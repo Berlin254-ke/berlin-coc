@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Berlin C.O.C. — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold:#C9A84C; --gold-light:#F0C96B; --gold-dim:rgba(201,168,76,0.12);
+  --bg:#0A0907; --bg2:#111009; --surface:#1A1812; --surface2:#221F15;
+  --border:rgba(201,168,76,0.1); --border2:rgba(255,255,255,0.06);
+  --text:#F5F3EE; --muted:#9E9A90; --dim:#5C5952;
+  --green:#4DFF9E; --red:#FF5C5C; --blue:#47C8FF; --orange:#FF9F47;
+  --radius:6px; --sidebar:260px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;overflow-x:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar);flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  height:100vh;position:fixed;top:0;left:0;z-index:100;
+  transition:transform 0.3s;
+}
+.sidebar-logo{
+  padding:1.75rem 1.5rem 1.25rem;
+  border-bottom:1px solid var(--border);
+}
+.sidebar-logo-text{
+  font-family:'Unbounded',sans-serif;
+  font-size:0.85rem;font-weight:900;letter-spacing:0.08em;
+}
+.sidebar-logo-text span{color:var(--gold);}
+.sidebar-logo-sub{font-size:0.65rem;color:var(--dim);margin-top:0.25rem;letter-spacing:0.1em;text-transform:uppercase;}
+.sidebar-nav{flex:1;padding:1.25rem 0;overflow-y:auto;}
+.nav-section-label{
+  font-family:'DM Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--dim);padding:0.75rem 1.5rem 0.4rem;
+}
+.nav-item{
+  display:flex;align-items:center;gap:0.85rem;
+  padding:0.65rem 1.5rem;
+  font-size:0.85rem;font-weight:500;
+  color:var(--muted);cursor:pointer;
+  transition:all 0.2s;position:relative;
+  border-left:2px solid transparent;
+}
+.nav-item:hover{color:var(--text);background:var(--surface2);}
+.nav-item.active{color:var(--gold);border-left-color:var(--gold);background:var(--gold-dim);}
+.nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
+.nav-badge{
+  margin-left:auto;
+  background:var(--red);color:#fff;
+  font-size:0.6rem;font-weight:700;
+  padding:0.15rem 0.45rem;border-radius:100px;
+  font-family:'DM Mono',monospace;
+}
+.nav-badge.gold{background:var(--gold);color:#0A0907;}
+.sidebar-footer{
+  padding:1.25rem 1.5rem;
+  border-top:1px solid var(--border);
+}
+.sidebar-user{display:flex;align-items:center;gap:0.85rem;}
+.sidebar-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--gold-dim);border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;
+}
+.sidebar-user-name{font-size:0.82rem;font-weight:600;}
+.sidebar-user-role{font-size:0.7rem;color:var(--dim);}
+.logout-btn{
+  margin-left:auto;background:none;border:none;
+  color:var(--dim);font-size:0.8rem;cursor:pointer;
+  transition:color 0.2s;
+}
+.logout-btn:hover{color:var(--red);}
+
+/* ── MAIN ── */
+.main{margin-left:var(--sidebar);flex:1;min-height:100vh;display:flex;flex-direction:column;}
+.topbar{
+  padding:1.1rem 2rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg);position:sticky;top:0;z-index:50;
+}
+.topbar-title{font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.04em;}
+.topbar-right{display:flex;align-items:center;gap:1rem;}
+.topbar-time{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--dim);}
+.notif-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;cursor:pointer;position:relative;
+  transition:border-color 0.2s;
+}
+.notif-btn:hover{border-color:var(--gold);}
+.notif-dot{
+  position:absolute;top:6px;right:6px;
+  width:7px;height:7px;border-radius:50%;background:var(--red);
+  border:1px solid var(--bg);
+}
+.content{padding:2rem;flex:1;}
+
+/* ── PANELS ── */
+.panel{display:none;}
+.panel.active{display:block;animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── STATS GRID ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-bottom:2rem;}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.5rem;
+  transition:border-color 0.2s;
+}
+.stat-card:hover{border-color:rgba(201,168,76,0.3);}
+.stat-card-label{font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:0.75rem;}
+.stat-card-value{font-family:'Unbounded',sans-serif;font-size:2rem;font-weight:900;line-height:1;}
+.stat-card-value.gold{color:var(--gold);}
+.stat-card-value.green{color:var(--green);}
+.stat-card-value.blue{color:var(--blue);}
+.stat-card-value.red{color:var(--red);}
+.stat-card-change{font-size:0.75rem;color:var(--muted);margin-top:0.5rem;}
+.stat-card-change.up{color:var(--green);}
+.stat-card-change.down{color:var(--red);}
+
+/* ── TABLES ── */
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.table-header{
+  padding:1.25rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+  flex-wrap:wrap;gap:1rem;
+}
+.table-title{font-family:'Unbounded',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.04em;}
+.table-actions{display:flex;gap:0.75rem;align-items:center;}
+.search-input{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:0.45rem 0.85rem;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.82rem;
+  outline:none;width:220px;transition:border-color 0.2s;
+}
+.search-input:focus{border-color:var(--gold);}
+.search-input::placeholder{color:var(--dim);}
+table{width:100%;border-collapse:collapse;}
+th{
+  padding:0.75rem 1.5rem;
+  font-family:'DM Mono',monospace;font-size:0.65rem;
+  font-weight:500;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--dim);text-align:left;
+  border-bottom:1px solid var(--border);
+  background:var(--bg2);
+}
+td{
+  padding:1rem 1.5rem;
+  font-size:0.85rem;color:var(--muted);
+  border-bottom:1px solid var(--border2);
+}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--surface2);}
+.td-name{color:var(--text);font-weight:500;}
+.td-email{font-family:'DM Mono',monospace;font-size:0.75rem;}
+
+/* STATUS BADGES */
+.badge{
+  display:inline-flex;align-items:center;gap:0.35rem;
+  padding:0.25rem 0.65rem;border-radius:100px;
+  font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  font-family:'DM Mono',monospace;
+}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;}
+.badge.new{background:rgba(71,200,255,0.12);color:var(--blue);}
+.badge.pending{background:rgba(255,159,71,0.12);color:var(--orange);}
+.badge.replied{background:rgba(77,255,158,0.12);color:var(--green);}
+.badge.closed{background:rgba(92,89,82,0.2);color:var(--dim);}
+.badge.published{background:rgba(77,255,158,0.12);color:var(--green);}
+.badge.draft{background:rgba(255,159,71,0.12);color:var(--orange);}
+.badge.active{background:rgba(77,255,158,0.12);color:var(--green);}
+.badge.inactive{background:rgba(92,89,82,0.2);color:var(--dim);}
+
+/* ACTION BUTTONS */
+.btn{
+  padding:0.45rem 1rem;border-radius:var(--radius);
+  font-family:'Unbounded',sans-serif;font-size:0.62rem;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  border:none;cursor:pointer;transition:all 0.2s;
+}
+.btn-gold{background:var(--gold);color:#0A0907;}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-1px);}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.btn-danger{background:rgba(255,92,92,0.15);border:1px solid rgba(255,92,92,0.3);color:var(--red);}
+.btn-danger:hover{background:rgba(255,92,92,0.25);}
+.btn-sm{padding:0.3rem 0.7rem;font-size:0.58rem;}
+.btn-green{background:rgba(77,255,158,0.15);border:1px solid rgba(77,255,158,0.3);color:var(--green);}
+.btn-green:hover{background:rgba(77,255,158,0.25);}
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;padding:2rem;
+  opacity:0;visibility:hidden;transition:all 0.3s;
+}
+.modal-overlay.open{opacity:1;visibility:visible;}
+.modal{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;width:100%;max-width:660px;max-height:90vh;overflow-y:auto;
+  transform:scale(0.95);transition:transform 0.3s;
+}
+.modal-overlay.open .modal{transform:scale(1);}
+.modal-header{
+  padding:1.5rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-title{font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700;}
+.modal-close{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--surface2);border:none;
+  color:var(--muted);font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.modal-close:hover{background:rgba(255,92,92,0.2);color:var(--red);}
+.modal-body{padding:1.5rem;}
+.modal-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:0.75rem;justify-content:flex-end;}
+
+/* ── FORMS ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.form-group{display:flex;flex-direction:column;gap:0.45rem;}
+.form-group.full{grid-column:span 2;}
+.form-label{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+.form-input,.form-select,.form-textarea{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:0.7rem 0.9rem;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.9rem;
+  outline:none;transition:border-color 0.2s,box-shadow 0.2s;resize:vertical;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim);
+}
+.form-select{appearance:none;cursor:pointer;}
+.form-textarea{min-height:120px;}
+
+/* ── INBOX ── */
+.inbox-layout{display:grid;grid-template-columns:340px 1fr;gap:0;height:calc(100vh - 130px);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.inbox-list{border-right:1px solid var(--border);overflow-y:auto;background:var(--surface);}
+.inbox-search{padding:1rem;border-bottom:1px solid var(--border);}
+.inbox-item{
+  padding:1rem 1.25rem;border-bottom:1px solid var(--border2);
+  cursor:pointer;transition:background 0.15s;
+  position:relative;
+}
+.inbox-item:hover{background:var(--surface2);}
+.inbox-item.active{background:var(--gold-dim);border-left:2px solid var(--gold);}
+.inbox-item.unread .inbox-item-name{color:var(--text);font-weight:600;}
+.inbox-item-row{display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;}
+.inbox-item-name{font-size:0.85rem;font-weight:500;color:var(--muted);}
+.inbox-item-time{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--dim);white-space:nowrap;}
+.inbox-item-subject{font-size:0.78rem;color:var(--muted);margin-top:0.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.inbox-item-preview{font-size:0.75rem;color:var(--dim);margin-top:0.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.unread-dot{
+  position:absolute;top:1.15rem;right:1rem;
+  width:7px;height:7px;border-radius:50%;background:var(--blue);
+}
+.inbox-thread{display:flex;flex-direction:column;background:var(--bg);}
+.thread-topbar{
+  padding:1rem 1.5rem;border-bottom:1px solid var(--border);
+  background:var(--surface);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.thread-subject{font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700;}
+.thread-messages{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem;}
+.message-bubble{
+  max-width:80%;padding:1.1rem 1.25rem;
+  border-radius:12px;
+}
+.message-bubble.client{
+  background:var(--surface);border:1px solid var(--border);
+  align-self:flex-start;border-bottom-left-radius:3px;
+}
+.message-bubble.admin{
+  background:var(--gold-dim);border:1px solid rgba(201,168,76,0.2);
+  align-self:flex-end;border-bottom-right-radius:3px;
+}
+.msg-meta{font-size:0.68rem;color:var(--dim);margin-bottom:0.5rem;font-family:'DM Mono',monospace;}
+.msg-text{font-size:0.88rem;line-height:1.6;color:var(--text);}
+.thread-reply{
+  padding:1.25rem;border-top:1px solid var(--border);
+  background:var(--surface);
+}
+.reply-textarea{
+  width:100%;background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:0.85rem;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.88rem;
+  resize:none;outline:none;min-height:90px;transition:border-color 0.2s;
+}
+.reply-textarea:focus{border-color:var(--gold);}
+.reply-actions{display:flex;justify-content:space-between;align-items:center;margin-top:0.85rem;}
+.reply-tools{display:flex;gap:0.5rem;}
+.empty-thread{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;color:var(--dim);
+}
+.empty-icon{font-size:3rem;opacity:0.3;}
+.empty-text{font-size:0.85rem;}
+
+/* ── CONTENT EDITOR ── */
+.content-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;background:var(--surface);padding:0.35rem;border-radius:var(--radius);border:1px solid var(--border);width:fit-content;}
+.content-tab{
+  padding:0.45rem 1rem;border-radius:4px;
+  font-family:'Unbounded',sans-serif;font-size:0.62rem;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  background:none;border:none;color:var(--muted);cursor:pointer;transition:all 0.2s;
+}
+.content-tab.active{background:var(--gold);color:#0A0907;}
+
+/* ── CARDS GRID ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;}
+.item-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;transition:border-color 0.2s;
+}
+.item-card:hover{border-color:rgba(201,168,76,0.3);}
+.item-card-img{
+  height:140px;background:var(--surface2);
+  display:flex;align-items:center;justify-content:center;font-size:2.5rem;
+}
+.item-card-body{padding:1.25rem;}
+.item-card-title{font-family:'Unbounded',sans-serif;font-size:0.82rem;font-weight:700;margin-bottom:0.35rem;}
+.item-card-sub{font-size:0.78rem;color:var(--muted);margin-bottom:0.85rem;line-height:1.5;}
+.item-card-footer{display:flex;align-items:center;justify-content:space-between;}
+
+/* ── CHART ── */
+.chart-grid{display:grid;grid-template-columns:2fr 1fr;gap:1.25rem;margin-bottom:1.5rem;}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;}
+.chart-title{font-family:'Unbounded',sans-serif;font-size:0.78rem;font-weight:700;margin-bottom:1.5rem;}
+.bar-chart{display:flex;align-items:flex-end;gap:0.5rem;height:140px;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:0.35rem;}
+.bar{
+  width:100%;border-radius:3px 3px 0 0;
+  background:linear-gradient(to top,var(--gold),var(--gold-light));
+  transition:height 0.8s cubic-bezier(0.16,1,0.3,1);
+  min-height:4px;
+}
+.bar-label{font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--dim);}
+.donut-wrap{display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;}
+.donut-legend{display:flex;flex-direction:column;gap:0.75rem;}
+.legend-item{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--muted);}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ── ACTIVITY FEED ── */
+.activity-feed{display:flex;flex-direction:column;gap:0;}
+.activity-item{
+  display:flex;gap:1rem;padding:0.85rem 0;
+  border-bottom:1px solid var(--border2);align-items:flex-start;
+}
+.activity-item:last-child{border-bottom:none;}
+.activity-icon{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;flex-shrink:0;margin-top:2px;
+}
+.activity-text{font-size:0.82rem;line-height:1.5;color:var(--muted);}
+.activity-text strong{color:var(--text);}
+.activity-time{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--dim);margin-top:0.2rem;}
+
+/* ── SETTINGS ── */
+.settings-grid{display:grid;grid-template-columns:220px 1fr;gap:1.5rem;align-items:start;}
+.settings-nav{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.settings-nav-item{
+  padding:0.75rem 1.25rem;font-size:0.85rem;color:var(--muted);
+  cursor:pointer;border-bottom:1px solid var(--border2);transition:all 0.2s;
+}
+.settings-nav-item:last-child{border-bottom:none;}
+.settings-nav-item:hover{color:var(--text);background:var(--surface2);}
+.settings-nav-item.active{color:var(--gold);background:var(--gold-dim);}
+.settings-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;}
+.settings-section-title{font-family:'Unbounded',sans-serif;font-size:0.82rem;font-weight:700;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+
+/* ── TOAST ── */
+.toast-container{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:0.75rem;}
+.toast{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:0.85rem 1.25rem;
+  display:flex;align-items:center;gap:0.85rem;
+  font-size:0.85rem;color:var(--text);
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
+  animation:slideIn 0.3s ease;min-width:280px;
+}
+.toast.success{border-color:rgba(77,255,158,0.3);}
+.toast.error{border-color:rgba(255,92,92,0.3);}
+.toast-icon{font-size:1.1rem;}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── LOGIN ── */
+.login-screen{
+  position:fixed;inset:0;z-index:2000;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+}
+.login-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:3rem;width:100%;max-width:420px;
+  position:relative;overflow:hidden;
+}
+.login-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+}
+.login-logo{font-family:'Unbounded',sans-serif;font-size:1.1rem;font-weight:900;text-align:center;margin-bottom:0.35rem;}
+.login-logo span{color:var(--gold);}
+.login-sub{text-align:center;font-size:0.78rem;color:var(--dim);margin-bottom:2rem;font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;}
+.login-title{font-family:'Unbounded',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:0.5rem;text-align:center;}
+.login-desc{font-size:0.85rem;color:var(--muted);text-align:center;margin-bottom:2rem;}
+.login-hint{font-size:0.72rem;color:var(--dim);text-align:center;margin-top:1rem;font-family:'DM Mono',monospace;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .chart-grid{grid-template-columns:1fr;}
+  .inbox-layout{grid-template-columns:1fr;height:auto;}
+  .inbox-thread{min-height:500px;}
+  .settings-grid{grid-template-columns:1fr;}
+}
+@media(max-width:768px){
+  :root{--sidebar:0px;}
+  .sidebar{transform:translateX(-260px);width:260px;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-group.full{grid-column:span 1;}
+}
+
+/* ── KANBAN ── */
+.kanban-board{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;align-items:start;}
+.kanban-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.kanban-col-header{padding:.85rem 1.1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.kanban-col-title{font-family:'Unbounded',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;}
+.kanban-count{background:var(--surface2);padding:.15rem .5rem;border-radius:100px;font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);}
+.kanban-cards{padding:.75rem;display:flex;flex-direction:column;gap:.65rem;min-height:120px;}
+.kanban-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem;cursor:pointer;transition:all .2s;}
+.kanban-card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-2px);}
+.kc-name{font-size:.82rem;font-weight:600;margin-bottom:.25rem;}
+.kc-service{font-size:.72rem;color:var(--muted);}
+.kc-budget{font-size:.7rem;color:var(--gold);font-family:'DM Mono',monospace;margin-top:.4rem;}
+.kc-date{font-size:.65rem;color:var(--dim);margin-top:.25rem;}
+.kc-drag{cursor:grab;}
+/* ── MEDIA LIBRARY ── */
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;}
+.media-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer;transition:all .2s;}
+.media-item:hover{border-color:rgba(201,168,76,.4);}
+.media-thumb{height:120px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:var(--surface2);}
+.media-info{padding:.65rem .75rem;}
+.media-name{font-size:.72rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.media-size{font-size:.65rem;color:var(--dim);font-family:'DM Mono',monospace;}
+.media-check{position:absolute;top:.5rem;right:.5rem;width:20px;height:20px;border-radius:4px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.7rem;opacity:0;transition:all .2s;}
+.media-item:hover .media-check,.media-item.selected .media-check{opacity:1;}
+.media-item.selected .media-check{background:var(--gold);border-color:var(--gold);color:#0A0907;}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:3rem;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:1.5rem;}
+.upload-zone:hover{border-color:var(--gold);background:var(--gold-dim);}
+.upload-icon{font-size:2.5rem;margin-bottom:.75rem;}
+.upload-text{font-family:'Unbounded',sans-serif;font-size:.78rem;font-weight:700;margin-bottom:.35rem;}
+.upload-sub{font-size:.78rem;color:var(--dim);}
+/* ── INVOICE ── */
+.invoice-preview{background:#fff;color:#111;border-radius:var(--radius);padding:3rem;max-width:680px;margin:0 auto;}
+.inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3rem;}
+.inv-logo{font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;letter-spacing:.08em;}
+.inv-logo span{color:#C9A84C;}
+.inv-meta{text-align:right;font-size:.8rem;color:#666;}
+.inv-title{font-family:'Unbounded',sans-serif;font-size:1.4rem;font-weight:900;margin-bottom:.25rem;}
+.inv-num{font-family:'DM Mono',monospace;font-size:.75rem;color:#888;}
+.inv-from-to{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:2.5rem;}
+.inv-label{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#999;margin-bottom:.5rem;}
+.inv-val{font-size:.88rem;color:#333;line-height:1.6;}
+.inv-table{width:100%;border-collapse:collapse;margin-bottom:2rem;}
+.inv-table th{padding:.65rem 1rem;background:#f5f5f5;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-align:left;color:#666;}
+.inv-table td{padding:.75rem 1rem;border-bottom:1px solid #eee;font-size:.85rem;color:#333;}
+.inv-totals{text-align:right;display:flex;flex-direction:column;gap:.4rem;}
+.inv-total-row{display:flex;justify-content:flex-end;gap:3rem;font-size:.85rem;color:#666;}
+.inv-total-row.grand{font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:700;color:#111;margin-top:.5rem;padding-top:.5rem;border-top:2px solid #111;}
+.inv-notes{margin-top:2rem;padding:1rem;background:#f9f9f9;border-radius:4px;font-size:.8rem;color:#666;line-height:1.6;}
+/* ── AUDIT LOG ── */
+.audit-entry{display:flex;gap:1rem;padding:.75rem 0;border-bottom:1px solid var(--border2);font-size:.82rem;}
+.audit-time{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--dim);white-space:nowrap;min-width:100px;}
+.audit-action{color:var(--text);}
+.audit-detail{color:var(--muted);font-size:.78rem;}
+.audit-source{margin-left:auto;font-family:'DM Mono',monospace;font-size:.6rem;color:var(--dim);}
+/* ── TEMPLATES ── */
+.template-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;transition:border-color .2s;}
+.template-card:hover{border-color:rgba(201,168,76,.3);}
+.template-title{font-family:'Unbounded',sans-serif;font-size:.78rem;font-weight:700;margin-bottom:.5rem;}
+.template-preview{font-size:.8rem;color:var(--muted);line-height:1.5;margin-bottom:1rem;}
+/* ── BROADCAST ── */
+.broadcast-preview{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-top:1rem;font-size:.85rem;color:var(--muted);line-height:1.7;}
+/* ── BULK SELECT ── */
+.bulk-bar{
+  background:var(--gold);color:#0A0907;
+  padding:.75rem 1.5rem;display:flex;align-items:center;gap:1rem;
+  font-family:'Unbounded',sans-serif;font-size:.72rem;font-weight:700;
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+@media(max-width:1024px){.kanban-board{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.kanban-board{grid-template-columns:1fr;}.invoice-preview{padding:1.5rem;}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">BERLIN <span>C.O.C.</span></div>
+    <div class="login-sub">Admin Dashboard</div>
+    <div class="login-title">Welcome Back</div>
+    <div class="login-desc">Sign in to manage your studio</div>
+    <div class="form-group" style="margin-bottom:1rem">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="loginEmail" placeholder="admin@berlincoc.com" value="admin@berlincoc.com"/>
+    </div>
+    <div class="form-group" style="margin-bottom:1.5rem">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" id="loginPass" placeholder="••••••••" value="admin123"/>
+    </div>
+    <button class="btn btn-gold" style="width:100%;padding:0.85rem;font-size:0.78rem" onclick="doLogin()">Sign In →</button>
+    <div class="login-hint">Demo: admin@berlincoc.com / admin123</div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-text">BERLIN <span>C.O.C.</span></div>
+    <div class="sidebar-logo-sub">Admin Console</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Overview</div>
+    <div class="nav-item active" onclick="showPanel('dashboard')">
+      <span class="nav-icon">📊</span> Dashboard
+    </div>
+    <div class="nav-section-label">Communications</div>
+    <div class="nav-item" onclick="showPanel('inbox')" id="inboxNavItem">
+      <span class="nav-icon">📨</span> Inbox
+      <span class="nav-badge" id="inboxBadge">3</span>
+    </div>
+    <div class="nav-item" onclick="showPanel('inquiries')">
+      <span class="nav-icon">💼</span> Project Inquiries
+      <span class="nav-badge" id="inquiriesBadge">2</span>
+    </div>
+    <div class="nav-item" onclick="showPanel('subscribers')">
+      <span class="nav-icon">📬</span> Subscribers
+    </div>
+    <div class="nav-section-label">Content</div>
+    <div class="nav-item" onclick="showPanel('portfolio')">
+      <span class="nav-icon">🖼️</span> Portfolio
+    </div>
+    <div class="nav-item" onclick="showPanel('services')">
+      <span class="nav-icon">⚙️</span> Services
+    </div>
+    <div class="nav-item" onclick="showPanel('blog')">
+      <span class="nav-icon">✍️</span> Blog / Insights
+    </div>
+    <div class="nav-item" onclick="showPanel('testimonials')">
+      <span class="nav-icon">⭐</span> Testimonials
+    </div>
+    <div class="nav-section-label">Management</div>
+    <div class="nav-item" onclick="showPanel('pipeline')">
+      <span class="nav-icon">📋</span> Pipeline
+    </div>
+    <div class="nav-item" onclick="showPanel('media')">
+      <span class="nav-icon">🖼️</span> Media Library
+    </div>
+    <div class="nav-item" onclick="showPanel('broadcast')">
+      <span class="nav-icon">📡</span> Newsletter Broadcast
+    </div>
+    <div class="nav-item" onclick="showPanel('invoices')">
+      <span class="nav-icon">🧾</span> Invoices
+    </div>
+    <div class="nav-item" onclick="showPanel('templates')">
+      <span class="nav-icon">💬</span> Reply Templates
+    </div>
+    <div class="nav-section-label">System</div>
+    <div class="nav-item" onclick="showPanel('analytics')">
+      <span class="nav-icon">📈</span> Analytics
+    </div>
+    <div class="nav-item" onclick="showPanel('settings')">
+      <span class="nav-icon">🔧</span> Settings
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">👤</div>
+      <div>
+        <div class="sidebar-user-name">Berlin Admin</div>
+        <div class="sidebar-user-role">Super Admin</div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()" title="Logout">⏻</button>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="panelTitle">Dashboard</div>
+    <div class="topbar-right">
+      <div class="topbar-time" id="clock"></div>
+      <div class="notif-btn" onclick="showPanel('inbox')">
+        🔔 <div class="notif-dot"></div>
+      </div>
+      <button class="btn btn-gold btn-sm" onclick="showPanel('inbox')">New Message</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-label">Total Inquiries</div>
+          <div class="stat-card-value gold" id="stat-inquiries">0</div>
+          <div class="stat-card-change up" id="stat-inquiries-change">↑ Loading...</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Unread Messages</div>
+          <div class="stat-card-value blue" id="stat-unread">0</div>
+          <div class="stat-card-change">Needs attention</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Portfolio Items</div>
+          <div class="stat-card-value green" id="stat-portfolio">0</div>
+          <div class="stat-card-change">Published projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Blog Articles</div>
+          <div class="stat-card-value" id="stat-blog">0</div>
+          <div class="stat-card-change">Total posts</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Subscribers</div>
+          <div class="stat-card-value gold" id="stat-subscribers">0</div>
+          <div class="stat-card-change up">Newsletter list</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Testimonials</div>
+          <div class="stat-card-value green" id="stat-testimonials">0</div>
+          <div class="stat-card-change">Client reviews</div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-title">Inquiries — Last 6 Months</div>
+          <div class="bar-chart" id="inquiriesChart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Traffic Sources</div>
+          <div class="donut-wrap">
+            <svg width="100" height="100" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--surface2)" stroke-width="3.5"/>
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--gold)" stroke-width="3.5" stroke-dasharray="45 55" stroke-dashoffset="25" transform="rotate(-90 18 18)"/>
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-dasharray="30 70" stroke-dashoffset="-20" transform="rotate(-90 18 18)"/>
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--green)" stroke-width="3.5" stroke-dasharray="15 85" stroke-dashoffset="-50" transform="rotate(-90 18 18)"/>
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--orange)" stroke-width="3.5" stroke-dasharray="10 90" stroke-dashoffset="-65" transform="rotate(-90 18 18)"/>
+            </svg>
+            <div class="donut-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Organic 45%</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Social 30%</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Referral 15%</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div>Direct 10%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Recent Activity</div>
+        <div class="activity-feed" id="activityFeed"></div>
+      </div>
+    </div>
+
+    <!-- ══ INBOX ══ -->
+    <div class="panel" id="panel-inbox">
+      <div class="inbox-layout">
+        <div class="inbox-list">
+          <div class="inbox-search">
+            <input class="search-input" style="width:100%" placeholder="Search messages..." oninput="filterInbox(this.value)"/>
+          </div>
+          <div id="inboxListContainer"></div>
+        </div>
+        <div class="inbox-thread" id="inboxThread">
+          <div class="empty-thread">
+            <div class="empty-icon">📭</div>
+            <div class="empty-text">Select a conversation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PROJECT INQUIRIES ══ -->
+    <div class="panel" id="panel-inquiries">
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">Project Inquiries</div>
+          <div class="table-actions">
+            <input class="search-input" placeholder="Search inquiries..." oninput="filterTable('inquiriesTable', this.value)"/>
+            <button class="btn btn-gold btn-sm" onclick="openModal('addInquiryModal')">+ Add</button>
+          </div>
+        </div>
+        <table id="inquiriesTable"><thead><tr>
+          <th>Client</th><th>Service</th><th>Budget</th><th>Status</th><th>Date</th><th>Actions</th>
+        </tr></thead><tbody id="inquiriesTbody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ SUBSCRIBERS ══ -->
+    <div class="panel" id="panel-subscribers">
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">Newsletter Subscribers</div>
+          <div class="table-actions">
+            <input class="search-input" placeholder="Search subscribers..." oninput="filterTable('subscribersTable', this.value)"/>
+            <button class="btn btn-gold btn-sm" onclick="openModal('addSubscriberModal')">+ Add</button>
+          </div>
+        </div>
+        <table id="subscribersTable"><thead><tr>
+          <th>Email</th><th>Name</th><th>Source</th><th>Date</th><th>Status</th><th>Actions</th>
+        </tr></thead><tbody id="subscribersTbody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ PORTFOLIO ══ -->
+    <div class="panel" id="panel-portfolio">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <div style="font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700">Portfolio Projects</div>
+        <button class="btn btn-gold" onclick="openModal('addPortfolioModal')">+ Add Project</button>
+      </div>
+      <div class="cards-grid" id="portfolioCards"></div>
+    </div>
+
+    <!-- ══ SERVICES ══ -->
+    <div class="panel" id="panel-services">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <div style="font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700">Services</div>
+        <button class="btn btn-gold" onclick="openModal('addServiceModal')">+ Add Service</button>
+      </div>
+      <div class="table-wrap">
+        <table><thead><tr><th>Service</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="servicesTbody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ BLOG ══ -->
+    <div class="panel" id="panel-blog">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <div style="font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700">Blog & Insights</div>
+        <button class="btn btn-gold" onclick="openModal('addBlogModal')">+ Write Article</button>
+      </div>
+      <div class="cards-grid" id="blogCards"></div>
+    </div>
+
+    <!-- ══ TESTIMONIALS ══ -->
+    <div class="panel" id="panel-testimonials">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <div style="font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700">Client Testimonials</div>
+        <button class="btn btn-gold" onclick="openModal('addTestimonialModal')">+ Add Testimonial</button>
+      </div>
+      <div class="table-wrap">
+        <table><thead><tr><th>Client</th><th>Company</th><th>Rating</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody id="testimonialsTbody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ ANALYTICS ══ -->
+    <div class="panel" id="panel-analytics">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-card-label">Page Views (Month)</div><div class="stat-card-value gold">4,821</div><div class="stat-card-change up">↑ 18% vs last month</div></div>
+        <div class="stat-card"><div class="stat-card-label">Unique Visitors</div><div class="stat-card-value blue">1,247</div><div class="stat-card-change up">↑ 12%</div></div>
+        <div class="stat-card"><div class="stat-card-label">Avg. Session</div><div class="stat-card-value">3m 42s</div><div class="stat-card-change up">↑ 8%</div></div>
+        <div class="stat-card"><div class="stat-card-label">Bounce Rate</div><div class="stat-card-value red">34%</div><div class="stat-card-change down">↓ 5%</div></div>
+        <div class="stat-card"><div class="stat-card-label">Conversion Rate</div><div class="stat-card-value green">4.2%</div><div class="stat-card-change up">↑ 1.1%</div></div>
+        <div class="stat-card"><div class="stat-card-label">Contact Form Fills</div><div class="stat-card-value gold">52</div><div class="stat-card-change up">↑ 22%</div></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Weekly Traffic — Last 8 Weeks</div>
+        <div class="bar-chart">
+          <div class="bar-wrap"><div class="bar" style="height:55%"></div><div class="bar-label">W1</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:70%"></div><div class="bar-label">W2</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:60%"></div><div class="bar-label">W3</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:85%"></div><div class="bar-label">W4</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:75%"></div><div class="bar-label">W5</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:90%"></div><div class="bar-label">W6</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:80%"></div><div class="bar-label">W7</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:95%"></div><div class="bar-label">W8</div></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.25rem">
+        <div class="chart-card">
+          <div class="chart-title">Top Pages</div>
+          <div style="display:flex;flex-direction:column;gap:0.85rem;margin-top:0.5rem">
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem"><span style="color:var(--muted)">/</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">1,842</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem"><span style="color:var(--muted)">/portfolio</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">974</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem"><span style="color:var(--muted)">/services</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">687</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem"><span style="color:var(--muted)">/about</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">542</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem"><span style="color:var(--muted)">/contact</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">418</span></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Top Countries</div>
+          <div style="display:flex;flex-direction:column;gap:0.85rem;margin-top:0.5rem">
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem"><span style="color:var(--muted)">🇺🇸 United States</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">38%</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem"><span style="color:var(--muted)">🇬🇧 United Kingdom</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">22%</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem"><span style="color:var(--muted)">🇨🇦 Canada</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">14%</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem"><span style="color:var(--muted)">🇦🇺 Australia</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">10%</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.82rem"><span style="color:var(--muted)">🌍 Other</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">16%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SETTINGS ══ -->
+    
+    <!-- ══ PIPELINE / KANBAN ══ -->
+    <div class="panel" id="panel-pipeline">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <div style="font-family:'Unbounded',sans-serif;font-size:.85rem;font-weight:700">Project Pipeline</div>
+        <button class="btn btn-gold" onclick="openModal('addInquiryModal')">+ New Lead</button>
+      </div>
+      <div class="kanban-board" id="kanbanBoard"></div>
+    </div>
+
+    <!-- ══ MEDIA LIBRARY ══ -->
+    <div class="panel" id="panel-media">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <div style="font-family:'Unbounded',sans-serif;font-size:.85rem;font-weight:700">Media Library</div>
+        <div style="display:flex;gap:.75rem">
+          <button class="btn btn-outline btn-sm" onclick="deleteSelectedMedia()">Delete Selected</button>
+          <button class="btn btn-gold" onclick="document.getElementById('mediaUploadInput').click()">+ Upload</button>
+          <input type="file" id="mediaUploadInput" multiple accept="image/*,video/*,.pdf,.svg" style="display:none" onchange="handleMediaUpload(this)"/>
+        </div>
+      </div>
+      <div class="upload-zone" onclick="document.getElementById('mediaUploadInput').click()">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text">Drop files or click to upload</div>
+        <div class="upload-sub">PNG, JPG, SVG, PDF, MP4 — up to 10MB each</div>
+      </div>
+      <div class="media-grid" id="mediaGrid"></div>
+    </div>
+
+    <!-- ══ NEWSLETTER BROADCAST ══ -->
+    <div class="panel" id="panel-broadcast">
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:1.5rem;align-items:start">
+        <div>
+          <div style="font-family:'Unbounded',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:1.5rem">Compose Broadcast</div>
+          <div class="table-wrap" style="margin-bottom:1.5rem">
+            <div class="table-header" style="flex-direction:column;align-items:flex-start;gap:1rem">
+              <div class="form-group" style="width:100%"><label class="form-label">Subject Line</label><input class="form-input" id="bc-subject" placeholder="Studio Update — March 2025"/></div>
+              <div class="form-group" style="width:100%"><label class="form-label">Preview Text</label><input class="form-input" id="bc-preview" placeholder="Brief teaser shown in inbox..."/></div>
+              <div class="form-group" style="width:100%"><label class="form-label">Email Body</label><textarea class="form-textarea" id="bc-body" style="min-height:280px" placeholder="Write your newsletter content here...&#10;&#10;You can use plain text — it will be wrapped in our branded email template automatically."></textarea></div>
+              <div style="display:flex;gap:.75rem">
+                <button class="btn btn-outline" onclick="previewBroadcast()">👁 Preview</button>
+                <button class="btn btn-gold" onclick="sendBroadcast()">📡 Send to All Subscribers</button>
+              </div>
+            </div>
+          </div>
+          <div id="broadcastPreviewWrap" style="display:none">
+            <div style="font-family:'Unbounded',sans-serif;font-size:.75rem;font-weight:700;margin-bottom:.75rem">Email Preview</div>
+            <div class="broadcast-preview" id="broadcastPreview"></div>
+          </div>
+        </div>
+        <div>
+          <div class="chart-card">
+            <div class="chart-title">Broadcast Stats</div>
+            <div style="display:flex;flex-direction:column;gap:1rem;margin-top:.5rem">
+              <div style="display:flex;justify-content:space-between"><span style="font-size:.82rem;color:var(--muted)">Total subscribers</span><span style="font-family:'DM Mono',monospace;color:var(--gold)" id="bcSubCount">—</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="font-size:.82rem;color:var(--muted)">Active</span><span style="font-family:'DM Mono',monospace;color:var(--green)" id="bcActiveCount">—</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="font-size:.82rem;color:var(--muted)">Broadcasts sent</span><span style="font-family:'DM Mono',monospace;color:var(--text)" id="bcSentCount">—</span></div>
+            </div>
+          </div>
+          <div class="chart-card" style="margin-top:1.25rem">
+            <div class="chart-title">Broadcast History</div>
+            <div id="broadcastHistory" style="margin-top:.5rem"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ INVOICES ══ -->
+    <div class="panel" id="panel-invoices">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <div style="font-family:'Unbounded',sans-serif;font-size:.85rem;font-weight:700">Invoices</div>
+        <button class="btn btn-gold" onclick="showInvoiceBuilder()">+ New Invoice</button>
+      </div>
+      <div id="invoicePanel">
+        <div class="table-wrap">
+          <table><thead><tr><th>Invoice #</th><th>Client</th><th>Service</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="invoicesTbody"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ REPLY TEMPLATES ══ -->
+    <div class="panel" id="panel-templates">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <div style="font-family:'Unbounded',sans-serif;font-size:.85rem;font-weight:700">Saved Reply Templates</div>
+        <button class="btn btn-gold" onclick="openModal('addTemplateModal')">+ New Template</button>
+      </div>
+      <div id="templatesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem"></div>
+    </div>
+
+<div class="panel" id="panel-settings">
+      <div class="settings-grid">
+        <div class="settings-nav">
+          <div class="settings-nav-item active" onclick="switchSettings(this,'set-profile')">Profile</div>
+          <div class="settings-nav-item" onclick="switchSettings(this,'set-brand')">Brand Info</div>
+          <div class="settings-nav-item" onclick="switchSettings(this,'set-email')">Email Config</div>
+          <div class="settings-nav-item" onclick="switchSettings(this,'set-security')">Security</div>
+          <div class="settings-nav-item" onclick="switchSettings(this,'set-seo')">SEO Defaults</div>
+        </div>
+        <div>
+          <div class="settings-section" id="set-profile">
+            <div class="settings-section-title">Profile Settings</div>
+            <div class="form-grid">
+              <div class="form-group"><label class="form-label">First Name</label><input class="form-input" value="Berlin"/></div>
+              <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" value="Admin"/></div>
+              <div class="form-group full"><label class="form-label">Email</label><input class="form-input" value="admin@berlincoc.com"/></div>
+              <div class="form-group full"><label class="form-label">Bio</label><textarea class="form-textarea" style="min-height:80px">Admin of Berlin C.O.C. creative studio.</textarea></div>
+            </div>
+            <button class="btn btn-gold" style="margin-top:1.25rem" onclick="showToast('Profile updated','success')">Save Changes</button>
+          </div>
+          <div class="settings-section" id="set-brand" style="display:none">
+            <div class="settings-section-title">Brand Information</div>
+            <div class="form-grid">
+              <div class="form-group full"><label class="form-label">Studio Name</label><input class="form-input" value="Berlin C.O.C."/></div>
+              <div class="form-group full"><label class="form-label">Tagline</label><input class="form-input" value="Zion Empire — Innovation. Creativity. Precision."/></div>
+              <div class="form-group"><label class="form-label">Email</label><input class="form-input" value="studio@berlincoc.com"/></div>
+              <div class="form-group"><label class="form-label">Phone</label><input class="form-input" value="+1 (555) 000-0000"/></div>
+              <div class="form-group full"><label class="form-label">Address / Location</label><input class="form-input" value="Available Worldwide — Remote Studio"/></div>
+            </div>
+            <button class="btn btn-gold" style="margin-top:1.25rem" onclick="showToast('Brand info saved','success')">Save Changes</button>
+          </div>
+          <div class="settings-section" id="set-email" style="display:none">
+            <div class="settings-section-title">Email Configuration</div>
+            <div class="form-grid">
+              <div class="form-group full"><label class="form-label">Notification Email</label><input class="form-input" value="studio@berlincoc.com"/></div>
+              <div class="form-group full"><label class="form-label">Auto-Reply Subject</label><input class="form-input" value="Thank you for reaching out — Berlin C.O.C."/></div>
+              <div class="form-group full"><label class="form-label">Auto-Reply Message</label><textarea class="form-textarea">Thank you for reaching out to Berlin C.O.C. We've received your message and will respond within 24-48 hours. In the meantime, feel free to browse our portfolio at berlincoc.com. — The Studio</textarea></div>
+              <div class="form-group"><label class="form-label">SMTP Host</label><input class="form-input" placeholder="smtp.gmail.com"/></div>
+              <div class="form-group"><label class="form-label">SMTP Port</label><input class="form-input" placeholder="587"/></div>
+            </div>
+            <button class="btn btn-gold" style="margin-top:1.25rem" onclick="showToast('Email config saved','success')">Save & Test</button>
+          </div>
+          <div class="settings-section" id="set-security" style="display:none">
+            <div class="settings-section-title">Security Settings</div>
+            <div class="form-grid">
+              <div class="form-group full"><label class="form-label">Current Password</label><input class="form-input" type="password" placeholder="••••••••"/></div>
+              <div class="form-group"><label class="form-label">New Password</label><input class="form-input" type="password" placeholder="••••••••"/></div>
+              <div class="form-group"><label class="form-label">Confirm Password</label><input class="form-input" type="password" placeholder="••••••••"/></div>
+            </div>
+            <div style="margin-top:1.5rem;padding:1rem;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border)">
+              <div style="font-size:0.82rem;font-weight:600;margin-bottom:0.5rem">Two-Factor Authentication</div>
+              <div style="font-size:0.78rem;color:var(--muted);margin-bottom:1rem">Add an extra layer of security to your account.</div>
+              <button class="btn btn-outline btn-sm">Enable 2FA</button>
+            </div>
+            <button class="btn btn-gold" style="margin-top:1.25rem" onclick="showToast('Password updated','success')">Update Password</button>
+          </div>
+          <div class="settings-section" id="set-seo" style="display:none">
+            <div class="settings-section-title">SEO Defaults</div>
+            <div class="form-grid">
+              <div class="form-group full"><label class="form-label">Default Meta Title</label><input class="form-input" value="Berlin C.O.C. — Zion Empire | Web Development & Design Studio"/></div>
+              <div class="form-group full"><label class="form-label">Default Meta Description</label><textarea class="form-textarea" style="min-height:80px">Berlin C.O.C. is a premium creative digital studio delivering world-class web development, UI/UX design, branding, and graphic design.</textarea></div>
+              <div class="form-group full"><label class="form-label">Default Keywords</label><input class="form-input" value="web development, UI/UX design, branding, graphic design, Berlin COC"/></div>
+              <div class="form-group full"><label class="form-label">Google Analytics ID</label><input class="form-input" placeholder="G-XXXXXXXXXX"/></div>
+            </div>
+            <button class="btn btn-gold" style="margin-top:1.25rem" onclick="showToast('SEO settings saved','success')">Save SEO Settings</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ══ MODALS ══ -->
+
+<!-- INQUIRY DETAIL MODAL -->
+<div class="modal-overlay" id="inquiryDetailModal">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header">
+      <div class="modal-title" id="inquiryDetailTitle">Inquiry Details</div>
+      <button class="modal-close" onclick="closeModal('inquiryDetailModal')">✕</button>
+    </div>
+    <div class="modal-body" id="inquiryDetailBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('inquiryDetailModal')">Close</button>
+      <button class="btn btn-gold" onclick="replyToInquiry()">Reply →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT PORTFOLIO MODAL -->
+<div class="modal-overlay" id="addPortfolioModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="portfolioModalTitle">Add Portfolio Project</div>
+      <button class="modal-close" onclick="closeModal('addPortfolioModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label">Project Title</label><input class="form-input" id="port-title" placeholder="Project name"/></div>
+        <div class="form-group"><label class="form-label">Category</label>
+          <select class="form-select" id="port-cat">
+            <option>Web Development</option><option>Branding</option><option>UI/UX Design</option><option>Graphic Design</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="port-status"><option>published</option><option>draft</option></select>
+        </div>
+        <div class="form-group full"><label class="form-label">Description</label><textarea class="form-textarea" id="port-desc" placeholder="Project description..."></textarea></div>
+        <div class="form-group"><label class="form-label">Client</label><input class="form-input" id="port-client" placeholder="Client name"/></div>
+        <div class="form-group"><label class="form-label">Tools Used</label><input class="form-input" id="port-tools" placeholder="React, Figma, ..."/></div>
+        <div class="form-group full"><label class="form-label">Results / Impact</label><input class="form-input" id="port-results" placeholder="e.g. +240% conversions"/></div>
+        <div class="form-group"><label class="form-label">Emoji / Icon</label><input class="form-input" id="port-icon" placeholder="🌐" value="🌐"/></div>
+        <div class="form-group"><label class="form-label">Live URL</label><input class="form-input" id="port-url" placeholder="https://..."/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addPortfolioModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="savePortfolio()">Save Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD BLOG MODAL -->
+<div class="modal-overlay" id="addBlogModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="blogModalTitle">Write Article</div>
+      <button class="modal-close" onclick="closeModal('addBlogModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label">Article Title</label><input class="form-input" id="blog-title" placeholder="Article title..."/></div>
+        <div class="form-group"><label class="form-label">Category</label>
+          <select class="form-select" id="blog-cat">
+            <option>Design</option><option>Development</option><option>Branding</option><option>Strategy</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="blog-status"><option>draft</option><option>published</option></select>
+        </div>
+        <div class="form-group full"><label class="form-label">Excerpt</label><textarea class="form-textarea" id="blog-excerpt" placeholder="Brief summary..." style="min-height:80px"></textarea></div>
+        <div class="form-group full"><label class="form-label">Content</label><textarea class="form-textarea" id="blog-content" placeholder="Full article content..." style="min-height:200px"></textarea></div>
+        <div class="form-group full"><label class="form-label">SEO Meta Description</label><input class="form-input" id="blog-seo" placeholder="Meta description for search engines..."/></div>
+        <div class="form-group"><label class="form-label">Read Time</label><input class="form-input" id="blog-readtime" placeholder="8 min read"/></div>
+        <div class="form-group"><label class="form-label">Cover Emoji</label><input class="form-input" id="blog-icon" placeholder="✦" value="✦"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addBlogModal')">Cancel</button>
+      <button class="btn btn-outline" onclick="saveBlog('draft')">Save Draft</button>
+      <button class="btn btn-gold" onclick="saveBlog('published')">Publish</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD TESTIMONIAL MODAL -->
+<div class="modal-overlay" id="addTestimonialModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add Testimonial</div>
+      <button class="modal-close" onclick="closeModal('addTestimonialModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Client Name</label><input class="form-input" id="test-name" placeholder="Jane Doe"/></div>
+        <div class="form-group"><label class="form-label">Company</label><input class="form-input" id="test-company" placeholder="Acme Corp"/></div>
+        <div class="form-group"><label class="form-label">Role / Title</label><input class="form-input" id="test-role" placeholder="CEO"/></div>
+        <div class="form-group"><label class="form-label">Rating</label>
+          <select class="form-select" id="test-rating">
+            <option value="5">★★★★★ 5 Stars</option><option value="4">★★★★☆ 4 Stars</option><option value="3">★★★☆☆ 3 Stars</option>
+          </select>
+        </div>
+        <div class="form-group full"><label class="form-label">Testimonial Text</label><textarea class="form-textarea" id="test-text" placeholder="Client review..."></textarea></div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="test-status"><option>published</option><option>draft</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Project (Optional)</label><input class="form-input" id="test-project" placeholder="Project name"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addTestimonialModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveTestimonial()">Save Testimonial</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD SERVICE MODAL -->
+<div class="modal-overlay" id="addServiceModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="serviceModalTitle">Add Service</div>
+      <button class="modal-close" onclick="closeModal('addServiceModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label">Service Name</label><input class="form-input" id="svc-name" placeholder="Service title"/></div>
+        <div class="form-group"><label class="form-label">Category</label><input class="form-input" id="svc-cat" placeholder="Web Dev, Design..."/></div>
+        <div class="form-group"><label class="form-label">Starting Price</label><input class="form-input" id="svc-price" placeholder="$1,500"/></div>
+        <div class="form-group full"><label class="form-label">Description</label><textarea class="form-textarea" id="svc-desc" placeholder="Service description..."></textarea></div>
+        <div class="form-group full"><label class="form-label">Deliverables (comma-separated)</label><input class="form-input" id="svc-deliverables" placeholder="Custom website, CMS integration, ..."/></div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="svc-status"><option>active</option><option>inactive</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Icon Emoji</label><input class="form-input" id="svc-icon" placeholder="💻" value="💻"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addServiceModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveService()">Save Service</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD SUBSCRIBER MODAL -->
+<div class="modal-overlay" id="addSubscriberModal">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-header">
+      <div class="modal-title">Add Subscriber</div>
+      <button class="modal-close" onclick="closeModal('addSubscriberModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label">Email</label><input class="form-input" id="sub-email" placeholder="email@example.com"/></div>
+        <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="sub-name" placeholder="Full name"/></div>
+        <div class="form-group"><label class="form-label">Source</label>
+          <select class="form-select" id="sub-source"><option>Manual</option><option>Website</option><option>Social</option><option>Referral</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addSubscriberModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveSubscriber()">Add Subscriber</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD INQUIRY MODAL -->
+<div class="modal-overlay" id="addInquiryModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add Inquiry</div>
+      <button class="modal-close" onclick="closeModal('addInquiryModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="inq-fname" placeholder="John"/></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="inq-lname" placeholder="Doe"/></div>
+        <div class="form-group full"><label class="form-label">Email</label><input class="form-input" id="inq-email" placeholder="email@company.com"/></div>
+        <div class="form-group"><label class="form-label">Company</label><input class="form-input" id="inq-company" placeholder="Company name"/></div>
+        <div class="form-group"><label class="form-label">Service</label>
+          <select class="form-select" id="inq-service">
+            <option>Web Development</option><option>UI/UX Design</option><option>Branding</option><option>Graphic Design</option><option>Maintenance</option><option>Multiple</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Budget</label>
+          <select class="form-select" id="inq-budget">
+            <option>$500-$1,000</option><option>$1,000-$3,000</option><option>$3,000-$7,500</option><option>$7,500-$15,000</option><option>$15,000+</option>
+          </select>
+        </div>
+        <div class="form-group full"><label class="form-label">Message</label><textarea class="form-textarea" id="inq-message"></textarea></div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-select" id="inq-status"><option>new</option><option>pending</option><option>replied</option><option>closed</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addInquiryModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveInquiry()">Save Inquiry</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ═══════════════════════════════════════
+// DATABASE — localStorage backed
+// ═══════════════════════════════════════
+const DB = {
+  get(key) { try { return JSON.parse(localStorage.getItem('berlin_'+key)) || []; } catch(e){ return []; } },
+  set(key, val) { localStorage.setItem('berlin_'+key, JSON.stringify(val)); },
+  getObj(key, def={}) { try { return JSON.parse(localStorage.getItem('berlin_'+key)) || def; } catch(e){ return def; } },
+  setObj(key, val) { localStorage.setItem('berlin_'+key, JSON.stringify(val)); }
+};
+
+// ── SEED DATA ──────────────────────────
+function seedDatabase() {
+  if(DB.get('seeded').length) return;
+
+  DB.set('messages', [
+    { id:1, name:'Marcus A.', email:'marcus@nexgen.com', subject:'Web App Project Brief', message:'Hi, I need a full fintech platform built. Budget around $15k. Timeline 3 months. Can we schedule a call this week?', date:'2025-03-08', status:'new', replies:[] },
+    { id:2, name:'Sarah K.', email:'sarah@apexcreative.io', subject:'Brand Identity Package', message:'Looking to rebrand our agency completely. We need logo, style guide, and all brand assets. What are your rates?', date:'2025-03-06', status:'new', replies:[] },
+    { id:3, name:'David O.', email:'david@lumix.co', subject:'UI/UX Design — Mobile App', message:'We have a photography app that needs a full UX overhaul. Currently has poor retention. Want to fix the onboarding flow first.', date:'2025-03-04', status:'replied', replies:[{from:'admin', text:'Thanks David! I reviewed your app briefly and can see several quick wins. Let me put together a proposal.', date:'2025-03-05'}] },
+    { id:4, name:'Priya M.', email:'priya@monarch.com', subject:'Social Media Campaign Assets', message:'Need 50+ social graphics for our Q2 campaign. Instagram, LinkedIn, and Facebook. Launch date is April 1st.', date:'2025-03-01', status:'pending', replies:[] },
+    { id:5, name:'James T.', email:'james@velour.fashion', subject:'E-commerce Redesign', message:'Our Shopify store needs a complete redesign. Current conversion rate is 1.2%, industry average is 3.5%. Help?', date:'2025-02-28', status:'replied', replies:[{from:'admin', text:'James, I specialize in conversion-focused e-commerce. I\'ve boosted rates to 4%+ on similar stores. Let\'s talk this week.', date:'2025-03-01'}] },
+  ]);
+
+  DB.set('inquiries', [
+    { id:1, name:'Marcus A.', email:'marcus@nexgen.com', company:'NexGen Capital', service:'Web Development', budget:'$15,000+', message:'Full fintech platform project.', status:'new', date:'2025-03-08' },
+    { id:2, name:'Sarah K.', email:'sarah@apex.io', company:'Apex Creative', service:'Branding', budget:'$3,000-$7,500', message:'Complete rebrand.', status:'pending', date:'2025-03-06' },
+    { id:3, name:'Elena V.', email:'elena@obsidian.co', company:'Obsidian Consulting', service:'Branding', budget:'$3,000-$7,500', message:'Brand identity for consulting firm.', status:'replied', date:'2025-02-20' },
+    { id:4, name:'James T.', email:'james@velour.fashion', company:'Velour Fashion', service:'Web Development', budget:'$7,500-$15,000', message:'E-commerce redesign.', status:'closed', date:'2025-02-10' },
+  ]);
+
+  DB.set('portfolio', [
+    { id:1, title:'NexGen Finance Platform', cat:'Web Development', desc:'High-performance fintech web app with real-time dashboards.', client:'NexGen Capital', tools:'Next.js, TypeScript, Tailwind', results:'+240% conversions', status:'published', icon:'🌐', url:'#', date:'2025-02-15' },
+    { id:2, title:'Apex Creative Identity', cat:'Branding', desc:'Complete brand overhaul for a premium creative agency.', client:'Apex Creative', tools:'Figma, Illustrator', results:'Premium market repositioning', status:'published', icon:'✦', url:'#', date:'2025-01-20' },
+    { id:3, title:'Lumix Mobile App', cat:'UI/UX Design', desc:'End-to-end product design for photography management app.', client:'Lumix Studios', tools:'Figma, Protopie', results:'4.8★ App Store rating', status:'published', icon:'📱', url:'#', date:'2025-01-05' },
+    { id:4, title:'Monarch Campaign Series', cat:'Graphic Design', desc:'50-piece social media and print campaign for luxury real estate.', client:'Monarch Group', tools:'Photoshop, Illustrator', results:'35% engagement increase', status:'published', icon:'🎨', url:'#', date:'2024-12-10' },
+  ]);
+
+  DB.set('blog', [
+    { id:1, title:'Why Most Brand Identities Fail', cat:'Design', excerpt:'Most brands confuse aesthetics with identity. Real brand identity is built on strategic differentiation.', content:'Full article content here...', status:'published', readtime:'8 min read', icon:'✦', seo:'Brand identity strategy guide.', date:'2025-03-05' },
+    { id:2, title:'The 2025 Web Performance Stack', cat:'Development', excerpt:'Lighthouse scores are vanity metrics if they don\'t translate to conversions.', content:'Full article content here...', status:'published', readtime:'12 min read', icon:'💻', seo:'Web performance optimization 2025.', date:'2025-02-18' },
+    { id:3, title:'Premium Positioning: How Design Justifies Higher Prices', cat:'Strategy', excerpt:'Your design is making pricing decisions before you open your mouth.', content:'Full article content here...', status:'draft', readtime:'6 min read', icon:'🎯', seo:'Premium brand positioning guide.', date:'2025-02-01' },
+  ]);
+
+  DB.set('testimonials', [
+    { id:1, name:'Marcus A.', company:'NexGen Capital', role:'CEO', rating:5, text:'"Berlin C.O.C. completely transformed our online presence. Conversion rate tripled in 90 days."', status:'published', project:'NexGen Finance Platform', date:'2025-02-20' },
+    { id:2, name:'Sarah K.', company:'Apex Creative', role:'Founder', rating:5, text:'"Elite level work. They build brands, not just websites."', status:'published', project:'Apex Identity', date:'2025-01-25' },
+    { id:3, name:'David O.', company:'Lumix Studios', role:'Director', rating:5, text:'"The rebrand completely repositioned us. ROI has been extraordinary."', status:'published', project:'Lumix App', date:'2025-01-10' },
+    { id:4, name:'Priya M.', company:'Monarch Group', role:'CMO', rating:5, text:'"Fast, precise, and visionary. I won\'t work with anyone else."', status:'published', project:'Monarch Campaign', date:'2024-12-15' },
+  ]);
+
+  DB.set('services', [
+    { id:1, name:'Web Development', cat:'Development', price:'$1,500', desc:'Custom websites and web apps.', deliverables:'Custom design,Next.js build,CMS integration,SEO optimization', status:'active', icon:'💻' },
+    { id:2, name:'UI/UX Design', cat:'Design', price:'$1,200', desc:'Research-driven interface design.', deliverables:'Wireframes,High-fi designs,Prototype,Design system', status:'active', icon:'🎨' },
+    { id:3, name:'Branding & Identity', cat:'Branding', price:'$800', desc:'Complete brand systems.', deliverables:'Logo,Color palette,Typography,Brand guide', status:'active', icon:'✦' },
+    { id:4, name:'Graphic Design', cat:'Design', price:'$300', desc:'High-impact visual content.', deliverables:'Social graphics,Print design,Presentations', status:'active', icon:'🖼️' },
+    { id:5, name:'Website Maintenance', cat:'Maintenance', price:'$200/mo', desc:'Proactive site care.', deliverables:'Updates,Security,Backups,Reports', status:'active', icon:'🔧' },
+    { id:6, name:'Digital Marketing Assets', cat:'Marketing', price:'$500', desc:'Conversion-optimized assets.', deliverables:'Landing pages,Ad creatives,Email templates', status:'active', icon:'📈' },
+  ]);
+
+  DB.set('subscribers', [
+    { id:1, email:'hello@nexgen.com', name:'Marcus A.', source:'Website', status:'active', date:'2025-03-01' },
+    { id:2, email:'sarah@apexcreative.io', name:'Sarah K.', source:'Social', status:'active', date:'2025-02-15' },
+    { id:3, email:'james@velour.fashion', name:'James T.', source:'Referral', status:'active', date:'2025-01-20' },
+    { id:4, email:'priya@monarch.com', name:'Priya M.', source:'Website', status:'active', date:'2025-01-10' },
+    { id:5, email:'elena@obsidian.co', name:'Elena V.', source:'Manual', status:'active', date:'2024-12-05' },
+  ]);
+
+  DB.set('seeded', [true]);
+}
+
+// ═══════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════
+function doLogin() {
+  const e = document.getElementById('loginEmail').value;
+  const p = document.getElementById('loginPass').value;
+  if(e === 'admin@berlincoc.com' && p === 'admin123') {
+    document.getElementById('loginScreen').style.display='none';
+    init();
+    showToast('Welcome back, Berlin Admin 👋','success');
+  } else {
+    showToast('Invalid credentials','error');
+  }
+}
+function doLogout() {
+  document.getElementById('loginScreen').style.display='flex';
+  showToast('Signed out successfully','success');
+}
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+const panelTitles = {
+  dashboard:'Dashboard', inbox:'Inbox', inquiries:'Project Inquiries',
+  subscribers:'Subscribers', portfolio:'Portfolio', services:'Services',
+  blog:'Blog & Insights', testimonials:'Testimonials', analytics:'Analytics', settings:'Settings'
+};
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelector(`.nav-item[onclick*="'${id}'"]`)?.classList.add('active');
+  document.getElementById('panelTitle').textContent = panelTitles[id]||id;
+  if(id==='inbox') renderInbox();
+  if(id==='inquiries') renderInquiries();
+  if(id==='portfolio') renderPortfolio();
+  if(id==='blog') renderBlog();
+  if(id==='testimonials') renderTestimonials();
+  if(id==='services') renderServices();
+  if(id==='subscribers') renderSubscribers();
+  if(id==='dashboard') renderDashboard();
+}
+
+// ═══════════════════════════════════════
+// CLOCK
+// ═══════════════════════════════════════
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ═══════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════
+function renderDashboard() {
+  const msgs = DB.get('messages');
+  const inqs = DB.get('inquiries');
+  const port = DB.get('portfolio');
+  const blg  = DB.get('blog');
+  const subs = DB.get('subscribers');
+  const test = DB.get('testimonials');
+
+  document.getElementById('stat-inquiries').textContent = inqs.length;
+  document.getElementById('stat-unread').textContent = msgs.filter(m=>m.status==='new').length;
+  document.getElementById('stat-portfolio').textContent = port.filter(p=>p.status==='published').length;
+  document.getElementById('stat-blog').textContent = blg.length;
+  document.getElementById('stat-subscribers').textContent = subs.length;
+  document.getElementById('stat-testimonials').textContent = test.length;
+
+  // Bar chart
+  const months = ['Oct','Nov','Dec','Jan','Feb','Mar'];
+  const vals   = [3,5,4,7,6,inqs.length];
+  const max = Math.max(...vals);
+  document.getElementById('inquiriesChart').innerHTML = months.map((m,i)=>
+    `<div class="bar-wrap"><div class="bar" style="height:${(vals[i]/max*100)}%"></div><div class="bar-label">${m}</div></div>`
+  ).join('');
+
+  // Activity feed
+  const activities = [
+    ...msgs.slice(-3).reverse().map(m=>({icon:'📨',bg:'rgba(71,200,255,0.12)',color:'var(--blue)',text:`<strong>${m.name}</strong> sent a message: "${m.subject}"`,time:m.date})),
+    ...inqs.slice(-2).reverse().map(i=>({icon:'💼',bg:'rgba(201,168,76,0.12)',color:'var(--gold)',text:`<strong>${i.name}</strong> submitted a project inquiry`,time:i.date})),
+  ].sort((a,b)=>new Date(b.time)-new Date(a.time)).slice(0,8);
+
+  document.getElementById('activityFeed').innerHTML = activities.map(a=>`
+    <div class="activity-item">
+      <div class="activity-icon" style="background:${a.bg};color:${a.color}">${a.icon}</div>
+      <div><div class="activity-text">${a.text}</div><div class="activity-time">${a.time}</div></div>
+    </div>
+  `).join('') || '<div style="color:var(--dim);font-size:0.85rem;padding:1rem 0">No recent activity</div>';
+
+  // Badges
+  const newMsgs = msgs.filter(m=>m.status==='new').length;
+  const newInqs = inqs.filter(i=>i.status==='new').length;
+  document.getElementById('inboxBadge').textContent = newMsgs;
+  document.getElementById('inboxBadge').style.display = newMsgs ? '' : 'none';
+  document.getElementById('inquiriesBadge').textContent = newInqs;
+  document.getElementById('inquiriesBadge').style.display = newInqs ? '' : 'none';
+}
+
+// ═══════════════════════════════════════
+// INBOX
+// ═══════════════════════════════════════
+let activeMessageId = null;
+
+function renderInbox(filter='') {
+  const msgs = DB.get('messages');
+  const filtered = msgs.filter(m =>
+    !filter || m.name.toLowerCase().includes(filter) || m.subject.toLowerCase().includes(filter) || m.email.toLowerCase().includes(filter)
+  );
+  document.getElementById('inboxListContainer').innerHTML = filtered.map(m=>`
+    <div class="inbox-item ${m.status==='new'?'unread':''} ${activeMessageId===m.id?'active':''}" onclick="openMessage(${m.id})">
+      ${m.status==='new'?'<div class="unread-dot"></div>':''}
+      <div class="inbox-item-row">
+        <div class="inbox-item-name">${m.name}</div>
+        <div class="inbox-item-time">${m.date}</div>
+      </div>
+      <div class="inbox-item-subject">${m.subject}</div>
+      <div class="inbox-item-preview">${m.message.substring(0,60)}...</div>
+    </div>
+  `).join('') || '<div style="padding:2rem;text-align:center;color:var(--dim);font-size:0.82rem">No messages</div>';
+}
+
+function openMessage(id) {
+  const msgs = DB.get('messages');
+  const msg = msgs.find(m=>m.id===id);
+  if(!msg) return;
+  activeMessageId = id;
+  // Mark as read
+  if(msg.status==='new') { msg.status='pending'; DB.set('messages', msgs); }
+  renderInbox();
+
+  const thread = document.getElementById('inboxThread');
+  const allReplies = [
+    {from:'client', text:msg.message, date:msg.date},
+    ...(msg.replies||[])
+  ];
+
+  thread.innerHTML = `
+    <div class="thread-topbar">
+      <div>
+        <div class="thread-subject">${msg.subject}</div>
+        <div style="font-size:0.75rem;color:var(--muted);margin-top:0.25rem">${msg.name} · ${msg.email}</div>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <span class="badge ${msg.status}">${msg.status}</span>
+        <button class="btn btn-sm btn-outline" onclick="updateMsgStatus(${id},'pending')">Mark Pending</button>
+        <button class="btn btn-sm btn-green" onclick="updateMsgStatus(${id},'replied')">Mark Replied</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteMessage(${id})">Delete</button>
+      </div>
+    </div>
+    <div class="thread-messages">
+      ${allReplies.map(r=>`
+        <div class="message-bubble ${r.from==='admin'?'admin':'client'}">
+          <div class="msg-meta">${r.from==='admin'?'You (Berlin Admin)':msg.name} · ${r.date}</div>
+          <div class="msg-text">${r.text}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="thread-reply">
+      <textarea class="reply-textarea" id="replyTextarea-${id}" placeholder="Write your reply to ${msg.name}..."></textarea>
+      <div class="reply-actions">
+        <div class="reply-tools">
+          <button class="btn btn-outline btn-sm" onclick="insertTemplate(${id},'follow')">📋 Follow-up</button>
+          <button class="btn btn-outline btn-sm" onclick="insertTemplate(${id},'proposal')">📄 Proposal</button>
+        </div>
+        <button class="btn btn-gold" onclick="sendReply(${id})">Send Reply →</button>
+      </div>
+    </div>
+  `;
+}
+
+function sendReply(id) {
+  const ta = document.getElementById('replyTextarea-'+id);
+  const text = ta.value.trim();
+  if(!text) { showToast('Please write a reply first','error'); return; }
+  const msgs = DB.get('messages');
+  const msg = msgs.find(m=>m.id===id);
+  if(!msg) return;
+  if(!msg.replies) msg.replies=[];
+  msg.replies.push({from:'admin', text, date:new Date().toISOString().split('T')[0]});
+  msg.status = 'replied';
+  DB.set('messages', msgs);
+  showToast('Reply sent successfully ✓','success');
+  openMessage(id);
+  renderDashboard();
+}
+
+function updateMsgStatus(id, status) {
+  const msgs = DB.get('messages');
+  const msg = msgs.find(m=>m.id===id);
+  if(msg) { msg.status=status; DB.set('messages', msgs); openMessage(id); showToast(`Status updated to "${status}"`, 'success'); }
+}
+
+function deleteMessage(id) {
+  if(!confirm('Delete this message?')) return;
+  const msgs = DB.get('messages').filter(m=>m.id!==id);
+  DB.set('messages', msgs);
+  activeMessageId = null;
+  document.getElementById('inboxThread').innerHTML = '<div class="empty-thread"><div class="empty-icon">📭</div><div class="empty-text">Select a conversation</div></div>';
+  renderInbox();
+  showToast('Message deleted','success');
+}
+
+function insertTemplate(id, type) {
+  const templates = {
+    follow: "Hi there,\n\nThank you for your message! I wanted to follow up and let you know I'm reviewing your inquiry. I'll have a detailed response for you within 24 hours.\n\nBest,\nBerlin C.O.C.",
+    proposal: "Hi,\n\nThank you for your interest in working together! Based on your brief, I'd love to schedule a discovery call to discuss your project in detail.\n\nI'm available this week for a 30-minute call. Please reply with your preferred time.\n\nLooking forward to building something exceptional with you.\n\n— Berlin C.O.C."
+  };
+  document.getElementById('replyTextarea-'+id).value = templates[type]||'';
+}
+
+function filterInbox(val) { renderInbox(val.toLowerCase()); }
+
+// ═══════════════════════════════════════
+// INQUIRIES
+// ═══════════════════════════════════════
+function renderInquiries() {
+  const inqs = DB.get('inquiries');
+  document.getElementById('inquiriesTbody').innerHTML = inqs.map(i=>`
+    <tr>
+      <td><div class="td-name">${i.name}</div><div class="td-email">${i.email}</div></td>
+      <td>${i.service}</td>
+      <td>${i.budget}</td>
+      <td><span class="badge ${i.status}">${i.status}</span></td>
+      <td>${i.date}</td>
+      <td style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button class="btn btn-sm btn-outline" onclick="viewInquiry(${i.id})">View</button>
+        <button class="btn btn-sm btn-green" onclick="updateInqStatus(${i.id},'replied')">Replied</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteInquiry(${i.id})">Del</button>
+      </td>
+    </tr>
+  `).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--dim);padding:2rem">No inquiries yet</td></tr>';
+}
+
+function viewInquiry(id) {
+  const inq = DB.get('inquiries').find(i=>i.id===id);
+  if(!inq) return;
+  document.getElementById('inquiryDetailTitle').textContent = `Inquiry — ${inq.name}`;
+  document.getElementById('inquiryDetailBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <div><div class="form-label" style="margin-bottom:0.3rem">Name</div><div style="font-size:0.9rem">${inq.name}</div></div>
+      <div><div class="form-label" style="margin-bottom:0.3rem">Email</div><div class="td-email" style="font-size:0.82rem">${inq.email}</div></div>
+      <div><div class="form-label" style="margin-bottom:0.3rem">Company</div><div style="font-size:0.9rem">${inq.company||'—'}</div></div>
+      <div><div class="form-label" style="margin-bottom:0.3rem">Service</div><div style="font-size:0.9rem">${inq.service}</div></div>
+      <div><div class="form-label" style="margin-bottom:0.3rem">Budget</div><div style="font-size:0.9rem;color:var(--gold)">${inq.budget}</div></div>
+      <div><div class="form-label" style="margin-bottom:0.3rem">Status</div><span class="badge ${inq.status}">${inq.status}</span></div>
+    </div>
+    <div class="form-label" style="margin-bottom:0.5rem">Message</div>
+    <div style="background:var(--surface2);border-radius:var(--radius);padding:1rem;font-size:0.88rem;line-height:1.6;color:var(--muted)">${inq.message}</div>
+  `;
+  openModal('inquiryDetailModal');
+}
+
+function replyToInquiry() {
+  closeModal('inquiryDetailModal');
+  showPanel('inbox');
+  showToast('Opening inbox to compose reply...','success');
+}
+
+function updateInqStatus(id, status) {
+  const inqs = DB.get('inquiries');
+  const inq = inqs.find(i=>i.id===id);
+  if(inq) { inq.status=status; DB.set('inquiries', inqs); renderInquiries(); showToast('Status updated','success'); }
+}
+
+function deleteInquiry(id) {
+  if(!confirm('Delete this inquiry?')) return;
+  DB.set('inquiries', DB.get('inquiries').filter(i=>i.id!==id));
+  renderInquiries(); showToast('Inquiry deleted','success');
+}
+
+function saveInquiry() {
+  const inqs = DB.get('inquiries');
+  const inq = {
+    id: Date.now(),
+    name: (document.getElementById('inq-fname').value+' '+document.getElementById('inq-lname').value).trim(),
+    email: document.getElementById('inq-email').value,
+    company: document.getElementById('inq-company').value,
+    service: document.getElementById('inq-service').value,
+    budget: document.getElementById('inq-budget').value,
+    message: document.getElementById('inq-message').value,
+    status: document.getElementById('inq-status').value,
+    date: new Date().toISOString().split('T')[0]
+  };
+  if(!inq.name||!inq.email){showToast('Name and email required','error');return;}
+  inqs.push(inq); DB.set('inquiries', inqs);
+  closeModal('addInquiryModal'); renderInquiries(); renderDashboard();
+  showToast('Inquiry added','success');
+}
+
+// ═══════════════════════════════════════
+// SUBSCRIBERS
+// ═══════════════════════════════════════
+function renderSubscribers() {
+  const subs = DB.get('subscribers');
+  document.getElementById('subscribersTbody').innerHTML = subs.map(s=>`
+    <tr>
+      <td class="td-email">${s.email}</td>
+      <td>${s.name||'—'}</td>
+      <td>${s.source}</td>
+      <td>${s.date}</td>
+      <td><span class="badge ${s.status}">${s.status}</span></td>
+      <td><button class="btn btn-sm btn-danger" onclick="deleteSub(${s.id})">Remove</button></td>
+    </tr>
+  `).join('');
+}
+
+function deleteSub(id) {
+  DB.set('subscribers', DB.get('subscribers').filter(s=>s.id!==id));
+  renderSubscribers(); showToast('Subscriber removed','success');
+}
+
+function saveSubscriber() {
+  const subs = DB.get('subscribers');
+  const email = document.getElementById('sub-email').value;
+  if(!email){showToast('Email required','error');return;}
+  if(subs.find(s=>s.email===email)){showToast('Already subscribed','error');return;}
+  subs.push({id:Date.now(),email,name:document.getElementById('sub-name').value,source:document.getElementById('sub-source').value,status:'active',date:new Date().toISOString().split('T')[0]});
+  DB.set('subscribers',subs); closeModal('addSubscriberModal'); renderSubscribers(); showToast('Subscriber added','success');
+}
+
+// ═══════════════════════════════════════
+// PORTFOLIO
+// ═══════════════════════════════════════
+function renderPortfolio() {
+  const items = DB.get('portfolio');
+  document.getElementById('portfolioCards').innerHTML = items.map(p=>`
+    <div class="item-card">
+      <div class="item-card-img">${p.icon}</div>
+      <div class="item-card-body">
+        <div class="item-card-title">${p.title}</div>
+        <div class="item-card-sub">${p.cat} · ${p.client||''}</div>
+        <div class="item-card-footer">
+          <span class="badge ${p.status}">${p.status}</span>
+          <div style="display:flex;gap:0.5rem">
+            <button class="btn btn-sm btn-outline" onclick="editPortfolio(${p.id})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deletePortfolio(${p.id})">Del</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('') || '<div style="color:var(--dim);grid-column:span 3;text-align:center;padding:3rem">No projects yet</div>';
+}
+
+let editPortId = null;
+function editPortfolio(id) {
+  const p = DB.get('portfolio').find(x=>x.id===id);
+  if(!p) return;
+  editPortId = id;
+  document.getElementById('portfolioModalTitle').textContent='Edit Project';
+  document.getElementById('port-title').value=p.title||'';
+  document.getElementById('port-cat').value=p.cat||'Web Development';
+  document.getElementById('port-status').value=p.status||'draft';
+  document.getElementById('port-desc').value=p.desc||'';
+  document.getElementById('port-client').value=p.client||'';
+  document.getElementById('port-tools').value=p.tools||'';
+  document.getElementById('port-results').value=p.results||'';
+  document.getElementById('port-icon').value=p.icon||'🌐';
+  document.getElementById('port-url').value=p.url||'';
+  openModal('addPortfolioModal');
+}
+
+function savePortfolio() {
+  const port = DB.get('portfolio');
+  const item = {
+    id: editPortId||Date.now(),
+    title: document.getElementById('port-title').value,
+    cat: document.getElementById('port-cat').value,
+    status: document.getElementById('port-status').value,
+    desc: document.getElementById('port-desc').value,
+    client: document.getElementById('port-client').value,
+    tools: document.getElementById('port-tools').value,
+    results: document.getElementById('port-results').value,
+    icon: document.getElementById('port-icon').value,
+    url: document.getElementById('port-url').value,
+    date: new Date().toISOString().split('T')[0]
+  };
+  if(!item.title){showToast('Title required','error');return;}
+  if(editPortId) { const idx=port.findIndex(p=>p.id===editPortId); port[idx]=item; }
+  else port.push(item);
+  DB.set('portfolio',port); editPortId=null;
+  document.getElementById('portfolioModalTitle').textContent='Add Project';
+  closeModal('addPortfolioModal'); renderPortfolio(); renderDashboard();
+  showToast('Project saved','success');
+}
+
+function deletePortfolio(id) {
+  if(!confirm('Delete project?')) return;
+  DB.set('portfolio',DB.get('portfolio').filter(p=>p.id!==id));
+  renderPortfolio(); renderDashboard(); showToast('Project deleted','success');
+}
+
+// ═══════════════════════════════════════
+// BLOG
+// ═══════════════════════════════════════
+function renderBlog() {
+  const items = DB.get('blog');
+  document.getElementById('blogCards').innerHTML = items.map(b=>`
+    <div class="item-card">
+      <div class="item-card-img" style="background:var(--surface2)">${b.icon}</div>
+      <div class="item-card-body">
+        <div class="item-card-title">${b.title}</div>
+        <div class="item-card-sub">${b.cat} · ${b.readtime||''}</div>
+        <div class="item-card-footer">
+          <span class="badge ${b.status}">${b.status}</span>
+          <div style="display:flex;gap:0.5rem">
+            <button class="btn btn-sm btn-outline" onclick="editBlog(${b.id})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteBlog(${b.id})">Del</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('') || '<div style="color:var(--dim);grid-column:span 3;text-align:center;padding:3rem">No articles yet</div>';
+}
+
+let editBlogId = null;
+function editBlog(id) {
+  const b = DB.get('blog').find(x=>x.id===id);
+  if(!b) return;
+  editBlogId=id;
+  document.getElementById('blogModalTitle').textContent='Edit Article';
+  document.getElementById('blog-title').value=b.title||'';
+  document.getElementById('blog-cat').value=b.cat||'Design';
+  document.getElementById('blog-status').value=b.status||'draft';
+  document.getElementById('blog-excerpt').value=b.excerpt||'';
+  document.getElementById('blog-content').value=b.content||'';
+  document.getElementById('blog-seo').value=b.seo||'';
+  document.getElementById('blog-readtime').value=b.readtime||'';
+  document.getElementById('blog-icon').value=b.icon||'✦';
+  openModal('addBlogModal');
+}
+
+function saveBlog(status) {
+  const blogs = DB.get('blog');
+  const item = {
+    id:editBlogId||Date.now(),
+    title:document.getElementById('blog-title').value,
+    cat:document.getElementById('blog-cat').value,
+    status,
+    excerpt:document.getElementById('blog-excerpt').value,
+    content:document.getElementById('blog-content').value,
+    seo:document.getElementById('blog-seo').value,
+    readtime:document.getElementById('blog-readtime').value,
+    icon:document.getElementById('blog-icon').value,
+    date:new Date().toISOString().split('T')[0]
+  };
+  if(!item.title){showToast('Title required','error');return;}
+  if(editBlogId){const idx=blogs.findIndex(b=>b.id===editBlogId);blogs[idx]=item;}
+  else blogs.push(item);
+  DB.set('blog',blogs); editBlogId=null;
+  document.getElementById('blogModalTitle').textContent='Write Article';
+  closeModal('addBlogModal'); renderBlog(); renderDashboard();
+  showToast(status==='published'?'Article published ✓':'Draft saved','success');
+}
+
+function deleteBlog(id) {
+  if(!confirm('Delete article?')) return;
+  DB.set('blog',DB.get('blog').filter(b=>b.id!==id));
+  renderBlog(); showToast('Article deleted','success');
+}
+
+// ═══════════════════════════════════════
+// TESTIMONIALS
+// ═══════════════════════════════════════
+function renderTestimonials() {
+  const items = DB.get('testimonials');
+  document.getElementById('testimonialsTbody').innerHTML = items.map(t=>`
+    <tr>
+      <td class="td-name">${t.name}</td>
+      <td>${t.company}</td>
+      <td style="color:var(--gold)">${'★'.repeat(t.rating)}</td>
+      <td><span class="badge ${t.status}">${t.status}</span></td>
+      <td>${t.date}</td>
+      <td style="display:flex;gap:0.5rem">
+        <button class="btn btn-sm btn-outline" onclick="toggleTestStatus(${t.id})">${t.status==='published'?'Unpublish':'Publish'}</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteTestimonial(${t.id})">Del</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function toggleTestStatus(id) {
+  const tests = DB.get('testimonials');
+  const t = tests.find(x=>x.id===id);
+  if(t){t.status=t.status==='published'?'draft':'published';DB.set('testimonials',tests);renderTestimonials();showToast('Status updated','success');}
+}
+
+function deleteTestimonial(id) {
+  if(!confirm('Delete testimonial?')) return;
+  DB.set('testimonials',DB.get('testimonials').filter(t=>t.id!==id));
+  renderTestimonials(); showToast('Deleted','success');
+}
+
+function saveTestimonial() {
+  const tests = DB.get('testimonials');
+  const item = {
+    id:Date.now(),
+    name:document.getElementById('test-name').value,
+    company:document.getElementById('test-company').value,
+    role:document.getElementById('test-role').value,
+    rating:parseInt(document.getElementById('test-rating').value),
+    text:document.getElementById('test-text').value,
+    status:document.getElementById('test-status').value,
+    project:document.getElementById('test-project').value,
+    date:new Date().toISOString().split('T')[0]
+  };
+  if(!item.name||!item.text){showToast('Name and text required','error');return;}
+  tests.push(item); DB.set('testimonials',tests);
+  closeModal('addTestimonialModal'); renderTestimonials(); renderDashboard();
+  showToast('Testimonial saved','success');
+}
+
+// ═══════════════════════════════════════
+// SERVICES
+// ═══════════════════════════════════════
+function renderServices() {
+  const items = DB.get('services');
+  document.getElementById('servicesTbody').innerHTML = items.map(s=>`
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:0.75rem"><span style="font-size:1.1rem">${s.icon}</span><div class="td-name">${s.name}</div></div></td>
+      <td>${s.cat}</td>
+      <td style="color:var(--gold);font-family:'DM Mono',monospace">${s.price}</td>
+      <td><span class="badge ${s.status}">${s.status}</span></td>
+      <td style="display:flex;gap:0.5rem">
+        <button class="btn btn-sm btn-outline" onclick="editService(${s.id})">Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteService(${s.id})">Del</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+let editSvcId = null;
+function editService(id) {
+  const s = DB.get('services').find(x=>x.id===id);
+  if(!s) return;
+  editSvcId=id;
+  document.getElementById('serviceModalTitle').textContent='Edit Service';
+  document.getElementById('svc-name').value=s.name||'';
+  document.getElementById('svc-cat').value=s.cat||'';
+  document.getElementById('svc-price').value=s.price||'';
+  document.getElementById('svc-desc').value=s.desc||'';
+  document.getElementById('svc-deliverables').value=s.deliverables||'';
+  document.getElementById('svc-status').value=s.status||'active';
+  document.getElementById('svc-icon').value=s.icon||'💻';
+  openModal('addServiceModal');
+}
+
+function saveService() {
+  const svcs = DB.get('services');
+  const item = {
+    id:editSvcId||Date.now(),
+    name:document.getElementById('svc-name').value,
+    cat:document.getElementById('svc-cat').value,
+    price:document.getElementById('svc-price').value,
+    desc:document.getElementById('svc-desc').value,
+    deliverables:document.getElementById('svc-deliverables').value,
+    status:document.getElementById('svc-status').value,
+    icon:document.getElementById('svc-icon').value,
+  };
+  if(!item.name){showToast('Name required','error');return;}
+  if(editSvcId){const idx=svcs.findIndex(s=>s.id===editSvcId);svcs[idx]=item;}
+  else svcs.push(item);
+  DB.set('services',svcs); editSvcId=null;
+  document.getElementById('serviceModalTitle').textContent='Add Service';
+  closeModal('addServiceModal'); renderServices();
+  showToast('Service saved','success');
+}
+
+function deleteService(id) {
+  if(!confirm('Delete service?')) return;
+  DB.set('services',DB.get('services').filter(s=>s.id!==id));
+  renderServices(); showToast('Deleted','success');
+}
+
+// ═══════════════════════════════════════
+// MODAL HELPERS
+// ═══════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click', e=>{ if(e.target===m) m.classList.remove('open'); });
+});
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function showToast(msg, type='success') {
+  const tc = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span class="toast-icon">${type==='success'?'✓':'⚠'}</span><span>${msg}</span>`;
+  tc.appendChild(toast);
+  setTimeout(()=>{ toast.style.opacity='0'; toast.style.transform='translateX(20px)'; setTimeout(()=>toast.remove(),300); }, 3000);
+}
+
+// ═══════════════════════════════════════
+// SEARCH / FILTER TABLE
+// ═══════════════════════════════════════
+function filterTable(tableId, val) {
+  const q = val.toLowerCase();
+  document.querySelectorAll(`#${tableId} tbody tr`).forEach(row=>{
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+// ═══════════════════════════════════════
+// SETTINGS TABS
+// ═══════════════════════════════════════
+function switchSettings(el, id) {
+  document.querySelectorAll('.settings-nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('[id^="set-"]').forEach(s=>s.style.display='none');
+  document.getElementById(id).style.display='block';
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+function init() {
+  seedDatabase();
+  renderDashboard();
+}
+
+// Allow Enter key on login
+document.getElementById('loginPass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+
+// Public-facing website integration notice
+window.addEventListener('message', e=>{
+  if(e.data && e.data.type==='new_inquiry') {
+    const inqs = DB.get('inquiries');
+    inqs.push({...e.data.payload, id:Date.now(), status:'new', date:new Date().toISOString().split('T')[0]});
+    DB.set('inquiries', inqs);
+    showToast('New inquiry received from website!','success');
+    renderDashboard();
+  }
+  if(e.data && e.data.type==='new_message') {
+    const msgs = DB.get('messages');
+    msgs.push({...e.data.payload, id:Date.now(), status:'new', date:new Date().toISOString().split('T')[0], replies:[]});
+    DB.set('messages', msgs);
+    showToast('New message received!','success');
+    renderDashboard();
+  }
+});
+
+
+// ═══════════════════════════════════════
+// AUDIT LOG
+// ═══════════════════════════════════════
+function auditLog(action, detail='', source='admin'){
+  const logs = DB.get('audit_log');
+  logs.unshift({id:Date.now(), action, detail, source, date:new Date().toISOString()});
+  if(logs.length>500) logs.splice(500);
+  DB.set('audit_log', logs);
+}
+
+function openAuditLog(){
+  const logs = DB.get('audit_log');
+  document.getElementById('auditLogBody').innerHTML = logs.length ?
+    logs.map(l=>`
+      <div class="audit-entry">
+        <div class="audit-time">${new Date(l.date).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+        <div><div class="audit-action">${l.action}</div>${l.detail?`<div class="audit-detail">${l.detail}</div>`:''}</div>
+        <div class="audit-source">${l.source}</div>
+      </div>`).join('') :
+    '<div style="padding:2rem;text-align:center;color:var(--dim)">No audit entries yet</div>';
+  openModal('auditLogModal');
+}
+
+// ═══════════════════════════════════════
+// PIPELINE / KANBAN
+// ═══════════════════════════════════════
+const pipelineStages = [
+  {key:'new', label:'New Leads', color:'var(--blue)'},
+  {key:'pending', label:'In Discussion', color:'var(--orange)'},
+  {key:'replied', label:'Proposal Sent', color:'var(--gold)'},
+  {key:'closed', label:'Closed / Won', color:'var(--green)'},
+];
+
+function renderPipeline(){
+  const inqs = DB.get('inquiries');
+  document.getElementById('kanbanBoard').innerHTML = pipelineStages.map(stage=>{
+    const cards = inqs.filter(i=>i.status===stage.key);
+    return `
+      <div class="kanban-col">
+        <div class="kanban-col-header">
+          <div class="kanban-col-title" style="color:${stage.color}">${stage.label}</div>
+          <div class="kanban-count">${cards.length}</div>
+        </div>
+        <div class="kanban-cards">
+          ${cards.map(c=>`
+            <div class="kanban-card kc-drag" draggable="true" onclick="viewInquiry(${c.id})"
+              ondragstart="dragStart(event,${c.id})" ondragover="event.preventDefault()" ondrop="dropCard(event,'${stage.key}')">
+              <div class="kc-name">${c.name}</div>
+              <div class="kc-service">${c.service}</div>
+              <div class="kc-budget">${c.budget}</div>
+              <div class="kc-date">${c.date}</div>
+            </div>`).join('') || '<div style="color:var(--dim);font-size:.75rem;text-align:center;padding:1rem">Drop here</div>'}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+let draggedId = null;
+function dragStart(e, id){ draggedId=id; e.dataTransfer.effectAllowed='move'; }
+function dropCard(e, newStatus){
+  e.preventDefault();
+  if(!draggedId) return;
+  const inqs = DB.get('inquiries');
+  const inq = inqs.find(i=>i.id===draggedId);
+  if(inq){ inq.status=newStatus; DB.set('inquiries',inqs); renderPipeline(); auditLog('Pipeline card moved', inq.name+' → '+newStatus); }
+  draggedId=null;
+}
+
+// ═══════════════════════════════════════
+// MEDIA LIBRARY
+// ═══════════════════════════════════════
+function renderMedia(){
+  const items = DB.get('media');
+  if(!items.length){
+    document.getElementById('mediaGrid').innerHTML='<div style="color:var(--dim);font-size:.85rem;grid-column:span 6;text-align:center;padding:2rem">No media uploaded yet</div>';
+    return;
+  }
+  document.getElementById('mediaGrid').innerHTML = items.map(m=>`
+    <div class="media-item ${m.selected?'selected':''}" onclick="toggleMediaSelect(${m.id})" id="media-${m.id}">
+      <div class="media-thumb">${m.emoji||'🖼️'}</div>
+      <div class="media-info"><div class="media-name">${m.name}</div><div class="media-size">${m.size}</div></div>
+      <div class="media-check">✓</div>
+    </div>`).join('');
+}
+
+function handleMediaUpload(input){
+  const files = Array.from(input.files);
+  const media = DB.get('media');
+  files.forEach(f=>{
+    const emoji = f.type.startsWith('image/')?'🖼️':f.type.startsWith('video/')?'🎬':f.name.endsWith('.pdf')?'📄':'📎';
+    media.push({id:Date.now()+Math.random(),name:f.name,size:formatFileSize(f.size),type:f.type,emoji,date:new Date().toISOString().split('T')[0],selected:false});
+  });
+  DB.set('media',media);
+  renderMedia();
+  showToast(files.length+' file(s) uploaded','success');
+  auditLog('Media uploaded', files.map(f=>f.name).join(', '));
+}
+
+function formatFileSize(bytes){ if(bytes<1024)return bytes+'B'; if(bytes<1048576)return (bytes/1024).toFixed(1)+'KB'; return (bytes/1048576).toFixed(1)+'MB'; }
+
+function toggleMediaSelect(id){
+  const media = DB.get('media');
+  const m = media.find(x=>x.id===id);
+  if(m){ m.selected=!m.selected; DB.set('media',media); }
+  document.getElementById('media-'+id)?.classList.toggle('selected');
+  document.getElementById('media-'+id)?.querySelector('.media-check')?.classList.toggle('selected');
+}
+
+function deleteSelectedMedia(){
+  if(!confirm('Delete selected media?')) return;
+  const media = DB.get('media').filter(m=>!m.selected);
+  DB.set('media',media); renderMedia(); showToast('Selected media deleted','success');
+}
+
+// ═══════════════════════════════════════
+// NEWSLETTER BROADCAST
+// ═══════════════════════════════════════
+function updateBroadcastStats(){
+  const subs = DB.get('subscribers');
+  const broadcasts = DB.get('broadcasts');
+  document.getElementById('bcSubCount').textContent = subs.length;
+  document.getElementById('bcActiveCount').textContent = subs.filter(s=>s.status==='active').length;
+  document.getElementById('bcSentCount').textContent = broadcasts.length;
+  document.getElementById('broadcastHistory').innerHTML = broadcasts.slice(0,5).map(b=>`
+    <div style="padding:.5rem 0;border-bottom:1px solid var(--border2);font-size:.78rem">
+      <div style="font-weight:600;margin-bottom:.2rem">${b.subject}</div>
+      <div style="color:var(--dim);font-family:'DM Mono',monospace">${b.date} · ${b.sentTo} recipients</div>
+    </div>`).join('') || '<div style="color:var(--dim);font-size:.78rem;padding:.5rem 0">No broadcasts yet</div>';
+}
+
+function previewBroadcast(){
+  const subject = document.getElementById('bc-subject').value;
+  const body = document.getElementById('bc-body').value;
+  if(!body){ showToast('Write content first','error'); return; }
+  document.getElementById('broadcastPreviewWrap').style.display='block';
+  document.getElementById('broadcastPreview').innerHTML = `<strong style="font-family:'Unbounded',sans-serif;font-size:.8rem;display:block;margin-bottom:.75rem;color:var(--text)">${subject||'(No subject)'}</strong>${body.replace(/\n/g,'<br>')}`;
+}
+
+function sendBroadcast(){
+  const subject = document.getElementById('bc-subject').value.trim();
+  const body = document.getElementById('bc-body').value.trim();
+  if(!subject||!body){ showToast('Subject and body required','error'); return; }
+  const subs = DB.get('subscribers').filter(s=>s.status==='active');
+  if(!subs.length){ showToast('No active subscribers','error'); return; }
+  if(!confirm('Send to '+subs.length+' subscribers?')) return;
+  const broadcasts = DB.get('broadcasts');
+  broadcasts.unshift({id:Date.now(),subject,body,sentTo:subs.length,date:new Date().toISOString().split('T')[0]});
+  DB.set('broadcasts',broadcasts);
+  auditLog('Newsletter broadcast sent', subject+' to '+subs.length+' subscribers');
+  document.getElementById('bc-subject').value='';
+  document.getElementById('bc-body').value='';
+  document.getElementById('broadcastPreviewWrap').style.display='none';
+  updateBroadcastStats();
+  showToast('Broadcast sent to '+subs.length+' subscribers ✓','success');
+}
+
+// ═══════════════════════════════════════
+// INVOICES
+// ═══════════════════════════════════════
+function renderInvoices(){
+  const invs = DB.get('invoices');
+  document.getElementById('invoicesTbody').innerHTML = invs.map(inv=>`
+    <tr>
+      <td class="td-email">#${inv.num}</td>
+      <td class="td-name">${inv.client}</td>
+      <td>${inv.service||'Services'}</td>
+      <td style="color:var(--gold);font-family:'DM Mono',monospace">$${inv.total.toLocaleString()}</td>
+      <td><span class="badge ${inv.status}">${inv.status}</span></td>
+      <td>${inv.date}</td>
+      <td style="display:flex;gap:.5rem">
+        <button class="btn btn-sm btn-green" onclick="markInvoicePaid(${inv.id})">Paid</button>
+        <button class="btn btn-sm btn-outline" onclick="printSavedInvoice(${inv.id})">Print</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteInvoice(${inv.id})">Del</button>
+      </td>
+    </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--dim);padding:2rem">No invoices yet</td></tr>';
+}
+
+let invLineCount = 1;
+function showInvoiceBuilder(){
+  invLineCount=1;
+  document.getElementById('inv-due').value = new Date(Date.now()+30*86400000).toISOString().split('T')[0];
+  calcInvoiceTotal();
+  openModal('invoiceBuilderModal');
+}
+
+function addInvoiceLine(){
+  const container = document.getElementById('invoiceItems');
+  const div = document.createElement('div');
+  div.className='invoice-line-item';
+  div.style.cssText='display:grid;grid-template-columns:3fr 1fr 1fr auto;gap:.75rem;margin-bottom:.75rem;align-items:end';
+  div.innerHTML=`
+    <div class="form-group"><input class="form-input li-desc" placeholder="Service description"/></div>
+    <div class="form-group"><input class="form-input li-qty" type="number" value="1" oninput="calcInvoiceTotal()"/></div>
+    <div class="form-group"><input class="form-input li-rate" type="number" placeholder="0" oninput="calcInvoiceTotal()"/></div>
+    <button class="btn btn-danger btn-sm" onclick="removeInvoiceLine(this)">✕</button>`;
+  container.appendChild(div);
+}
+
+function removeInvoiceLine(btn){ btn.parentElement.remove(); calcInvoiceTotal(); }
+
+function calcInvoiceTotal(){
+  let total=0;
+  document.querySelectorAll('.invoice-line-item').forEach(row=>{
+    const qty=parseFloat(row.querySelector('.li-qty')?.value)||0;
+    const rate=parseFloat(row.querySelector('.li-rate')?.value)||0;
+    total+=qty*rate;
+  });
+  if(document.getElementById('invSubtotal')) document.getElementById('invSubtotal').textContent='$'+total.toLocaleString('en-US',{minimumFractionDigits:2});
+  if(document.getElementById('invTotal')) document.getElementById('invTotal').textContent='$'+total.toLocaleString('en-US',{minimumFractionDigits:2});
+  return total;
+}
+
+function saveInvoice(){
+  const client=document.getElementById('inv-client').value.trim();
+  if(!client){showToast('Client name required','error');return;}
+  const total=calcInvoiceTotal();
+  const invs=DB.get('invoices');
+  const invNum=(invs.length+1).toString().padStart(4,'0');
+  const inv={id:Date.now(),num:invNum,client,email:document.getElementById('inv-email').value,company:document.getElementById('inv-company').value,due:document.getElementById('inv-due').value,total,status:'pending',date:new Date().toISOString().split('T')[0],notes:document.getElementById('inv-notes').value};
+  invs.push(inv); DB.set('invoices',invs);
+  auditLog('Invoice created','#'+invNum+' for '+client+' — $'+total);
+  closeModal('invoiceBuilderModal'); renderInvoices();
+  showToast('Invoice #'+invNum+' created','success');
+}
+
+function markInvoicePaid(id){
+  const invs=DB.get('invoices');
+  const inv=invs.find(i=>i.id===id);
+  if(inv){inv.status='active';DB.set('invoices',invs);renderInvoices();auditLog('Invoice marked paid','#'+inv.num);showToast('Invoice marked as paid','success');}
+}
+
+function deleteInvoice(id){
+  if(!confirm('Delete invoice?')) return;
+  DB.set('invoices',DB.get('invoices').filter(i=>i.id!==id));
+  renderInvoices(); showToast('Invoice deleted','success');
+}
+
+function printInvoice(){ window.print(); }
+function printSavedInvoice(id){ window.print(); }
+
+// ═══════════════════════════════════════
+// REPLY TEMPLATES
+// ═══════════════════════════════════════
+const defaultTemplates = [
+  {id:1,name:'Initial Follow-up',cat:'Follow-up',body:"Hi {{name}},\n\nThank you for reaching out to Berlin C.O.C.! I've reviewed your inquiry and I'm excited about the possibility of working together.\n\nCould we schedule a quick 30-minute discovery call this week to discuss your vision in more detail?\n\nLooking forward to connecting.\n\n— Berlin C.O.C."},
+  {id:2,name:'Proposal Sent',cat:'Proposal',body:"Hi {{name}},\n\nI've put together a detailed proposal for your {{service}} project. Please find it attached.\n\nThe proposal covers our approach, timeline, deliverables, and investment. I'd love to walk you through it on a call if you have any questions.\n\nThis proposal is valid for 14 days. Looking forward to your thoughts.\n\n— Berlin C.O.C."},
+  {id:3,name:'Project Onboarding',cat:'Onboarding',body:"Hi {{name}},\n\nWelcome to Berlin C.O.C.! I'm thrilled to be working with you on this project.\n\nHere's what happens next:\n1. You'll receive a project brief questionnaire within 24 hours\n2. We'll schedule a kickoff call\n3. I'll share access to your project portal\n\nLet's build something legendary.\n\n— Berlin C.O.C."},
+  {id:4,name:'Project Closed',cat:'Closing',body:"Hi {{name}},\n\nYour project has been delivered and I hope you're thrilled with the results!\n\nIt would mean the world to me if you could share a short testimonial — it helps other clients find the studio.\n\nThank you for trusting Berlin C.O.C. with your vision.\n\n— Berlin C.O.C."},
+];
+
+function renderTemplates(){
+  const tmpls = DB.get('templates');
+  document.getElementById('templatesGrid').innerHTML = tmpls.map(t=>`
+    <div class="template-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem">
+        <div>
+          <div class="template-title">${t.name}</div>
+          <span class="badge ${t.cat==='Follow-up'?'pending':t.cat==='Proposal'?'new':t.cat==='Onboarding'?'active':'replied'}">${t.cat}</span>
+        </div>
+        <div style="display:flex;gap:.4rem">
+          <button class="btn btn-sm btn-outline" onclick="copyTemplate(${t.id})">📋 Copy</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteTemplate(${t.id})">✕</button>
+        </div>
+      </div>
+      <div class="template-preview">${t.body.substring(0,150).replace(/\n/g,' ')}...</div>
+    </div>`).join('') || '<div style="color:var(--dim);font-size:.85rem;padding:2rem">No templates yet</div>';
+}
+
+function saveTemplate(){
+  const name=document.getElementById('tmpl-name').value.trim();
+  const body=document.getElementById('tmpl-body').value.trim();
+  if(!name||!body){showToast('Name and body required','error');return;}
+  const tmpls=DB.get('templates');
+  tmpls.push({id:Date.now(),name,cat:document.getElementById('tmpl-cat').value,body});
+  DB.set('templates',tmpls); closeModal('addTemplateModal'); renderTemplates();
+  auditLog('Reply template created',name);
+  showToast('Template saved','success');
+}
+
+function copyTemplate(id){
+  const t=DB.get('templates').find(x=>x.id===id);
+  if(t){ navigator.clipboard?.writeText(t.body); showToast('Template copied to clipboard','success'); }
+}
+
+function deleteTemplate(id){
+  if(!confirm('Delete template?')) return;
+  DB.set('templates',DB.get('templates').filter(t=>t.id!==id));
+  renderTemplates(); showToast('Template deleted','success');
+}
+
+// ═══════════════════════════════════════
+// BACKUP & RESTORE
+// ═══════════════════════════════════════
+function exportBackup(){
+  const keys=['messages','inquiries','portfolio','blog','testimonials','services','subscribers','media','invoices','templates','broadcasts','bookings','audit_log'];
+  const backup={version:'1.0',exported:new Date().toISOString(),data:{}};
+  keys.forEach(k=>backup.data[k]=DB.get(k));
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='berlin-coc-backup-'+new Date().toISOString().split('T')[0]+'.json';
+  a.click();URL.revokeObjectURL(url);
+  auditLog('Backup exported','Full database export');
+  showToast('Backup downloaded','success');
+}
+
+function exportCSV(key){
+  const items=DB.get(key);
+  if(!items.length){showToast('No data to export','error');return;}
+  const headers=Object.keys(items[0]);
+  const rows=items.map(item=>headers.map(h=>JSON.stringify(item[h]??'')).join(','));
+  const csv=[headers.join(','),...rows].join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=key+'-'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();URL.revokeObjectURL(url);
+  auditLog('CSV exported',key);
+  showToast(key+' CSV exported','success');
+}
+
+function importBackup(input){
+  const file=input.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const backup=JSON.parse(e.target.result);
+      if(!backup.data){showToast('Invalid backup file','error');return;}
+      Object.entries(backup.data).forEach(([k,v])=>DB.set(k,v));
+      auditLog('Backup restored','Imported from file: '+file.name);
+      showToast('Backup restored successfully','success');
+      renderDashboard(); showPanel('dashboard');
+    }catch(err){showToast('Failed to parse backup file','error');}
+  };
+  reader.readAsText(file);
+}
+
+function clearAllData(){
+  const keys=['messages','inquiries','portfolio','blog','testimonials','services','subscribers','media','invoices','templates','broadcasts','bookings','seeded','audit_log'];
+  keys.forEach(k=>localStorage.removeItem('berlin_'+k));
+  showToast('All data cleared — refresh to re-seed','success');
+  setTimeout(()=>window.location.reload(),1500);
+}
+
+// ═══════════════════════════════════════
+// BOOKINGS PANEL (in settings nav)
+// ═══════════════════════════════════════
+function renderBookings(){
+  const bookings=DB.get('bookings');
+  const panel=document.getElementById('panel-bookings');
+  if(!panel) return;
+  panel.innerHTML=`
+    <div style="font-family:'Unbounded',sans-serif;font-size:.85rem;font-weight:700;margin-bottom:1.5rem">Discovery Call Bookings</div>
+    <div class="table-wrap">
+      <table><thead><tr><th>Name</th><th>Email</th><th>Date & Time</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>${bookings.map(b=>`
+        <tr>
+          <td class="td-name">${b.name}</td>
+          <td class="td-email">${b.email}</td>
+          <td>${b.date}</td>
+          <td><span class="badge ${b.status}">${b.status}</span></td>
+          <td><button class="btn btn-sm btn-danger" onclick="cancelBooking(${b.id})">Cancel</button></td>
+        </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--dim);padding:2rem">No bookings yet</td></tr>'}
+      </tbody></table>
+    </div>`;
+}
+
+function cancelBooking(id){
+  if(!confirm('Cancel this booking?')) return;
+  const bk=DB.get('bookings');
+  const b=bk.find(x=>x.id===id);
+  if(b){b.status='closed';DB.set('bookings',bk);renderBookings();showToast('Booking cancelled','success');}
+}
+
+// ═══════════════════════════════════════
+// PATCH showPanel to handle new panels
+// ═══════════════════════════════════════
+const _origShowPanel = showPanel;
+window.showPanel = function(id){
+  const extras = {pipeline:renderPipeline, media:renderMedia, broadcast:updateBroadcastStats, invoices:renderInvoices, templates:renderTemplates, bookings:renderBookings};
+  _origShowPanel(id);
+  if(extras[id]) extras[id]();
+  // extra panelTitles
+  const extraTitles={pipeline:'Project Pipeline',media:'Media Library',broadcast:'Newsletter Broadcast',invoices:'Invoices',templates:'Reply Templates',bookings:'Bookings'};
+  if(extraTitles[id]) document.getElementById('panelTitle').textContent=extraTitles[id];
+};
+
+// ═══════════════════════════════════════
+// SETTINGS: add Backup + Audit buttons
+// ═══════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  const settingsNav=document.querySelector('.settings-nav');
+  if(settingsNav){
+    settingsNav.innerHTML+=`
+      <div class="settings-nav-item" onclick="showPanel('bookings')">Bookings</div>
+      <div class="settings-nav-item" onclick="openAuditLog()">Audit Log</div>
+      <div class="settings-nav-item" onclick="openModal('backupModal')">Backup & Restore</div>`;
+  }
+  // Seed default templates if empty
+  if(!DB.get('templates').length) DB.set('templates', defaultTemplates);
+  // Show topbar backup + audit shortcuts
+  const topbarRight=document.querySelector('.topbar-right');
+  if(topbarRight){
+    topbarRight.insertAdjacentHTML('beforeend',`
+      <button class="btn btn-outline btn-sm" onclick="openModal('backupModal')" title="Backup">⬇ Backup</button>
+      <button class="btn btn-outline btn-sm" onclick="openAuditLog()" title="Audit Log">📋 Log</button>
+    `);
+  }
+});
+
+// ═══════════════════════════════════════
+// PATCH EXISTING FUNCTIONS to log actions
+// ═══════════════════════════════════════
+const _origSavePortfolio=savePortfolio;
+window.savePortfolio=function(){_origSavePortfolio();auditLog('Portfolio project saved');};
+const _origSaveBlog=saveBlog;
+window.saveBlog=function(s){_origSaveBlog(s);auditLog('Blog article saved','Status: '+s);};
+const _origSaveInquiry=saveInquiry;
+window.saveInquiry=function(){_origSaveInquiry();auditLog('Inquiry added');};
+const _origSendReply=sendReply;
+window.sendReply=function(id){_origSendReply(id);auditLog('Reply sent','Message ID: '+id);};
+</script>
+
+<!-- AUDIT LOG PANEL (injected into settings panel as tab) -->
+<!-- TEMPLATE MODAL -->
+<div class="modal-overlay" id="addTemplateModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header"><div class="modal-title">Add Reply Template</div><button class="modal-close" onclick="closeModal('addTemplateModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group" style="margin-bottom:1rem"><label class="form-label">Template Name</label><input class="form-input" id="tmpl-name" placeholder="e.g. Initial Follow-up"/></div>
+      <div class="form-group" style="margin-bottom:1rem"><label class="form-label">Category</label>
+        <select class="form-select" id="tmpl-cat"><option>Follow-up</option><option>Proposal</option><option>Onboarding</option><option>Closing</option><option>Rejection</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Template Body</label><textarea class="form-textarea" id="tmpl-body" style="min-height:200px" placeholder="Write your reusable reply here...&#10;&#10;You can use {{name}}, {{service}}, {{date}} as placeholders."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addTemplateModal')">Cancel</button>
+      <button class="btn btn-gold" onclick="saveTemplate()">Save Template</button>
+    </div>
+  </div>
+</div>
+
+<!-- INVOICE BUILDER MODAL -->
+<div class="modal-overlay" id="invoiceBuilderModal">
+  <div class="modal" style="max-width:780px">
+    <div class="modal-header"><div class="modal-title">New Invoice</div><button class="modal-close" onclick="closeModal('invoiceBuilderModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid" style="margin-bottom:1.5rem">
+        <div class="form-group"><label class="form-label">Client Name</label><input class="form-input" id="inv-client" placeholder="Client name"/></div>
+        <div class="form-group"><label class="form-label">Client Email</label><input class="form-input" id="inv-email" placeholder="client@company.com"/></div>
+        <div class="form-group"><label class="form-label">Company</label><input class="form-input" id="inv-company" placeholder="Company name"/></div>
+        <div class="form-group"><label class="form-label">Due Date</label><input class="form-input" id="inv-due" type="date"/></div>
+      </div>
+      <div style="font-family:'Unbounded',sans-serif;font-size:.72rem;font-weight:700;margin-bottom:.85rem;letter-spacing:.05em">Line Items</div>
+      <div id="invoiceItems">
+        <div class="invoice-line-item" style="display:grid;grid-template-columns:3fr 1fr 1fr auto;gap:.75rem;margin-bottom:.75rem;align-items:end">
+          <div class="form-group"><label class="form-label">Description</label><input class="form-input" placeholder="Web Development" class="li-desc"/></div>
+          <div class="form-group"><label class="form-label">Qty</label><input class="form-input" type="number" value="1" class="li-qty" oninput="calcInvoiceTotal()"/></div>
+          <div class="form-group"><label class="form-label">Rate ($)</label><input class="form-input" type="number" placeholder="1500" class="li-rate" oninput="calcInvoiceTotal()"/></div>
+          <button class="btn btn-danger btn-sm" style="margin-bottom:2px" onclick="removeInvoiceLine(this)">✕</button>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="addInvoiceLine()" style="margin-bottom:1.5rem">+ Add Line Item</button>
+      <div style="text-align:right">
+        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.35rem">Subtotal: <span style="color:var(--text);font-family:'DM Mono',monospace" id="invSubtotal">$0.00</span></div>
+        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.35rem">Tax (0%): <span style="color:var(--text);font-family:'DM Mono',monospace">$0.00</span></div>
+        <div style="font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:700;color:var(--gold)">Total: <span id="invTotal">$0.00</span></div>
+      </div>
+      <div class="form-group" style="margin-top:1.5rem"><label class="form-label">Notes</label><textarea class="form-textarea" id="inv-notes" style="min-height:70px" placeholder="Payment terms, bank details, thank you note..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('invoiceBuilderModal')">Cancel</button>
+      <button class="btn btn-outline" onclick="printInvoice()">🖨 Print / PDF</button>
+      <button class="btn btn-gold" onclick="saveInvoice()">Save Invoice</button>
+    </div>
+  </div>
+</div>
+
+<!-- BACKUP/RESTORE MODAL -->
+<div class="modal-overlay" id="backupModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header"><div class="modal-title">Backup & Restore</div><button class="modal-close" onclick="closeModal('backupModal')">✕</button></div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div style="background:var(--surface2);border-radius:var(--radius);padding:1.25rem">
+          <div style="font-family:'Unbounded',sans-serif;font-size:.75rem;font-weight:700;margin-bottom:.5rem">Export Backup</div>
+          <div style="font-size:.82rem;color:var(--muted);margin-bottom:1rem">Download all your data (messages, inquiries, portfolio, blog, testimonials) as a JSON file.</div>
+          <button class="btn btn-gold" onclick="exportBackup()">⬇ Download Backup JSON</button>
+        </div>
+        <div style="background:var(--surface2);border-radius:var(--radius);padding:1.25rem">
+          <div style="font-family:'Unbounded',sans-serif;font-size:.75rem;font-weight:700;margin-bottom:.5rem">Export CSV</div>
+          <div style="font-size:.82rem;color:var(--muted);margin-bottom:1rem">Export individual datasets as CSV files.</div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+            <button class="btn btn-outline btn-sm" onclick="exportCSV('inquiries')">Inquiries CSV</button>
+            <button class="btn btn-outline btn-sm" onclick="exportCSV('subscribers')">Subscribers CSV</button>
+            <button class="btn btn-outline btn-sm" onclick="exportCSV('messages')">Messages CSV</button>
+          </div>
+        </div>
+        <div style="background:var(--surface2);border-radius:var(--radius);padding:1.25rem">
+          <div style="font-family:'Unbounded',sans-serif;font-size:.75rem;font-weight:700;margin-bottom:.5rem">Restore from Backup</div>
+          <div style="font-size:.82rem;color:var(--muted);margin-bottom:1rem">Upload a previously exported backup JSON to restore all data.</div>
+          <input type="file" id="restoreInput" accept=".json" style="display:none" onchange="importBackup(this)"/>
+          <button class="btn btn-danger btn-sm" onclick="document.getElementById('restoreInput').click()">⬆ Upload & Restore</button>
+        </div>
+        <div style="background:var(--surface2);border-radius:var(--radius);padding:1.25rem">
+          <div style="font-family:'Unbounded',sans-serif;font-size:.75rem;font-weight:700;margin-bottom:.5rem;color:var(--red)">Danger Zone</div>
+          <button class="btn btn-danger btn-sm" onclick="if(confirm('This will DELETE ALL DATA. Are you sure?')){clearAllData()}">🗑 Clear All Data</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUDIT LOG MODAL -->
+<div class="modal-overlay" id="auditLogModal">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <div class="modal-title">Audit Log</div>
+      <div style="display:flex;gap:.75rem;align-items:center">
+        <button class="btn btn-outline btn-sm" onclick="exportCSV('audit_log')">Export</button>
+        <button class="modal-close" onclick="closeModal('auditLogModal')">✕</button>
+      </div>
+    </div>
+    <div class="modal-body" style="max-height:500px;overflow-y:auto" id="auditLogBody"></div>
+  </div>
+</div>
+
+<!-- BOOKING CALENDAR PANEL -->
+<div class="panel" id="panel-bookings" style="display:none"></div>
+
+</body>
+</html>

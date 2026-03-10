@@ -1,0 +1,3207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Berlin C.O.C. — Zion Empire | Web Development & Design Studio</title>
+<meta name="description" content="Berlin C.O.C. is a premium creative digital studio delivering world-class web development, UI/UX design, branding, and graphic design. Where vision meets execution."/>
+<meta property="og:title" content="Berlin C.O.C. — Zion Empire"/>
+<meta property="og:description" content="Premium creative digital studio. Web Development. UI/UX Design. Branding. Graphic Design."/>
+<meta property="og:type" content="website"/>
+<!-- SEO & Open Graph -->
+<meta name="robots" content="index, follow"/>
+<meta name="author" content="Berlin C.O.C."/>
+<meta name="keywords" content="web development, UI/UX design, branding, graphic design, digital studio, Berlin COC, Zion Empire"/>
+<link rel="canonical" href="https://berlincoc.com/"/>
+<meta property="og:title" content="Berlin C.O.C. — Zion Empire | Web Development & Design Studio"/>
+<meta property="og:description" content="Premium creative digital studio. Web Development. UI/UX Design. Branding. Graphic Design."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://berlincoc.com/"/>
+<meta property="og:image" content="https://berlincoc.com/og-image.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Berlin C.O.C. — Zion Empire"/>
+<meta name="twitter:description" content="Premium creative digital studio delivering world-class web development, UI/UX design, branding, and graphic design."/>
+<meta name="twitter:image" content="https://berlincoc.com/og-image.jpg"/>
+<!-- Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ProfessionalService",
+  "name":"Berlin C.O.C.",
+  "alternateName":"Zion Empire",
+  "description":"Premium creative digital studio delivering world-class web development, UI/UX design, branding, and graphic design.",
+  "url":"https://berlincoc.com",
+  "email":"studio@berlincoc.com",
+  "telephone":"+15550000000",
+  "address":{"@type":"PostalAddress","addressCountry":"US"},
+  "sameAs":["https://instagram.com/berlincoc","https://twitter.com/berlincoc","https://linkedin.com/company/berlincoc"],
+  "hasOfferCatalog":{
+    "@type":"OfferCatalog","name":"Creative Studio Services",
+    "itemListElement":[
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Web Development"}},
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"UI/UX Design"}},
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Branding & Identity"}},
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Graphic Design"}}
+    ]
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════
+   ROOT & THEME
+═══════════════════════════════════════════ */
+:root {
+  --gold: #C9A84C;
+  --gold-light: #F0C96B;
+  --gold-dim: rgba(201,168,76,0.15);
+  --white: #F5F3EE;
+  --gray-100: #E8E5DE;
+  --gray-300: #9E9A90;
+  --gray-500: #5C5952;
+  --radius: 4px;
+  --radius-lg: 16px;
+  --transition: 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+[data-theme="dark"] {
+  --bg: #0A0907;
+  --bg2: #111009;
+  --bg3: #1A1812;
+  --surface: #1E1C15;
+  --surface2: #28251C;
+  --border: rgba(201,168,76,0.12);
+  --text: #F5F3EE;
+  --text-muted: #9E9A90;
+  --text-dim: #5C5952;
+}
+[data-theme="light"] {
+  --bg: #F9F7F2;
+  --bg2: #F2EFE8;
+  --bg3: #E8E4DB;
+  --surface: #FFFFFF;
+  --surface2: #F2EFE8;
+  --border: rgba(201,168,76,0.2);
+  --text: #1A1812;
+  --text-muted: #5C5952;
+  --text-dim: #9E9A90;
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  cursor:none;
+}
+img { max-width:100%; display:block; }
+a { color:inherit; text-decoration:none; }
+button { cursor:pointer; font-family:inherit; }
+
+/* CUSTOM CURSOR */
+.cursor {
+  position:fixed; z-index:9999;
+  width:10px; height:10px;
+  background:var(--gold);
+  border-radius:50%;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  transition:width 0.2s,height 0.2s,background 0.2s;
+  mix-blend-mode:difference;
+}
+.cursor-ring {
+  position:fixed; z-index:9998;
+  width:36px; height:36px;
+  border:1px solid var(--gold);
+  border-radius:50%;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  transition:transform 0.12s,width 0.3s,height 0.3s,opacity 0.3s;
+  opacity:0.5;
+}
+body:has(a:hover) .cursor { width:6px; height:6px; }
+body:has(a:hover) .cursor-ring { width:50px; height:50px; opacity:0.3; }
+
+/* SCROLL PROGRESS */
+.scroll-progress {
+  position:fixed; top:0; left:0; right:0;
+  height:2px; background:transparent; z-index:1000;
+}
+.scroll-progress-bar {
+  height:100%;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  width:0%;
+  transition:width 0.1s;
+}
+
+/* PRELOADER */
+.preloader {
+  position:fixed; inset:0; z-index:10000;
+  background:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:1.5rem;
+  transition:opacity 0.6s, visibility 0.6s;
+}
+.preloader.hidden { opacity:0; visibility:hidden; }
+.preloader-logo {
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(1.4rem,4vw,2rem);
+  font-weight:900;
+  letter-spacing:0.15em;
+  color:var(--text);
+}
+.preloader-logo span { color:var(--gold); }
+.preloader-bar {
+  width:200px; height:1px;
+  background:var(--surface2);
+  overflow:hidden;
+}
+.preloader-bar-fill {
+  height:100%;
+  background:var(--gold);
+  width:0%;
+  animation:preload 1.8s ease forwards;
+}
+@keyframes preload { to { width:100%; } }
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:900;
+  padding:1.5rem 4vw;
+  display:flex; align-items:center; justify-content:space-between;
+  transition:background 0.4s,backdrop-filter 0.4s,padding 0.4s;
+}
+nav.scrolled {
+  background:rgba(10,9,7,0.85);
+  backdrop-filter:blur(20px);
+  padding:1rem 4vw;
+  border-bottom:1px solid var(--border);
+}
+[data-theme="light"] nav.scrolled { background:rgba(249,247,242,0.9); }
+
+.nav-logo {
+  font-family:'Unbounded',sans-serif;
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:0.1em;
+}
+.nav-logo span { color:var(--gold); }
+.nav-links {
+  display:flex; gap:2.5rem; list-style:none;
+  align-items:center;
+}
+.nav-links a {
+  font-size:0.78rem;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  transition:color 0.2s;
+  position:relative;
+}
+.nav-links a::after {
+  content:'';
+  position:absolute; bottom:-4px; left:0;
+  width:0; height:1px;
+  background:var(--gold);
+  transition:width 0.3s;
+}
+.nav-links a:hover,
+.nav-links a.active { color:var(--text); }
+.nav-links a:hover::after,
+.nav-links a.active::after { width:100%; }
+
+.nav-actions { display:flex; align-items:center; gap:1rem; }
+
+.theme-toggle {
+  width:38px; height:38px;
+  border-radius:50%;
+  background:var(--surface);
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1rem;
+  transition:all 0.3s;
+  color:var(--text-muted);
+}
+.theme-toggle:hover { border-color:var(--gold); color:var(--gold); }
+
+.btn-nav {
+  padding:0.55rem 1.4rem;
+  background:var(--gold);
+  color:#0A0907;
+  font-family:'Unbounded',sans-serif;
+  font-size:0.68rem;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  border:none;
+  border-radius:var(--radius);
+  transition:all 0.3s;
+}
+.btn-nav:hover { background:var(--gold-light); transform:translateY(-1px); }
+
+.hamburger {
+  display:none; flex-direction:column; gap:5px;
+  background:none; border:none; padding:4px;
+}
+.hamburger span {
+  display:block; width:22px; height:1.5px;
+  background:var(--text);
+  transition:all 0.3s;
+}
+
+/* MOBILE NAV */
+.mobile-nav {
+  position:fixed; inset:0; z-index:800;
+  background:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:2rem;
+  transform:translateX(100%);
+  transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.mobile-nav.open { transform:translateX(0); }
+.mobile-nav a {
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(1.5rem,6vw,2.5rem);
+  font-weight:700;
+  letter-spacing:0.05em;
+  transition:color 0.2s;
+}
+.mobile-nav a:hover { color:var(--gold); }
+
+/* ═══════════════════════════════════════════
+   PAGES
+═══════════════════════════════════════════ */
+.page { display:none; }
+.page.active { display:block; }
+
+/* ═══════════════════════════════════════════
+   SECTIONS & LAYOUT
+═══════════════════════════════════════════ */
+section { padding:8rem 4vw; position:relative; }
+.container { max-width:1280px; margin:0 auto; }
+.section-label {
+  font-family:'Unbounded',sans-serif;
+  font-size:0.65rem;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:1.25rem;
+  display:flex; align-items:center; gap:1rem;
+}
+.section-label::before {
+  content:'';
+  width:2rem; height:1px;
+  background:var(--gold);
+}
+.section-title {
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:700;
+  line-height:1.15;
+  letter-spacing:-0.02em;
+}
+.section-title em { font-style:normal; color:var(--gold); }
+.section-sub {
+  font-size:1.05rem;
+  color:var(--text-muted);
+  line-height:1.7;
+  max-width:560px;
+  margin-top:1rem;
+}
+
+/* REVEAL ANIMATION */
+.reveal {
+  opacity:0;
+  transform:translateY(40px);
+  transition:opacity 0.8s var(--transition),transform 0.8s var(--transition);
+}
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:0.1s; }
+.reveal-delay-2 { transition-delay:0.2s; }
+.reveal-delay-3 { transition-delay:0.3s; }
+.reveal-delay-4 { transition-delay:0.4s; }
+
+/* ═══════════════════════════════════════════
+   HOME — HERO
+═══════════════════════════════════════════ */
+.hero {
+  min-height:100vh;
+  display:flex; align-items:center;
+  padding:0 4vw;
+  position:relative;
+  overflow:hidden;
+}
+.hero-bg {
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.06) 0%, transparent 60%),
+             radial-gradient(ellipse at 10% 80%, rgba(201,168,76,0.03) 0%, transparent 50%);
+  pointer-events:none;
+}
+.hero-grid-lines {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size:80px 80px;
+  pointer-events:none;
+}
+.hero-grain {
+  position:absolute; inset:0;
+  opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.hero-content { position:relative; z-index:2; max-width:1280px; margin:0 auto; width:100%; }
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:0.75rem;
+  padding:0.45rem 1rem;
+  border:1px solid var(--border);
+  border-radius:100px;
+  font-size:0.72rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-family:'Unbounded',sans-serif;
+  margin-bottom:2rem;
+  animation:fadeInDown 0.8s ease both;
+}
+.hero-eyebrow-dot {
+  width:6px; height:6px;
+  border-radius:50%;
+  background:var(--gold);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+@keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+.hero-title {
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(3.5rem,10vw,9rem);
+  font-weight:900;
+  line-height:0.95;
+  letter-spacing:-0.04em;
+  animation:fadeInUp 1s 0.2s ease both;
+}
+.hero-title .line1 { display:block; }
+.hero-title .line2 {
+  display:block;
+  -webkit-text-stroke:1px var(--gold);
+  color:transparent;
+  opacity:0.5;
+}
+.hero-sub {
+  margin-top:2rem;
+  font-size:clamp(0.9rem,1.5vw,1.1rem);
+  color:var(--text-muted);
+  line-height:1.7;
+  max-width:480px;
+  animation:fadeInUp 1s 0.4s ease both;
+}
+.hero-actions {
+  display:flex; gap:1.25rem; flex-wrap:wrap;
+  margin-top:2.5rem;
+  animation:fadeInUp 1s 0.6s ease both;
+}
+.btn-primary {
+  padding:0.9rem 2.2rem;
+  background:var(--gold);
+  color:#0A0907;
+  font-family:'Unbounded',sans-serif;
+  font-size:0.72rem;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  border:none;
+  border-radius:var(--radius);
+  transition:all 0.3s;
+  position:relative; overflow:hidden;
+}
+.btn-primary::before {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.2));
+  opacity:0; transition:opacity 0.3s;
+}
+.btn-primary:hover { background:var(--gold-light); transform:translateY(-2px); box-shadow:0 20px 40px rgba(201,168,76,0.3); }
+.btn-primary:hover::before { opacity:1; }
+.btn-outline {
+  padding:0.9rem 2.2rem;
+  background:transparent;
+  color:var(--text);
+  font-family:'Unbounded',sans-serif;
+  font-size:0.72rem;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  transition:all 0.3s;
+}
+.btn-outline:hover { border-color:var(--gold); color:var(--gold); transform:translateY(-2px); }
+
+.hero-stats {
+  display:flex; gap:3rem; flex-wrap:wrap;
+  margin-top:5rem;
+  padding-top:3rem;
+  border-top:1px solid var(--border);
+  animation:fadeInUp 1s 0.8s ease both;
+}
+.stat-num {
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(1.6rem,3vw,2.4rem);
+  font-weight:900;
+  color:var(--gold);
+  line-height:1;
+}
+.stat-label {
+  font-size:0.78rem;
+  color:var(--text-muted);
+  letter-spacing:0.05em;
+  margin-top:0.35rem;
+}
+
+.hero-scroll {
+  position:absolute; bottom:3rem; right:4vw;
+  display:flex; flex-direction:column; align-items:center; gap:0.75rem;
+  animation:fadeInUp 1s 1s ease both;
+}
+.hero-scroll span {
+  font-size:0.65rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--text-dim);
+  writing-mode:vertical-rl;
+}
+.scroll-line {
+  width:1px; height:60px;
+  background:linear-gradient(var(--gold),transparent);
+  animation:scrollLine 2s infinite;
+}
+@keyframes scrollLine {
+  0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top}
+  51%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom}
+}
+
+/* ═══════════════════════════════════════════
+   MARQUEE
+═══════════════════════════════════════════ */
+.marquee-section {
+  padding:2rem 0;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  overflow:hidden;
+  background:var(--bg2);
+}
+.marquee-track {
+  display:flex; gap:4rem;
+  animation:marquee 20s linear infinite;
+  width:max-content;
+}
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.marquee-item {
+  display:flex; align-items:center; gap:1.5rem;
+  font-family:'Unbounded',sans-serif;
+  font-size:0.72rem;
+  font-weight:600;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--text-dim);
+  white-space:nowrap;
+}
+.marquee-item span { color:var(--gold); font-size:0.9rem; }
+
+/* ═══════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════ */
+.services-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1.5rem;
+  margin-top:4rem;
+}
+.service-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:2.5rem;
+  position:relative; overflow:hidden;
+  transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s;
+  cursor:default;
+}
+.service-card::before {
+  content:'';
+  position:absolute; inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(201,168,76,0.06) 0%, transparent 60%);
+  opacity:0; transition:opacity 0.4s;
+}
+.service-card:hover { border-color:rgba(201,168,76,0.4); transform:translateY(-4px); box-shadow:0 30px 60px rgba(0,0,0,0.3); }
+.service-card:hover::before { opacity:1; }
+.service-num {
+  font-family:'Unbounded',sans-serif;
+  font-size:0.6rem;
+  font-weight:700;
+  letter-spacing:0.2em;
+  color:var(--gold);
+  opacity:0.6;
+  margin-bottom:1.5rem;
+}
+.service-icon {
+  width:52px; height:52px;
+  border-radius:12px;
+  background:var(--gold-dim);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.4rem;
+  margin-bottom:1.5rem;
+  transition:transform 0.3s;
+}
+.service-card:hover .service-icon { transform:scale(1.1) rotate(-5deg); }
+.service-title {
+  font-family:'Unbounded',sans-serif;
+  font-size:1rem;
+  font-weight:700;
+  margin-bottom:0.75rem;
+  letter-spacing:-0.01em;
+}
+.service-desc {
+  font-size:0.9rem;
+  color:var(--text-muted);
+  line-height:1.7;
+  margin-bottom:1.5rem;
+}
+.service-arrow {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  font-size:0.75rem;
+  font-weight:500;
+  letter-spacing:0.05em;
+  color:var(--gold);
+  transition:gap 0.3s;
+}
+.service-card:hover .service-arrow { gap:0.85rem; }
+
+/* ═══════════════════════════════════════════
+   PORTFOLIO PREVIEW
+═══════════════════════════════════════════ */
+.portfolio-grid {
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:1.5rem;
+  margin-top:4rem;
+}
+.port-card {
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  position:relative;
+  background:var(--surface);
+  border:1px solid var(--border);
+  transition:transform 0.4s,box-shadow 0.4s;
+  cursor:pointer;
+}
+.port-card:hover { transform:scale(1.02); box-shadow:0 40px 80px rgba(0,0,0,0.4); }
+.port-card:nth-child(1) { grid-column:span 7; min-height:400px; }
+.port-card:nth-child(2) { grid-column:span 5; min-height:400px; }
+.port-card:nth-child(3) { grid-column:span 4; min-height:300px; }
+.port-card:nth-child(4) { grid-column:span 8; min-height:300px; }
+
+.port-img {
+  width:100%; height:100%;
+  background:var(--surface2);
+  display:flex; align-items:center; justify-content:center;
+  position:absolute; inset:0;
+  font-size:4rem;
+  transition:transform 0.6s;
+}
+.port-card:hover .port-img { transform:scale(1.08); }
+.port-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(10,9,7,0.95) 0%, transparent 60%);
+  opacity:0; transition:opacity 0.4s;
+  display:flex; flex-direction:column; justify-content:flex-end; padding:2rem;
+}
+.port-card:hover .port-overlay { opacity:1; }
+.port-tag {
+  font-size:0.65rem; font-weight:600;
+  letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:0.5rem;
+}
+.port-name {
+  font-family:'Unbounded',sans-serif;
+  font-size:1.1rem; font-weight:700;
+  line-height:1.2;
+}
+
+/* port card BG colors */
+.port-card:nth-child(1) .port-img { background:linear-gradient(135deg,#1A1812,#2a2518); }
+.port-card:nth-child(2) .port-img { background:linear-gradient(135deg,#131210,#1e1a12); }
+.port-card:nth-child(3) .port-img { background:linear-gradient(135deg,#0f0e0a,#1a1712); }
+.port-card:nth-child(4) .port-img { background:linear-gradient(135deg,#161411,#221f15); }
+
+/* ═══════════════════════════════════════════
+   ABOUT PREVIEW
+═══════════════════════════════════════════ */
+.about-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6rem;
+  align-items:center;
+  margin-top:4rem;
+}
+.about-visual {
+  position:relative;
+}
+.about-photo-wrap {
+  width:100%; aspect-ratio:3/4;
+  border-radius:var(--radius-lg);
+  background:var(--surface);
+  border:1px solid var(--border);
+  overflow:hidden;
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+  font-size:5rem;
+}
+.about-photo-wrap::after {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,0.08),transparent 60%);
+}
+.about-badge {
+  position:absolute; bottom:2rem; right:-2rem;
+  background:var(--gold);
+  color:#0A0907;
+  padding:1.25rem 1.5rem;
+  border-radius:12px;
+  font-family:'Unbounded',sans-serif;
+  font-size:0.7rem;
+  font-weight:700;
+  letter-spacing:0.05em;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(201,168,76,0.3);
+}
+.about-badge-num {
+  font-size:2rem;
+  font-weight:900;
+  line-height:1;
+  margin-bottom:0.25rem;
+}
+.skills-list {
+  display:flex; flex-wrap:wrap; gap:0.75rem;
+  margin-top:2rem;
+}
+.skill-tag {
+  padding:0.4rem 0.9rem;
+  border:1px solid var(--border);
+  border-radius:100px;
+  font-size:0.78rem;
+  color:var(--text-muted);
+  transition:all 0.2s;
+}
+.skill-tag:hover { border-color:var(--gold); color:var(--gold); }
+
+/* ═══════════════════════════════════════════
+   PROCESS
+═══════════════════════════════════════════ */
+.process-section { background:var(--bg2); }
+.process-steps {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:2rem;
+  margin-top:4rem;
+  position:relative;
+}
+.process-steps::before {
+  content:'';
+  position:absolute; top:28px; left:5%; right:5%;
+  height:1px; background:var(--border);
+  z-index:0;
+}
+.process-step {
+  text-align:center;
+  padding:0 1rem;
+  position:relative; z-index:1;
+}
+.process-num {
+  width:56px; height:56px;
+  border-radius:50%;
+  background:var(--bg);
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Unbounded',sans-serif;
+  font-size:0.8rem; font-weight:700;
+  color:var(--gold);
+  margin:0 auto 1.5rem;
+  transition:all 0.3s;
+}
+.process-step:hover .process-num {
+  background:var(--gold);
+  color:#0A0907;
+  border-color:var(--gold);
+  box-shadow:0 0 0 8px var(--gold-dim);
+}
+.process-step-title {
+  font-family:'Unbounded',sans-serif;
+  font-size:0.85rem; font-weight:700;
+  margin-bottom:0.75rem;
+}
+.process-step-desc { font-size:0.85rem; color:var(--text-muted); line-height:1.6; }
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════ */
+.testimonials-section { overflow:hidden; }
+.testimonials-slider { position:relative; margin-top:4rem; }
+.testimonials-track {
+  display:flex; gap:1.5rem;
+  transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.testimonial-card {
+  flex:0 0 calc(33.333% - 1rem);
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:2.5rem;
+  transition:border-color 0.3s;
+}
+.testimonial-card:hover { border-color:rgba(201,168,76,0.3); }
+.test-stars { color:var(--gold); font-size:0.9rem; letter-spacing:0.1em; margin-bottom:1.25rem; }
+.test-text {
+  font-size:0.95rem; line-height:1.7;
+  color:var(--text-muted);
+  margin-bottom:1.75rem;
+  font-style:italic;
+}
+.test-author { display:flex; align-items:center; gap:1rem; }
+.test-avatar {
+  width:42px; height:42px;
+  border-radius:50%;
+  background:var(--gold-dim);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; flex-shrink:0;
+}
+.test-name { font-family:'Unbounded',sans-serif; font-size:0.78rem; font-weight:700; }
+.test-role { font-size:0.75rem; color:var(--text-dim); margin-top:0.15rem; }
+.slider-controls { display:flex; gap:0.75rem; margin-top:2rem; }
+.slider-btn {
+  width:44px; height:44px;
+  border-radius:50%;
+  border:1px solid var(--border);
+  background:transparent;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.9rem; color:var(--text-muted);
+  transition:all 0.2s;
+}
+.slider-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+/* ═══════════════════════════════════════════
+   CTA SECTION
+═══════════════════════════════════════════ */
+.cta-section {
+  background:var(--bg2);
+  text-align:center;
+  padding:8rem 4vw;
+}
+.cta-title {
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(2rem,5vw,4.5rem);
+  font-weight:900;
+  letter-spacing:-0.03em;
+  line-height:1.1;
+  margin-bottom:1.5rem;
+}
+.cta-title em { font-style:normal; color:var(--gold); }
+.cta-sub { font-size:1.05rem; color:var(--text-muted); margin-bottom:3rem; max-width:480px; margin-left:auto; margin-right:auto; }
+
+/* ═══════════════════════════════════════════
+   ABOUT PAGE
+═══════════════════════════════════════════ */
+.page-hero {
+  padding:14rem 4vw 6rem;
+  position:relative;
+  overflow:hidden;
+}
+.page-hero-bg {
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+.page-hero-title {
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(3rem,7vw,6rem);
+  font-weight:900;
+  letter-spacing:-0.04em;
+  line-height:1;
+}
+.page-hero-title em { font-style:normal; -webkit-text-stroke:1px var(--gold); color:transparent; }
+
+.timeline { margin-top:3rem; }
+.timeline-item {
+  display:grid; grid-template-columns:140px 1fr;
+  gap:2rem; padding:2rem 0;
+  border-top:1px solid var(--border);
+  position:relative;
+}
+.timeline-year {
+  font-family:'Unbounded',sans-serif;
+  font-size:0.75rem; font-weight:700;
+  color:var(--gold); padding-top:0.25rem;
+}
+.timeline-title { font-family:'Unbounded',sans-serif; font-size:0.95rem; font-weight:700; margin-bottom:0.5rem; }
+.timeline-desc { font-size:0.9rem; color:var(--text-muted); line-height:1.6; }
+
+.tools-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr));
+  gap:1rem; margin-top:2rem;
+}
+.tool-item {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.25rem 0.5rem;
+  text-align:center;
+  transition:all 0.2s;
+}
+.tool-item:hover { border-color:var(--gold); transform:translateY(-3px); }
+.tool-icon { font-size:1.6rem; margin-bottom:0.5rem; }
+.tool-name { font-size:0.7rem; font-weight:500; color:var(--text-muted); }
+
+/* ═══════════════════════════════════════════
+   SERVICES PAGE
+═══════════════════════════════════════════ */
+.services-full {
+  display:flex; flex-direction:column; gap:1.5rem;
+  margin-top:4rem;
+}
+.service-full-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:3rem;
+  display:grid;
+  grid-template-columns:1fr 1.5fr auto;
+  gap:3rem;
+  align-items:start;
+  transition:border-color 0.3s;
+}
+.service-full-card:hover { border-color:rgba(201,168,76,0.3); }
+.service-full-head {}
+.service-full-num {
+  font-family:'Unbounded',sans-serif;
+  font-size:0.6rem; font-weight:700;
+  letter-spacing:0.25em; color:var(--gold); opacity:0.6;
+  margin-bottom:1rem;
+}
+.service-full-title {
+  font-family:'Unbounded',sans-serif;
+  font-size:1.2rem; font-weight:700; margin-bottom:0.5rem;
+}
+.service-full-tagline { font-size:0.85rem; color:var(--text-muted); }
+.service-full-body {}
+.service-full-desc { font-size:0.95rem; color:var(--text-muted); line-height:1.7; margin-bottom:1.5rem; }
+.deliverables-list { list-style:none; display:flex; flex-direction:column; gap:0.5rem; }
+.deliverables-list li {
+  font-size:0.85rem; color:var(--text-muted);
+  display:flex; align-items:center; gap:0.75rem;
+}
+.deliverables-list li::before { content:'→'; color:var(--gold); }
+.service-full-cta { display:flex; flex-direction:column; align-items:flex-end; gap:1rem; }
+.price-from {
+  font-family:'Unbounded',sans-serif;
+  font-size:0.62rem; letter-spacing:0.1em; color:var(--text-dim); text-align:right;
+}
+.price-num {
+  font-family:'Unbounded',sans-serif;
+  font-size:1.5rem; font-weight:900; color:var(--gold);
+  text-align:right;
+}
+
+/* ═══════════════════════════════════════════
+   PORTFOLIO PAGE
+═══════════════════════════════════════════ */
+.filter-bar {
+  display:flex; gap:0.75rem; flex-wrap:wrap;
+  margin:3rem 0 2.5rem;
+}
+.filter-btn {
+  padding:0.5rem 1.25rem;
+  border-radius:100px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text-muted);
+  font-family:'Unbounded',sans-serif;
+  font-size:0.65rem; font-weight:600;
+  letter-spacing:0.1em; text-transform:uppercase;
+  transition:all 0.2s;
+}
+.filter-btn:hover,
+.filter-btn.active { background:var(--gold); color:#0A0907; border-color:var(--gold); }
+
+.portfolio-full-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(350px,1fr));
+  gap:1.5rem;
+}
+.port-full-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  transition:all 0.4s;
+  cursor:pointer;
+}
+.port-full-card:hover { transform:translateY(-6px); box-shadow:0 40px 80px rgba(0,0,0,0.3); border-color:rgba(201,168,76,0.3); }
+.port-full-img {
+  aspect-ratio:16/10;
+  background:var(--surface2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:3rem;
+  transition:transform 0.5s;
+  overflow:hidden;
+}
+.port-full-card:hover .port-full-img { transform:scale(1.04); }
+.port-full-info { padding:1.75rem; }
+.port-full-cat {
+  font-family:'Unbounded',sans-serif;
+  font-size:0.6rem; font-weight:600;
+  letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:0.5rem;
+}
+.port-full-title { font-family:'Unbounded',sans-serif; font-size:1rem; font-weight:700; margin-bottom:0.5rem; }
+.port-full-desc { font-size:0.85rem; color:var(--text-muted); line-height:1.6; }
+.port-full-tools {
+  display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1rem;
+}
+.port-tool-tag {
+  padding:0.25rem 0.65rem;
+  border-radius:100px;
+  background:var(--surface2);
+  font-size:0.68rem; color:var(--text-dim);
+}
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS PAGE
+═══════════════════════════════════════════ */
+.testimonials-full-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:1.5rem;
+  margin-top:4rem;
+}
+.test-full-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:2.5rem;
+  display:flex; flex-direction:column;
+  transition:all 0.3s;
+}
+.test-full-card:hover { border-color:rgba(201,168,76,0.3); transform:translateY(-3px); }
+.test-rating {
+  display:flex; gap:0.25rem; margin-bottom:1.25rem;
+}
+.star { color:var(--gold); font-size:0.85rem; }
+
+/* ═══════════════════════════════════════════
+   BLOG PAGE
+═══════════════════════════════════════════ */
+.blog-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:1.5rem; margin-top:4rem;
+}
+.blog-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  transition:all 0.3s;
+  cursor:pointer;
+}
+.blog-card:hover { transform:translateY(-4px); border-color:rgba(201,168,76,0.3); box-shadow:0 30px 60px rgba(0,0,0,0.2); }
+.blog-img {
+  aspect-ratio:16/9;
+  background:var(--surface2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:2.5rem;
+}
+.blog-body { padding:1.75rem; }
+.blog-meta {
+  display:flex; align-items:center; gap:1rem;
+  font-size:0.72rem; color:var(--text-dim);
+  margin-bottom:0.75rem;
+}
+.blog-cat {
+  padding:0.2rem 0.6rem;
+  background:var(--gold-dim);
+  border-radius:100px;
+  font-family:'Unbounded',sans-serif;
+  font-size:0.58rem; font-weight:700;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--gold);
+}
+.blog-title { font-family:'Unbounded',sans-serif; font-size:0.95rem; font-weight:700; line-height:1.3; margin-bottom:0.75rem; }
+.blog-excerpt { font-size:0.85rem; color:var(--text-muted); line-height:1.6; }
+.blog-read-more {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  font-size:0.75rem; font-weight:500;
+  color:var(--gold); margin-top:1.25rem;
+  transition:gap 0.2s;
+}
+.blog-card:hover .blog-read-more { gap:0.85rem; }
+
+/* ═══════════════════════════════════════════
+   CONTACT PAGE
+═══════════════════════════════════════════ */
+.contact-grid {
+  display:grid; grid-template-columns:1fr 1.5fr;
+  gap:4rem; margin-top:4rem;
+  align-items:start;
+}
+.contact-info { display:flex; flex-direction:column; gap:2rem; }
+.contact-info-item {
+  display:flex; gap:1.25rem; align-items:flex-start;
+}
+.contact-icon {
+  width:44px; height:44px; flex-shrink:0;
+  border-radius:10px;
+  background:var(--gold-dim);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+}
+.contact-info-label { font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.3rem; }
+.contact-info-val { font-size:0.95rem; font-weight:500; }
+.social-links { display:flex; gap:0.75rem; margin-top:1rem; }
+.social-link {
+  width:40px; height:40px;
+  border-radius:50%; border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.9rem; color:var(--text-muted);
+  transition:all 0.2s;
+}
+.social-link:hover { border-color:var(--gold); color:var(--gold); transform:translateY(-2px); }
+
+.contact-form { display:flex; flex-direction:column; gap:1.25rem; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; }
+.form-group { display:flex; flex-direction:column; gap:0.5rem; }
+.form-label {
+  font-size:0.72rem; font-weight:600;
+  letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--text-muted);
+}
+.form-input,
+.form-select,
+.form-textarea {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:0.85rem 1.1rem;
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:0.95rem;
+  transition:border-color 0.2s, box-shadow 0.2s;
+  outline:none;
+  resize:none;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px var(--gold-dim);
+}
+.form-textarea { min-height:140px; }
+.form-select { appearance:none; cursor:pointer; }
+.form-submit {
+  width:100%; padding:1rem;
+  background:var(--gold);
+  color:#0A0907;
+  border:none; border-radius:var(--radius);
+  font-family:'Unbounded',sans-serif;
+  font-size:0.75rem; font-weight:700;
+  letter-spacing:0.1em; text-transform:uppercase;
+  transition:all 0.3s;
+}
+.form-submit:hover { background:var(--gold-light); transform:translateY(-2px); box-shadow:0 20px 40px rgba(201,168,76,0.3); }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer {
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  padding:5rem 4vw 2.5rem;
+}
+.footer-grid {
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1.5fr;
+  gap:4rem;
+  margin-bottom:4rem;
+}
+.footer-brand-name {
+  font-family:'Unbounded',sans-serif;
+  font-size:1.2rem; font-weight:900;
+  letter-spacing:0.08em; margin-bottom:1rem;
+}
+.footer-brand-name span { color:var(--gold); }
+.footer-bio { font-size:0.88rem; color:var(--text-muted); line-height:1.7; max-width:280px; }
+.footer-col-title {
+  font-family:'Unbounded',sans-serif;
+  font-size:0.65rem; font-weight:700;
+  letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--text-dim); margin-bottom:1.25rem;
+}
+.footer-links { list-style:none; display:flex; flex-direction:column; gap:0.75rem; }
+.footer-links a { font-size:0.88rem; color:var(--text-muted); transition:color 0.2s; }
+.footer-links a:hover { color:var(--gold); }
+.footer-bottom {
+  padding-top:2rem; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:1rem;
+}
+.footer-copy { font-size:0.78rem; color:var(--text-dim); }
+.footer-bottom-links { display:flex; gap:2rem; }
+.footer-bottom-links a { font-size:0.78rem; color:var(--text-dim); transition:color 0.2s; }
+.footer-bottom-links a:hover { color:var(--gold); }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width:1024px) {
+  .portfolio-grid { grid-template-columns:1fr 1fr; }
+  .port-card:nth-child(1),
+  .port-card:nth-child(2),
+  .port-card:nth-child(3),
+  .port-card:nth-child(4) { grid-column:span 6; }
+  .footer-grid { grid-template-columns:1fr 1fr; }
+  .service-full-card { grid-template-columns:1fr; }
+  .service-full-cta { align-items:flex-start; }
+  .price-from,.price-num { text-align:left; }
+}
+@media (max-width:768px) {
+  section { padding:5rem 4vw; }
+  .nav-links,.btn-nav,.theme-toggle { display:none; }
+  .hamburger { display:flex; }
+  .about-grid,.contact-grid { grid-template-columns:1fr; }
+  .about-badge { right:0; }
+  .portfolio-grid { grid-template-columns:1fr; }
+  .port-card:nth-child(n) { grid-column:span 1; min-height:250px; }
+  .testimonial-card { flex:0 0 90%; }
+  .form-row { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr; gap:2.5rem; }
+  .footer-bottom { flex-direction:column; text-align:center; }
+  .process-steps::before { display:none; }
+  .hero-stats { gap:2rem; }
+}
+@media (max-width:480px) {
+  .hero-title { letter-spacing:-0.03em; }
+  .hero-actions { flex-direction:column; }
+  .btn-primary,.btn-outline { text-align:center; }
+}
+
+/* ═══ ACCESSIBILITY ═══ */
+.skip-link{position:absolute;top:-40px;left:0;background:var(--gold);color:#0A0907;padding:.5rem 1rem;z-index:10000;font-weight:700;font-size:.82rem;transition:top .2s;}
+.skip-link:focus{top:0;}
+*:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+/* ═══ COOKIE BANNER ═══ */
+.cookie-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:8000;
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:1.25rem 4vw;
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;
+  transform:translateY(100%);transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.cookie-banner.show{transform:translateY(0);}
+.cookie-text{font-size:.82rem;color:var(--text-muted);max-width:600px;line-height:1.6;}
+.cookie-text a{color:var(--gold);text-decoration:underline;}
+.cookie-btns{display:flex;gap:.75rem;flex-shrink:0;}
+
+/* ═══ BACK TO TOP ═══ */
+.back-top{
+  position:fixed;bottom:2rem;right:2rem;z-index:500;
+  width:46px;height:46px;border-radius:50%;
+  background:var(--gold);border:none;color:#0A0907;
+  font-size:1.1rem;font-weight:700;cursor:pointer;
+  opacity:0;transform:translateY(10px);
+  transition:all .3s;box-shadow:0 8px 24px rgba(201,168,76,.4);
+  display:flex;align-items:center;justify-content:center;
+}
+.back-top.visible{opacity:1;transform:translateY(0);}
+.back-top:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(201,168,76,.5);}
+
+/* ═══ NEWSLETTER STRIP ═══ */
+.newsletter-strip{
+  background:var(--gold);padding:1.5rem 4vw;
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;
+}
+.nl-text{font-family:'Unbounded',sans-serif;font-size:.82rem;font-weight:700;color:#0A0907;letter-spacing:.02em;}
+.nl-form{display:flex;gap:.75rem;flex-wrap:wrap;}
+.nl-input{
+  padding:.6rem 1.1rem;border:2px solid rgba(10,9,7,.2);
+  border-radius:4px;background:rgba(10,9,7,.1);
+  color:#0A0907;font-family:'DM Sans',sans-serif;font-size:.88rem;
+  outline:none;width:260px;transition:border-color .2s;
+}
+.nl-input::placeholder{color:rgba(10,9,7,.5);}
+.nl-input:focus{border-color:#0A0907;}
+.nl-btn{
+  padding:.6rem 1.4rem;background:#0A0907;color:var(--gold);
+  font-family:'Unbounded',sans-serif;font-size:.68rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;border:none;border-radius:4px;cursor:pointer;
+  transition:all .2s;white-space:nowrap;
+}
+.nl-btn:hover{background:#1a1812;}
+
+/* ═══ FLOATING CTA ═══ */
+.floating-cta{
+  position:fixed;bottom:5rem;right:2rem;z-index:500;
+  display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;
+}
+.float-btn{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.65rem 1.2rem;border-radius:100px;
+  font-family:'Unbounded',sans-serif;font-size:.65rem;font-weight:700;
+  letter-spacing:.06em;border:none;cursor:pointer;transition:all .3s;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);white-space:nowrap;
+}
+.float-btn.primary{background:var(--gold);color:#0A0907;}
+.float-btn.primary:hover{background:var(--gold-light);transform:translateX(-4px);}
+.float-btn.secondary{background:var(--surface);border:1px solid var(--border);color:var(--text);}
+.float-btn.secondary:hover{border-color:var(--gold);color:var(--gold);transform:translateX(-4px);}
+.float-dot{width:7px;height:7px;border-radius:50%;background:var(--green,#4DFF9E);animation:pulse 2s infinite;}
+
+/* ═══ SEARCH OVERLAY ═══ */
+.search-overlay{
+  position:fixed;inset:0;z-index:9000;
+  background:rgba(10,9,7,.95);backdrop-filter:blur(20px);
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  padding:6rem 4vw 4rem;
+  opacity:0;visibility:hidden;transition:all .3s;
+}
+.search-overlay.open{opacity:1;visibility:visible;}
+.search-wrap{width:100%;max-width:700px;}
+.search-bar{
+  display:flex;align-items:center;gap:1rem;
+  border-bottom:2px solid var(--border);padding-bottom:1rem;margin-bottom:2rem;
+}
+.search-icon{font-size:1.3rem;color:var(--gold);}
+.search-field{
+  flex:1;background:none;border:none;outline:none;
+  font-family:'Unbounded',sans-serif;font-size:clamp(1.2rem,3vw,2rem);
+  font-weight:600;color:var(--text);caret-color:var(--gold);
+}
+.search-field::placeholder{color:var(--text-dim);}
+.search-close{background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;padding:.5rem;}
+.search-results{display:flex;flex-direction:column;gap:.75rem;}
+.search-result-item{
+  padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:1rem;
+}
+.search-result-item:hover{border-color:var(--gold);}
+.sr-icon{font-size:1.2rem;width:36px;height:36px;border-radius:8px;background:var(--gold-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sr-title{font-family:'Unbounded',sans-serif;font-size:.82rem;font-weight:700;}
+.sr-type{font-size:.72rem;color:var(--gold);font-family:'DM Mono',monospace;letter-spacing:.1em;}
+
+/* ═══ LIVE CHAT ═══ */
+.chat-bubble{
+  position:fixed;bottom:2rem;left:2rem;z-index:500;
+  width:52px;height:52px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;cursor:pointer;transition:all .3s;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+}
+.chat-bubble:hover{border-color:var(--gold);transform:scale(1.1);}
+.chat-bubble .chat-dot{
+  position:absolute;top:6px;right:6px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--green,#4DFF9E);border:2px solid var(--bg);
+  animation:pulse 2s infinite;
+}
+.chat-window{
+  position:fixed;bottom:5.5rem;left:2rem;z-index:500;
+  width:320px;background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 30px 60px rgba(0,0,0,.4);
+  transform:scale(.8) translateY(20px);transform-origin:bottom left;
+  opacity:0;visibility:hidden;transition:all .3s cubic-bezier(.16,1,.3,1);
+}
+.chat-window.open{opacity:1;visibility:visible;transform:scale(1) translateY(0);}
+.chat-header{
+  padding:1rem 1.25rem;background:var(--gold);
+  display:flex;align-items:center;gap:.85rem;
+}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:rgba(10,9,7,.2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.chat-header-name{font-family:'Unbounded',sans-serif;font-size:.75rem;font-weight:700;color:#0A0907;}
+.chat-header-status{font-size:.65rem;color:rgba(10,9,7,.6);}
+.chat-close-btn{margin-left:auto;background:none;border:none;font-size:1rem;cursor:pointer;color:rgba(10,9,7,.6);}
+.chat-messages{padding:1rem;height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:.75rem;}
+.chat-msg{max-width:85%;}
+.chat-msg.bot{align-self:flex-start;}
+.chat-msg.user{align-self:flex-end;}
+.chat-msg-bubble{
+  padding:.65rem .85rem;border-radius:12px;font-size:.82rem;line-height:1.5;
+}
+.chat-msg.bot .chat-msg-bubble{background:var(--surface2);color:var(--text);}
+.chat-msg.user .chat-msg-bubble{background:var(--gold);color:#0A0907;}
+.chat-msg-time{font-size:.62rem;color:var(--dim);margin-top:.25rem;text-align:right;}
+.chat-input-row{display:flex;gap:.5rem;padding:.85rem;border-top:1px solid var(--border);}
+.chat-input{
+  flex:1;background:var(--bg2);border:1px solid var(--border);
+  border-radius:20px;padding:.5rem .9rem;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:.82rem;
+  outline:none;transition:border-color .2s;
+}
+.chat-input:focus{border-color:var(--gold);}
+.chat-send{
+  width:34px;height:34px;border-radius:50%;background:var(--gold);
+  border:none;color:#0A0907;font-size:.9rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;
+}
+.chat-send:hover{background:var(--gold-light);}
+
+/* ═══ PORTFOLIO CASE STUDY MODAL ═══ */
+.modal-overlay-site{
+  position:fixed;inset:0;z-index:7000;
+  background:rgba(10,9,7,.92);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:2rem;
+  opacity:0;visibility:hidden;transition:all .3s;
+  overflow-y:auto;
+}
+.modal-overlay-site.open{opacity:1;visibility:visible;}
+.site-modal{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:20px;width:100%;max-width:820px;
+  position:relative;overflow:hidden;
+  transform:scale(.95);transition:transform .3s;
+}
+.modal-overlay-site.open .site-modal{transform:scale(1);}
+.site-modal-hero{
+  height:280px;display:flex;align-items:center;justify-content:center;
+  font-size:5rem;position:relative;overflow:hidden;
+}
+.site-modal-close{
+  position:absolute;top:1.25rem;right:1.25rem;
+  width:36px;height:36px;border-radius:50%;background:rgba(10,9,7,.6);
+  border:1px solid var(--border);color:var(--text);font-size:1.1rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;z-index:10;
+}
+.site-modal-close:hover{background:rgba(255,92,92,.2);color:#ff5c5c;}
+.site-modal-body{padding:2.5rem;}
+.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0;}
+.case-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;}
+.case-block-label{font-family:'Unbounded',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;}
+.case-block-text{font-size:.88rem;color:var(--text-muted);line-height:1.7;}
+.tools-chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem;}
+.tool-chip{padding:.3rem .75rem;background:var(--gold-dim);border-radius:100px;font-size:.72rem;color:var(--gold);font-family:'DM Mono',monospace;}
+.result-badge{font-family:'Unbounded',sans-serif;font-size:1.4rem;font-weight:900;color:var(--gold);}
+
+/* ═══ BLOG ARTICLE MODAL ═══ */
+.blog-modal-body{padding:2.5rem;max-height:70vh;overflow-y:auto;}
+.blog-modal-header{padding:2rem 2.5rem 0;}
+.article-body{font-size:.95rem;color:var(--text-muted);line-height:1.9;margin-top:1.5rem;}
+.article-body h2{font-family:'Unbounded',sans-serif;font-size:1.1rem;color:var(--text);margin:2rem 0 .75rem;}
+.article-body p{margin-bottom:1rem;}
+.share-row{display:flex;align-items:center;gap:1rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+.share-label{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.share-btn{
+  padding:.4rem .9rem;border-radius:100px;
+  border:1px solid var(--border);background:transparent;
+  font-size:.72rem;color:var(--muted);cursor:pointer;transition:all .2s;
+}
+.share-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ═══ BOOKING CALENDAR ═══ */
+.booking-section{background:var(--bg2);}
+.calendar-widget{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:2rem;max-width:520px;
+}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.cal-month{font-family:'Unbounded',sans-serif;font-size:.9rem;font-weight:700;}
+.cal-nav{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-size:.9rem;transition:all .2s;}
+.cal-nav:hover{border-color:var(--gold);color:var(--gold);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem;text-align:center;}
+.cal-dow{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--dim);padding:.25rem 0;}
+.cal-day{
+  aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;cursor:pointer;transition:all .2s;color:var(--text-muted);
+}
+.cal-day:hover{background:var(--gold-dim);color:var(--gold);}
+.cal-day.today{border:1px solid var(--gold);color:var(--gold);}
+.cal-day.selected{background:var(--gold);color:#0A0907;font-weight:700;}
+.cal-day.available{color:var(--text);}
+.cal-day.booked{opacity:.3;cursor:not-allowed;text-decoration:line-through;}
+.cal-day.empty{pointer-events:none;}
+.time-slots{margin-top:1.5rem;}
+.time-slots-label{font-family:'Unbounded',sans-serif;font-size:.72rem;font-weight:700;color:var(--gold);margin-bottom:.85rem;letter-spacing:.05em;}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;}
+.time-slot{
+  padding:.5rem;text-align:center;border:1px solid var(--border);
+  border-radius:6px;font-size:.78rem;color:var(--text-muted);
+  cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace;
+}
+.time-slot:hover{border-color:var(--gold);color:var(--gold);}
+.time-slot.selected{background:var(--gold);border-color:var(--gold);color:#0A0907;font-weight:700;}
+.time-slot.taken{opacity:.3;cursor:not-allowed;}
+.booking-confirm{margin-top:1.5rem;}
+
+/* ═══ 404 PAGE ═══ */
+#page-404{display:none;}
+#page-404.active{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;flex-direction:column;gap:1.5rem;padding:4rem;}
+.err-code{font-family:'Unbounded',sans-serif;font-size:clamp(6rem,20vw,14rem);font-weight:900;line-height:1;-webkit-text-stroke:2px var(--gold);color:transparent;opacity:.3;}
+.err-title{font-family:'Unbounded',sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;}
+.err-sub{font-size:1rem;color:var(--text-muted);max-width:400px;}
+
+/* ═══ ANNOUNCEMENT BAR ═══ */
+.announcement-bar{
+  background:var(--gold);text-align:center;
+  padding:.6rem 4vw;font-family:'Unbounded',sans-serif;
+  font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:#0A0907;position:relative;
+}
+.ann-close{position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:.9rem;color:rgba(10,9,7,.6);}
+.ann-close:hover{color:#0A0907;}
+
+/* mobile tweaks */
+@media(max-width:768px){
+  .case-grid{grid-template-columns:1fr;}
+  .time-grid{grid-template-columns:repeat(2,1fr);}
+  .nl-input{width:100%;}
+  .chat-window{width:calc(100vw - 4rem);}
+}
+</style>
+</head>
+<body>
+<!-- SKIP LINK -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement-bar" id="annBar">
+  ✦ Now accepting new projects for Q2 2025 — Limited slots available
+  <button class="ann-close" onclick="document.getElementById('annBar').style.display='none'" aria-label="Close announcement">✕</button>
+</div>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+  <p class="cookie-text">We use cookies to enhance your experience and analyze site traffic. By clicking "Accept", you consent to our use of cookies. <a href="#" onclick="navigate('about')">Privacy Policy</a></p>
+  <div class="cookie-btns">
+    <button class="btn-outline" style="padding:.5rem 1.1rem;font-size:.75rem;border:1px solid var(--border);background:transparent;color:var(--text-muted);border-radius:4px;cursor:pointer;" onclick="setCookie('declined')">Decline</button>
+    <button class="btn-nav" onclick="setCookie('accepted')" style="padding:.5rem 1.3rem">Accept All</button>
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- FLOATING CTA -->
+<div class="floating-cta" id="floatingCta" style="opacity:0;transition:opacity .5s">
+  <button class="float-btn primary" onclick="navigate('contact')">
+    <div class="float-dot"></div> Let's Talk
+  </button>
+  <button class="float-btn secondary" onclick="openSearch()">🔍 Search</button>
+</div>
+
+<!-- LIVE CHAT -->
+<div class="chat-bubble" id="chatBubble" onclick="toggleChat()" aria-label="Open live chat" role="button">
+  💬<div class="chat-dot"></div>
+</div>
+<div class="chat-window" id="chatWindow" role="dialog" aria-label="Live chat">
+  <div class="chat-header">
+    <div class="chat-avatar">👤</div>
+    <div><div class="chat-header-name">Berlin C.O.C.</div><div class="chat-header-status">🟢 Online — replies instantly</div></div>
+    <button class="chat-close-btn" onclick="toggleChat()" aria-label="Close chat">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot"><div class="chat-msg-bubble">👋 Hey! I'm here to help. What kind of project are you thinking about?</div><div class="chat-msg-time">Just now</div></div>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChat()"/>
+    <button class="chat-send" onclick="sendChat()" aria-label="Send message">→</button>
+  </div>
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay" role="search" aria-label="Site search">
+  <div class="search-wrap">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input class="search-field" id="searchField" placeholder="Search pages, services, blog..." oninput="runSearch(this.value)" autofocus/>
+      <button class="search-close" onclick="closeSearch()" aria-label="Close search">✕</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- PORTFOLIO CASE STUDY MODAL -->
+<div class="modal-overlay-site" id="caseStudyModal" onclick="if(event.target===this)closeSiteModal('caseStudyModal')">
+  <div class="site-modal">
+    <button class="site-modal-close" onclick="closeSiteModal('caseStudyModal')" aria-label="Close">✕</button>
+    <div class="site-modal-hero" id="caseHero"></div>
+    <div class="site-modal-body" id="caseBody"></div>
+  </div>
+</div>
+
+<!-- BLOG ARTICLE MODAL -->
+<div class="modal-overlay-site" id="blogModal" onclick="if(event.target===this)closeSiteModal('blogModal')">
+  <div class="site-modal" style="max-width:760px">
+    <button class="site-modal-close" onclick="closeSiteModal('blogModal')" aria-label="Close">✕</button>
+    <div class="blog-modal-header" id="blogModalHeader"></div>
+    <div class="blog-modal-body" id="blogModalBody"></div>
+  </div>
+</div>
+
+<div id="main-content"></div>
+
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress"><div class="scroll-progress-bar" id="scrollBar"></div></div>
+
+<!-- PRELOADER -->
+<div class="preloader" id="preloader">
+  <div class="preloader-logo">BERLIN <span>C.O.C.</span></div>
+  <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo" onclick="navigate('home')" style="cursor:pointer">BERLIN <span>C.O.C.</span></div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="navigate('home')" class="nav-link active" data-page="home">Home</a></li>
+    <li><a href="#" onclick="navigate('about')" class="nav-link" data-page="about">About</a></li>
+    <li><a href="#" onclick="navigate('services')" class="nav-link" data-page="services">Services</a></li>
+    <li><a href="#" onclick="navigate('portfolio')" class="nav-link" data-page="portfolio">Portfolio</a></li>
+    <li><a href="#" onclick="navigate('testimonials')" class="nav-link" data-page="testimonials">Testimonials</a></li>
+    <li><a href="#" onclick="navigate('blog')" class="nav-link" data-page="blog">Insights</a></li>
+    <li><a href="#" onclick="navigate('contact')" class="nav-link" data-page="contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">☀️</button>
+    <button class="btn-nav" onclick="navigate('contact')">Hire Me</button>
+  </div>
+  <button class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#" onclick="navigate('home');closeMobile()">Home</a>
+  <a href="#" onclick="navigate('about');closeMobile()">About</a>
+  <a href="#" onclick="navigate('services');closeMobile()">Services</a>
+  <a href="#" onclick="navigate('portfolio');closeMobile()">Portfolio</a>
+  <a href="#" onclick="navigate('testimonials');closeMobile()">Testimonials</a>
+  <a href="#" onclick="navigate('blog');closeMobile()">Insights</a>
+  <a href="#" onclick="navigate('contact');closeMobile()">Contact</a>
+</div>
+
+<!-- ═══════════════ HOME PAGE ═══════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="hero-grain"></div>
+    <div class="hero-content container">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-dot"></div>
+        Available for Projects · 2025
+      </div>
+      <h1 class="hero-title">
+        <span class="line1">BERLIN</span>
+        <span class="line2">C.O.C.</span>
+      </h1>
+      <p style="font-family:'Unbounded',sans-serif;font-size:clamp(0.8rem,2vw,1rem);font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-top:1rem;animation:fadeInUp 1s 0.3s ease both">ZION EMPIRE</p>
+      <p class="hero-sub">A premium creative digital studio delivering world-class web development, UI/UX design, branding, and high-impact graphic design. Where vision meets precision.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="navigate('contact')">Hire Me</button>
+        <button class="btn-outline" onclick="navigate('portfolio')">View Portfolio →</button>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Projects Delivered</div>
+        </div>
+        <div>
+          <div class="stat-num">98%</div>
+          <div class="stat-label">Client Satisfaction</div>
+        </div>
+        <div>
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div>
+          <div class="stat-num">20+</div>
+          <div class="stat-label">Brands Built</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track" id="marqueeTrack">
+      <div class="marquee-item"><span>✦</span> Web Development</div>
+      <div class="marquee-item"><span>✦</span> UI/UX Design</div>
+      <div class="marquee-item"><span>✦</span> Brand Identity</div>
+      <div class="marquee-item"><span>✦</span> Graphic Design</div>
+      <div class="marquee-item"><span>✦</span> Digital Strategy</div>
+      <div class="marquee-item"><span>✦</span> Motion Design</div>
+      <div class="marquee-item"><span>✦</span> Web Development</div>
+      <div class="marquee-item"><span>✦</span> UI/UX Design</div>
+      <div class="marquee-item"><span>✦</span> Brand Identity</div>
+      <div class="marquee-item"><span>✦</span> Graphic Design</div>
+      <div class="marquee-item"><span>✦</span> Digital Strategy</div>
+      <div class="marquee-item"><span>✦</span> Motion Design</div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section>
+    <div class="container">
+      <div class="section-label reveal">What I Do</div>
+      <h2 class="section-title reveal reveal-delay-1">Crafting Digital<br><em>Excellence</em></h2>
+      <p class="section-sub reveal reveal-delay-2">Every pixel, every line of code, every brand decision made with intention and precision.</p>
+      <div class="services-grid">
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-num">01</div>
+          <div class="service-icon">💻</div>
+          <div class="service-title">Web Development</div>
+          <p class="service-desc">High-performance websites and web applications built with modern frameworks, optimized for speed and conversion.</p>
+          <div class="service-arrow" onclick="navigate('services')">Learn More →</div>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-num">02</div>
+          <div class="service-icon">🎨</div>
+          <div class="service-title">UI/UX Design</div>
+          <p class="service-desc">Intuitive, beautiful interfaces that convert visitors into customers. Research-driven design that feels effortless.</p>
+          <div class="service-arrow" onclick="navigate('services')">Learn More →</div>
+        </div>
+        <div class="service-card reveal reveal-delay-3">
+          <div class="service-num">03</div>
+          <div class="service-icon">✦</div>
+          <div class="service-title">Branding & Identity</div>
+          <p class="service-desc">Complete brand systems that communicate authority, trust, and distinctiveness across every touchpoint.</p>
+          <div class="service-arrow" onclick="navigate('services')">Learn More →</div>
+        </div>
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-num">04</div>
+          <div class="service-icon">🖼️</div>
+          <div class="service-title">Graphic Design</div>
+          <p class="service-desc">Visually arresting creative assets — from social media to print — that stop the scroll and demand attention.</p>
+          <div class="service-arrow" onclick="navigate('services')">Learn More →</div>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-num">05</div>
+          <div class="service-icon">🔧</div>
+          <div class="service-title">Website Maintenance</div>
+          <p class="service-desc">Proactive care, updates, performance monitoring, and security hardening so your site stays at peak condition.</p>
+          <div class="service-arrow" onclick="navigate('services')">Learn More →</div>
+        </div>
+        <div class="service-card reveal reveal-delay-3">
+          <div class="service-num">06</div>
+          <div class="service-icon">📈</div>
+          <div class="service-title">Digital Marketing Assets</div>
+          <p class="service-desc">Conversion-optimized landing pages, ad creatives, email templates, and social graphics that drive measurable results.</p>
+          <div class="service-arrow" onclick="navigate('services')">Learn More →</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO PREVIEW -->
+  <section style="background:var(--bg2)">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:2rem">
+        <div>
+          <div class="section-label reveal">Selected Work</div>
+          <h2 class="section-title reveal reveal-delay-1">Portfolio<br><em>Highlights</em></h2>
+        </div>
+        <button class="btn-outline reveal" onclick="navigate('portfolio')">View All Work →</button>
+      </div>
+      <div class="portfolio-grid">
+        <div class="port-card reveal">
+          <div class="port-img">🌐</div>
+          <div class="port-overlay">
+            <div class="port-tag">Web Development</div>
+            <div class="port-name">NexGen Finance Platform</div>
+          </div>
+        </div>
+        <div class="port-card reveal reveal-delay-1">
+          <div class="port-img">✦</div>
+          <div class="port-overlay">
+            <div class="port-tag">Branding</div>
+            <div class="port-name">Apex Creative Identity</div>
+          </div>
+        </div>
+        <div class="port-card reveal reveal-delay-2">
+          <div class="port-img">🎨</div>
+          <div class="port-overlay">
+            <div class="port-tag">UI/UX</div>
+            <div class="port-name">Lumix App Design</div>
+          </div>
+        </div>
+        <div class="port-card reveal reveal-delay-3">
+          <div class="port-img">🖼️</div>
+          <div class="port-overlay">
+            <div class="port-tag">Graphic Design</div>
+            <div class="port-name">Monarch Brand Campaign</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT PREVIEW -->
+  <section>
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="about-photo-wrap">🧑‍💻</div>
+          <div class="about-badge">
+            <div class="about-badge-num">5+</div>
+            Years of<br>Excellence
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div class="section-label">About Me</div>
+          <h2 class="section-title">The Mind Behind<br>the <em>Empire</em></h2>
+          <p class="section-sub" style="margin-top:1.5rem">Berlin C.O.C. is a visionary creative studio operating at the intersection of art and technology. With a relentless pursuit of excellence, I craft digital experiences that transcend convention and establish lasting authority in your market.</p>
+          <p style="font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin-top:1rem">From concept to launch, every project receives the same dedication: obsessive attention to detail, strategic thinking, and flawless execution. No templates. No shortcuts. Pure craft.</p>
+          <div class="skills-list">
+            <span class="skill-tag">React / Next.js</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Adobe Suite</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">Tailwind CSS</span>
+            <span class="skill-tag">Three.js</span>
+            <span class="skill-tag">Framer Motion</span>
+          </div>
+          <button class="btn-primary" style="margin-top:2rem" onclick="navigate('about')">Read Full Story →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process-section">
+    <div class="container">
+      <div class="section-label reveal">My Approach</div>
+      <h2 class="section-title reveal reveal-delay-1">How I <em>Work</em></h2>
+      <div class="process-steps">
+        <div class="process-step reveal reveal-delay-1">
+          <div class="process-num">01</div>
+          <div class="process-step-title">Discovery</div>
+          <p class="process-step-desc">Deep dive into your goals, audience, and competitive landscape to establish a strategic foundation.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-2">
+          <div class="process-num">02</div>
+          <div class="process-step-title">Strategy</div>
+          <p class="process-step-desc">Define the visual direction, technical architecture, and success metrics before a single pixel is designed.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-3">
+          <div class="process-num">03</div>
+          <div class="process-step-title">Design</div>
+          <p class="process-step-desc">Create high-fidelity designs and interactive prototypes that bring the vision to life with precision.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-4">
+          <div class="process-num">04</div>
+          <div class="process-step-title">Build</div>
+          <p class="process-step-desc">Develop the final product with clean, performant code — optimized, accessible, and built to scale.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="process-num">05</div>
+          <div class="process-step-title">Launch</div>
+          <p class="process-step-desc">Deploy with confidence. Rigorous QA, performance testing, and seamless handoff — ready for the world.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:2rem">
+        <div>
+          <div class="section-label reveal">Social Proof</div>
+          <h2 class="section-title reveal reveal-delay-1">What Clients<br><em>Say</em></h2>
+        </div>
+        <div class="slider-controls">
+          <button class="slider-btn" id="prevBtn">←</button>
+          <button class="slider-btn" id="nextBtn">→</button>
+        </div>
+      </div>
+      <div class="testimonials-slider">
+        <div class="testimonials-track" id="testimonialsTrack">
+          <div class="testimonial-card">
+            <div class="test-stars">★★★★★</div>
+            <p class="test-text">"Berlin C.O.C. completely transformed our online presence. The attention to detail is unlike anything I've seen — every element serves a purpose. Our conversion rate tripled in 90 days."</p>
+            <div class="test-author">
+              <div class="test-avatar">👤</div>
+              <div>
+                <div class="test-name">Marcus A.</div>
+                <div class="test-role">CEO, NexGen Capital</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="test-stars">★★★★★</div>
+            <p class="test-text">"Working with Berlin C.O.C. was a revelation. They don't just build websites — they build brands. The strategic thinking behind every design decision is remarkable. Elite level work."</p>
+            <div class="test-author">
+              <div class="test-avatar">👤</div>
+              <div>
+                <div class="test-name">Sarah K.</div>
+                <div class="test-role">Founder, Apex Creative</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="test-stars">★★★★★</div>
+            <p class="test-text">"The rebrand Berlin C.O.C. created for us completely repositioned us in the market. We're now perceived as the premium choice in our industry. The ROI has been extraordinary."</p>
+            <div class="test-author">
+              <div class="test-avatar">👤</div>
+              <div>
+                <div class="test-name">David O.</div>
+                <div class="test-role">Director, Lumix Studios</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="test-stars">★★★★★</div>
+            <p class="test-text">"Fast, precise, and visionary. Berlin C.O.C. understood our brand identity better than we did. The final product exceeded every expectation. I won't work with anyone else."</p>
+            <div class="test-author">
+              <div class="test-avatar">👤</div>
+              <div>
+                <div class="test-name">Priya M.</div>
+                <div class="test-role">CMO, Monarch Group</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="section-label reveal" style="justify-content:center">Start Your Project</div>
+      <h2 class="cta-title reveal reveal-delay-1">Ready to Build<br>Something <em>Legendary?</em></h2>
+      <p class="cta-sub reveal reveal-delay-2">Let's turn your vision into a digital masterpiece. Limited project slots available.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap" class="reveal reveal-delay-3">
+        <button class="btn-primary" onclick="navigate('contact')">Start a Project</button>
+        <button class="btn-outline" onclick="navigate('portfolio')">See My Work First</button>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /home page -->
+
+<!-- ═══════════════ ABOUT PAGE ═══════════════ -->
+<div id="page-about" class="page">
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="section-label reveal">About Berlin C.O.C.</div>
+      <h1 class="page-hero-title reveal reveal-delay-1">Creative.<br><em>Visionary.</em><br>Relentless.</h1>
+    </div>
+  </div>
+  <section style="padding-top:2rem">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="about-photo-wrap" style="aspect-ratio:1/1.2">🧑‍💻</div>
+          <div class="about-badge">
+            <div class="about-badge-num">50+</div>
+            Projects<br>Delivered
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div class="section-label">Biography</div>
+          <h2 class="section-title" style="font-size:clamp(1.5rem,3vw,2.2rem)">The Story Behind<br>the <em>Studio</em></h2>
+          <p style="color:var(--text-muted);line-height:1.8;margin-top:1.5rem;font-size:0.95rem">Berlin C.O.C. was born from a singular obsession: creating digital experiences that don't just look exceptional — they perform. Founded on the belief that design and technology are not separate disciplines but two sides of the same coin.</p>
+          <p style="color:var(--text-muted);line-height:1.8;margin-top:1rem;font-size:0.95rem">With over 5 years of experience working with startups, enterprises, and established brands, I've developed a methodology that balances strategic thinking with creative freedom — always in service of measurable results.</p>
+          <p style="color:var(--text-muted);line-height:1.8;margin-top:1rem;font-size:0.95rem">The name reflects the mission: Berlin — precision, structure, and European design excellence. C.O.C. (Creative Order of Craft) — the systematic, disciplined pursuit of creative perfection. Together: Zion Empire.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--bg2)">
+    <div class="container">
+      <div class="section-label reveal">Expertise</div>
+      <h2 class="section-title reveal reveal-delay-1">Skills &<br><em>Technologies</em></h2>
+      <div class="tools-grid" style="margin-top:3rem">
+        <div class="tool-item reveal"><div class="tool-icon">⚛️</div><div class="tool-name">React</div></div>
+        <div class="tool-item reveal reveal-delay-1"><div class="tool-icon">▲</div><div class="tool-name">Next.js</div></div>
+        <div class="tool-item reveal reveal-delay-2"><div class="tool-icon">🎨</div><div class="tool-name">Figma</div></div>
+        <div class="tool-item reveal reveal-delay-3"><div class="tool-icon">Ps</div><div class="tool-name">Photoshop</div></div>
+        <div class="tool-item reveal"><div class="tool-icon">Ai</div><div class="tool-name">Illustrator</div></div>
+        <div class="tool-item reveal reveal-delay-1"><div class="tool-icon">🟦</div><div class="tool-name">TypeScript</div></div>
+        <div class="tool-item reveal reveal-delay-2"><div class="tool-icon">💚</div><div class="tool-name">Node.js</div></div>
+        <div class="tool-item reveal reveal-delay-3"><div class="tool-icon">🔷</div><div class="tool-name">Tailwind</div></div>
+        <div class="tool-item reveal"><div class="tool-icon">🌐</div><div class="tool-name">WordPress</div></div>
+        <div class="tool-item reveal reveal-delay-1"><div class="tool-icon">🔥</div><div class="tool-name">Firebase</div></div>
+        <div class="tool-item reveal reveal-delay-2"><div class="tool-icon">🎬</div><div class="tool-name">After Effects</div></div>
+        <div class="tool-item reveal reveal-delay-3"><div class="tool-icon">🦋</div><div class="tool-name">Framer</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label reveal">Journey</div>
+      <h2 class="section-title reveal reveal-delay-1">Experience<br><em>Timeline</em></h2>
+      <div class="timeline" style="margin-top:3rem">
+        <div class="timeline-item reveal">
+          <div class="timeline-year">2025</div>
+          <div><div class="timeline-title">Berlin C.O.C. — Studio Expansion</div><p class="timeline-desc">Expanded services to include full-scale brand strategy and digital marketing, serving clients across 3 continents. Launched Zion Empire creative platform.</p></div>
+        </div>
+        <div class="timeline-item reveal">
+          <div class="timeline-year">2023</div>
+          <div><div class="timeline-title">Senior Creative Director</div><p class="timeline-desc">Led creative direction for 20+ brand campaigns. Specialized in luxury and premium market positioning for tech and finance sectors.</p></div>
+        </div>
+        <div class="timeline-item reveal">
+          <div class="timeline-year">2021</div>
+          <div><div class="timeline-title">Berlin C.O.C. Founded</div><p class="timeline-desc">Established the studio with a focus on premium web development and brand identity. First 12 months saw 15 successful project launches.</p></div>
+        </div>
+        <div class="timeline-item reveal">
+          <div class="timeline-year">2019</div>
+          <div><div class="timeline-title">Lead UI/UX Designer</div><p class="timeline-desc">Designed enterprise-level products and consumer applications, developing expertise in conversion optimization and user research methodologies.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-title reveal">Let's Build<br>Your <em>Vision</em></h2>
+      <p class="cta-sub reveal reveal-delay-1">Ready to work with a studio that treats your brand with the same obsession as their own?</p>
+      <button class="btn-primary reveal reveal-delay-2" onclick="navigate('contact')">Get in Touch →</button>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════ SERVICES PAGE ═══════════════ -->
+<div id="page-services" class="page">
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="section-label reveal">What I Offer</div>
+      <h1 class="page-hero-title reveal reveal-delay-1">Services Built<br>for <em>Excellence</em></h1>
+    </div>
+  </div>
+  <section style="padding-top:2rem">
+    <div class="container">
+      <div class="services-full">
+        <div class="service-full-card reveal">
+          <div class="service-full-head">
+            <div class="service-full-num">01</div>
+            <div class="service-icon" style="margin-bottom:1rem">💻</div>
+            <div class="service-full-title">Web Development</div>
+            <div class="service-full-tagline">Fast, Scalable, Beautiful</div>
+          </div>
+          <div class="service-full-body">
+            <p class="service-full-desc">Custom websites and web applications built with cutting-edge technology. Performance-first architecture, pixel-perfect implementation, and seamless user experiences that convert.</p>
+            <ul class="deliverables-list">
+              <li>Custom website design & development</li>
+              <li>React / Next.js applications</li>
+              <li>E-commerce development</li>
+              <li>CMS integration (Sanity, Contentful)</li>
+              <li>Performance optimization & SEO</li>
+              <li>Responsive mobile-first design</li>
+            </ul>
+          </div>
+          <div class="service-full-cta">
+            <div><div class="price-from">Starting from</div><div class="price-num">$1,500</div></div>
+            <button class="btn-primary" onclick="navigate('contact')">Get Quote</button>
+          </div>
+        </div>
+        <div class="service-full-card reveal">
+          <div class="service-full-head">
+            <div class="service-full-num">02</div>
+            <div class="service-icon" style="margin-bottom:1rem">🎨</div>
+            <div class="service-full-title">UI/UX Design</div>
+            <div class="service-full-tagline">Intuitive & Conversion-Focused</div>
+          </div>
+          <div class="service-full-body">
+            <p class="service-full-desc">Research-driven design that looks stunning and performs. From wireframes to high-fidelity prototypes, every interaction is deliberate and optimized for your business goals.</p>
+            <ul class="deliverables-list">
+              <li>User research & persona development</li>
+              <li>Wireframes & information architecture</li>
+              <li>High-fidelity UI design in Figma</li>
+              <li>Interactive prototypes</li>
+              <li>Design system & component library</li>
+              <li>Usability testing & iteration</li>
+            </ul>
+          </div>
+          <div class="service-full-cta">
+            <div><div class="price-from">Starting from</div><div class="price-num">$1,200</div></div>
+            <button class="btn-primary" onclick="navigate('contact')">Get Quote</button>
+          </div>
+        </div>
+        <div class="service-full-card reveal">
+          <div class="service-full-head">
+            <div class="service-full-num">03</div>
+            <div class="service-icon" style="margin-bottom:1rem">✦</div>
+            <div class="service-full-title">Branding & Identity</div>
+            <div class="service-full-tagline">Authority Through Identity</div>
+          </div>
+          <div class="service-full-body">
+            <p class="service-full-desc">Complete brand systems that communicate who you are before you say a word. Strategic positioning, visual identity, and brand guidelines that set you apart in any market.</p>
+            <ul class="deliverables-list">
+              <li>Brand strategy & positioning</li>
+              <li>Logo design & variations</li>
+              <li>Color palette & typography system</li>
+              <li>Brand guidelines document</li>
+              <li>Business stationery design</li>
+              <li>Brand voice & messaging</li>
+            </ul>
+          </div>
+          <div class="service-full-cta">
+            <div><div class="price-from">Starting from</div><div class="price-num">$800</div></div>
+            <button class="btn-primary" onclick="navigate('contact')">Get Quote</button>
+          </div>
+        </div>
+        <div class="service-full-card reveal">
+          <div class="service-full-head">
+            <div class="service-full-num">04</div>
+            <div class="service-icon" style="margin-bottom:1rem">🖼️</div>
+            <div class="service-full-title">Graphic Design</div>
+            <div class="service-full-tagline">Visual Impact at Scale</div>
+          </div>
+          <div class="service-full-body">
+            <p class="service-full-desc">High-impact visual content that stops the scroll and communicates your message instantly. Print, digital, social — every medium covered with uncompromising quality.</p>
+            <ul class="deliverables-list">
+              <li>Social media graphics & templates</li>
+              <li>Print design (flyers, banners, posters)</li>
+              <li>Presentation design (pitch decks)</li>
+              <li>Marketing collateral</li>
+              <li>Packaging design</li>
+              <li>Illustration & icon design</li>
+            </ul>
+          </div>
+          <div class="service-full-cta">
+            <div><div class="price-from">Starting from</div><div class="price-num">$300</div></div>
+            <button class="btn-primary" onclick="navigate('contact')">Get Quote</button>
+          </div>
+        </div>
+        <div class="service-full-card reveal">
+          <div class="service-full-head">
+            <div class="service-full-num">05</div>
+            <div class="service-icon" style="margin-bottom:1rem">🔧</div>
+            <div class="service-full-title">Website Maintenance</div>
+            <div class="service-full-tagline">Peak Performance, Always</div>
+          </div>
+          <div class="service-full-body">
+            <p class="service-full-desc">Proactive maintenance to keep your website secure, fast, and up-to-date. Monthly reporting, priority support, and continuous optimization — so you can focus on your business.</p>
+            <ul class="deliverables-list">
+              <li>Monthly content updates</li>
+              <li>Security monitoring & updates</li>
+              <li>Performance optimization</li>
+              <li>Backup management</li>
+              <li>Bug fixes & technical support</li>
+              <li>Monthly analytics reporting</li>
+            </ul>
+          </div>
+          <div class="service-full-cta">
+            <div><div class="price-from">Monthly from</div><div class="price-num">$200</div></div>
+            <button class="btn-primary" onclick="navigate('contact')">Get Quote</button>
+          </div>
+        </div>
+        <div class="service-full-card reveal">
+          <div class="service-full-head">
+            <div class="service-full-num">06</div>
+            <div class="service-icon" style="margin-bottom:1rem">📈</div>
+            <div class="service-full-title">Digital Marketing Assets</div>
+            <div class="service-full-tagline">Design That Converts</div>
+          </div>
+          <div class="service-full-body">
+            <p class="service-full-desc">Conversion-optimized digital assets that make every marketing dollar work harder. Landing pages, ad creatives, and email campaigns designed to drive measurable results.</p>
+            <ul class="deliverables-list">
+              <li>Landing page design & development</li>
+              <li>Ad creative (Google, Meta, LinkedIn)</li>
+              <li>Email template design</li>
+              <li>Lead magnet design</li>
+              <li>A/B testing support</li>
+              <li>Conversion rate optimization</li>
+            </ul>
+          </div>
+          <div class="service-full-cta">
+            <div><div class="price-from">Starting from</div><div class="price-num">$500</div></div>
+            <button class="btn-primary" onclick="navigate('contact')">Get Quote</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-title reveal">Not Sure Which<br>Service You <em>Need?</em></h2>
+      <p class="cta-sub reveal reveal-delay-1">Let's talk. I'll assess your situation and recommend exactly what will drive the most impact for your brand.</p>
+      <button class="btn-primary reveal reveal-delay-2" onclick="navigate('contact')">Free Consultation →</button>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════ PORTFOLIO PAGE ═══════════════ -->
+<div id="page-portfolio" class="page">
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="section-label reveal">Selected Work</div>
+      <h1 class="page-hero-title reveal reveal-delay-1">Projects That<br><em>Define</em> Us</h1>
+    </div>
+  </div>
+  <section style="padding-top:2rem">
+    <div class="container">
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" data-filter="all">All Work</button>
+        <button class="filter-btn" data-filter="web">Websites</button>
+        <button class="filter-btn" data-filter="branding">Branding</button>
+        <button class="filter-btn" data-filter="graphics">Graphics</button>
+        <button class="filter-btn" data-filter="uiux">UI/UX</button>
+      </div>
+      <div class="portfolio-full-grid" id="portfolioGrid">
+        <div class="port-full-card reveal" data-cat="web">
+          <div class="port-full-img" style="background:linear-gradient(135deg,#1a1812,#2a2518)">🌐</div>
+          <div class="port-full-info">
+            <div class="port-full-cat">Web Development</div>
+            <div class="port-full-title">NexGen Finance Platform</div>
+            <p class="port-full-desc">A high-performance fintech web app with real-time data, complex dashboards, and institutional-grade UX.</p>
+            <div class="port-full-tools">
+              <span class="port-tool-tag">Next.js</span>
+              <span class="port-tool-tag">TypeScript</span>
+              <span class="port-tool-tag">Tailwind</span>
+            </div>
+          </div>
+        </div>
+        <div class="port-full-card reveal reveal-delay-1" data-cat="branding">
+          <div class="port-full-img" style="background:linear-gradient(135deg,#131210,#221f15)">✦</div>
+          <div class="port-full-info">
+            <div class="port-full-cat">Branding</div>
+            <div class="port-full-title">Apex Creative Identity</div>
+            <p class="port-full-desc">Complete brand overhaul for a premium creative agency — from positioning strategy to visual identity system.</p>
+            <div class="port-full-tools">
+              <span class="port-tool-tag">Figma</span>
+              <span class="port-tool-tag">Illustrator</span>
+            </div>
+          </div>
+        </div>
+        <div class="port-full-card reveal reveal-delay-2" data-cat="uiux">
+          <div class="port-full-img" style="background:linear-gradient(135deg,#0f0e0a,#1a1712)">📱</div>
+          <div class="port-full-info">
+            <div class="port-full-cat">UI/UX Design</div>
+            <div class="port-full-title">Lumix Mobile App</div>
+            <p class="port-full-desc">End-to-end product design for a photography management app — from user research to interactive prototype.</p>
+            <div class="port-full-tools">
+              <span class="port-tool-tag">Figma</span>
+              <span class="port-tool-tag">Protopie</span>
+            </div>
+          </div>
+        </div>
+        <div class="port-full-card reveal" data-cat="graphics">
+          <div class="port-full-img" style="background:linear-gradient(135deg,#161411,#221f15)">🎨</div>
+          <div class="port-full-info">
+            <div class="port-full-cat">Graphic Design</div>
+            <div class="port-full-title">Monarch Campaign Series</div>
+            <p class="port-full-desc">A 50-piece social media and print campaign for a luxury real estate group. Bold, aspirational, unforgettable.</p>
+            <div class="port-full-tools">
+              <span class="port-tool-tag">Photoshop</span>
+              <span class="port-tool-tag">Illustrator</span>
+            </div>
+          </div>
+        </div>
+        <div class="port-full-card reveal reveal-delay-1" data-cat="web">
+          <div class="port-full-img" style="background:linear-gradient(135deg,#12100d,#1e1a12)">🏪</div>
+          <div class="port-full-info">
+            <div class="port-full-cat">Web Development</div>
+            <div class="port-full-title">Velour E-Commerce</div>
+            <p class="port-full-desc">A luxury fashion e-commerce platform with custom product configurator and seamless checkout experience.</p>
+            <div class="port-full-tools">
+              <span class="port-tool-tag">Next.js</span>
+              <span class="port-tool-tag">Stripe</span>
+              <span class="port-tool-tag">Sanity</span>
+            </div>
+          </div>
+        </div>
+        <div class="port-full-card reveal reveal-delay-2" data-cat="branding">
+          <div class="port-full-img" style="background:linear-gradient(135deg,#13120f,#201d14)">💎</div>
+          <div class="port-full-info">
+            <div class="port-full-cat">Branding</div>
+            <div class="port-full-title">Obsidian Consulting</div>
+            <p class="port-full-desc">Premium brand identity for a management consulting firm targeting Fortune 500 clients. Dark, authoritative, elite.</p>
+            <div class="port-full-tools">
+              <span class="port-tool-tag">Figma</span>
+              <span class="port-tool-tag">Illustrator</span>
+              <span class="port-tool-tag">InDesign</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════ TESTIMONIALS PAGE ═══════════════ -->
+<div id="page-testimonials" class="page">
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="section-label reveal">Client Reviews</div>
+      <h1 class="page-hero-title reveal reveal-delay-1">Words from<br>the <em>Empire</em></h1>
+    </div>
+  </div>
+  <section style="padding-top:2rem">
+    <div class="container">
+      <div class="testimonials-full-grid">
+        <div class="test-full-card reveal">
+          <div class="test-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <p class="test-text" style="flex:1">"Berlin C.O.C. completely transformed our online presence. The attention to detail is unlike anything I've seen — every element serves a purpose. Our conversion rate tripled in 90 days."</p>
+          <div class="test-author" style="margin-top:1.5rem">
+            <div class="test-avatar">👤</div>
+            <div><div class="test-name">Marcus A.</div><div class="test-role">CEO, NexGen Capital</div></div>
+          </div>
+        </div>
+        <div class="test-full-card reveal reveal-delay-1">
+          <div class="test-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <p class="test-text" style="flex:1">"Working with Berlin C.O.C. was a revelation. They don't just build websites — they build brands. The strategic thinking behind every design decision is remarkable. Elite level work."</p>
+          <div class="test-author" style="margin-top:1.5rem">
+            <div class="test-avatar">👤</div>
+            <div><div class="test-name">Sarah K.</div><div class="test-role">Founder, Apex Creative</div></div>
+          </div>
+        </div>
+        <div class="test-full-card reveal reveal-delay-2">
+          <div class="test-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <p class="test-text" style="flex:1">"The rebrand they created for us completely repositioned our firm in the market. We're now perceived as the premium choice. The ROI has been extraordinary — I can't recommend highly enough."</p>
+          <div class="test-author" style="margin-top:1.5rem">
+            <div class="test-avatar">👤</div>
+            <div><div class="test-name">David O.</div><div class="test-role">Director, Lumix Studios</div></div>
+          </div>
+        </div>
+        <div class="test-full-card reveal">
+          <div class="test-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <p class="test-text" style="flex:1">"Fast, precise, and visionary. Berlin C.O.C. understood our brand identity better than we did ourselves. The final product exceeded every expectation. I won't work with anyone else."</p>
+          <div class="test-author" style="margin-top:1.5rem">
+            <div class="test-avatar">👤</div>
+            <div><div class="test-name">Priya M.</div><div class="test-role">CMO, Monarch Group</div></div>
+          </div>
+        </div>
+        <div class="test-full-card reveal reveal-delay-1">
+          <div class="test-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <p class="test-text" style="flex:1">"The e-commerce platform built for us handles thousands of daily transactions flawlessly. Beyond the technical excellence, the design converts. Revenue is up 240% since launch."</p>
+          <div class="test-author" style="margin-top:1.5rem">
+            <div class="test-avatar">👤</div>
+            <div><div class="test-name">James T.</div><div class="test-role">Founder, Velour Fashion</div></div>
+          </div>
+        </div>
+        <div class="test-full-card reveal reveal-delay-2">
+          <div class="test-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <p class="test-text" style="flex:1">"Our new brand identity has changed how we're perceived overnight. Clients who previously questioned our pricing now see us as the only logical choice. Worth every cent."</p>
+          <div class="test-author" style="margin-top:1.5rem">
+            <div class="test-avatar">👤</div>
+            <div><div class="test-name">Elena V.</div><div class="test-role">CEO, Obsidian Consulting</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-title reveal">Join the <em>Empire</em></h2>
+      <p class="cta-sub reveal reveal-delay-1">Ready to be the next success story? Let's build something that moves markets.</p>
+      <button class="btn-primary reveal reveal-delay-2" onclick="navigate('contact')">Start a Project</button>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════ BLOG PAGE ═══════════════ -->
+<div id="page-blog" class="page">
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="section-label reveal">Insights & Ideas</div>
+      <h1 class="page-hero-title reveal reveal-delay-1">The <em>Studio</em><br>Journal</h1>
+    </div>
+  </div>
+  <section style="padding-top:2rem">
+    <div class="container">
+      <div class="filter-bar">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Design</button>
+        <button class="filter-btn">Development</button>
+        <button class="filter-btn">Branding</button>
+        <button class="filter-btn">Strategy</button>
+      </div>
+      <div class="blog-grid">
+        <div class="blog-card reveal">
+          <div class="blog-img" style="background:linear-gradient(135deg,#1a1812,#2a2518)">✦</div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-cat">Design</span><span>Mar 5, 2025</span><span>8 min read</span></div>
+            <div class="blog-title">Why Most Brand Identities Fail (And How to Build One That Lasts)</div>
+            <p class="blog-excerpt">Most brands confuse aesthetics with identity. Real brand identity is built on strategic differentiation — not just a pretty logo. Here's the framework we use for every client...</p>
+            <div class="blog-read-more">Read Article →</div>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-1">
+          <div class="blog-img" style="background:linear-gradient(135deg,#131210,#221f15)">💻</div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-cat">Development</span><span>Feb 18, 2025</span><span>12 min read</span></div>
+            <div class="blog-title">The 2025 Web Performance Stack: What Actually Moves the Needle</div>
+            <p class="blog-excerpt">Lighthouse scores are vanity metrics if they don't translate to conversions. Here's the real performance stack we use to build sites that rank and convert...</p>
+            <div class="blog-read-more">Read Article →</div>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-2">
+          <div class="blog-img" style="background:linear-gradient(135deg,#0f0e0a,#1a1712)">🎨</div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-cat">Strategy</span><span>Feb 1, 2025</span><span>6 min read</span></div>
+            <div class="blog-title">Premium Positioning: How Design Justifies Higher Prices</div>
+            <p class="blog-excerpt">Your design is making pricing decisions before you open your mouth. Learn how premium visual identity signals authority and eliminates price objections before they arise...</p>
+            <div class="blog-read-more">Read Article →</div>
+          </div>
+        </div>
+        <div class="blog-card reveal">
+          <div class="blog-img" style="background:linear-gradient(135deg,#16140f,#221f15)">🖥️</div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-cat">Development</span><span>Jan 15, 2025</span><span>10 min read</span></div>
+            <div class="blog-title">Next.js 15 + Sanity CMS: The Perfect Pairing for Agency Sites</div>
+            <p class="blog-excerpt">After building 30+ sites on this stack, here's the definitive guide to setting up a Next.js 15 project with Sanity CMS — from schema design to deployment...</p>
+            <div class="blog-read-more">Read Article →</div>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-1">
+          <div class="blog-img" style="background:linear-gradient(135deg,#12100d,#1e1a12)">📐</div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-cat">Design</span><span>Jan 3, 2025</span><span>7 min read</span></div>
+            <div class="blog-title">The Typography Hierarchy That Makes Websites Feel Expensive</div>
+            <p class="blog-excerpt">Typography does 80% of the visual work on any website. Learn the exact type scale and pairing system we use to create that intangible premium feeling in every project...</p>
+            <div class="blog-read-more">Read Article →</div>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-2">
+          <div class="blog-img" style="background:linear-gradient(135deg,#13120f,#201d14)">📊</div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-cat">Branding</span><span>Dec 20, 2024</span><span>9 min read</span></div>
+            <div class="blog-title">From Freelancer to Studio: How to Package Your Services for Premium Clients</div>
+            <p class="blog-excerpt">The shift from competing on price to competing on value isn't automatic. It requires a deliberate repositioning of how you present your work and expertise...</p>
+            <div class="blog-read-more">Read Article →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════ CONTACT PAGE ═══════════════ -->
+<div id="page-contact" class="page">
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="section-label reveal">Get in Touch</div>
+      <h1 class="page-hero-title reveal reveal-delay-1">Start a<br><em>Conversation</em></h1>
+    </div>
+  </div>
+  <section style="padding-top:2rem">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="reveal">
+            <div class="section-label">Contact Info</div>
+            <p style="color:var(--text-muted);line-height:1.7;font-size:0.95rem;margin-top:0.75rem">Ready to build something extraordinary? Reach out with your project details and let's discuss how we can create something that defines your market.</p>
+          </div>
+          <div class="contact-info-item reveal reveal-delay-1">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <div class="contact-info-label">Email</div>
+              <div class="contact-info-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="27545352434e48674542554b4e494448440944484a">[email&#160;protected]</a></div>
+            </div>
+          </div>
+          <div class="contact-info-item reveal reveal-delay-2">
+            <div class="contact-icon">📞</div>
+            <div>
+              <div class="contact-info-label">Phone</div>
+              <div class="contact-info-val">+1 (555) 000-0000</div>
+            </div>
+          </div>
+          <div class="contact-info-item reveal reveal-delay-3">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-info-label">Location</div>
+              <div class="contact-info-val">Available Worldwide</div>
+            </div>
+          </div>
+          <div class="reveal">
+            <div class="contact-info-label" style="margin-bottom:0.75rem">Follow the Empire</div>
+            <div class="social-links">
+              <a class="social-link" title="Instagram">📷</a>
+              <a class="social-link" title="Twitter/X">𝕏</a>
+              <a class="social-link" title="LinkedIn">in</a>
+              <a class="social-link" title="Behance">Be</a>
+              <a class="social-link" title="Dribbble">🏀</a>
+            </div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5rem">
+            <div style="font-family:'Unbounded',sans-serif;font-size:0.75rem;font-weight:700;margin-bottom:2rem;letter-spacing:0.05em">Project Brief</div>
+            <div class="contact-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">First Name</label>
+                  <input type="text" class="form-input" placeholder="John"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-input" placeholder="Doe"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-input" placeholder="john@company.com"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Company</label>
+                <input type="text" class="form-input" placeholder="Your Company Name"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Service Needed</label>
+                <select class="form-select form-input">
+                  <option value="">Select a service...</option>
+                  <option>Web Development</option>
+                  <option>UI/UX Design</option>
+                  <option>Branding & Identity</option>
+                  <option>Graphic Design</option>
+                  <option>Website Maintenance</option>
+                  <option>Digital Marketing Assets</option>
+                  <option>Multiple Services</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Budget Range</label>
+                <select class="form-select form-input">
+                  <option value="">Select budget range...</option>
+                  <option>$500 – $1,000</option>
+                  <option>$1,000 – $3,000</option>
+                  <option>$3,000 – $7,500</option>
+                  <option>$7,500 – $15,000</option>
+                  <option>$15,000+</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tell Me About Your Project</label>
+                <textarea class="form-textarea" placeholder="Describe your project, goals, timeline, and any specific requirements..."></textarea>
+              </div>
+              <button class="form-submit" onclick="submitForm(this)">Send Project Brief →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- BOOKING CALENDAR -->
+  <section style="padding:8rem 4vw;background:var(--bg2)" id="booking-section">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
+        <div>
+          <div class="section-label reveal">Book a Call</div>
+          <h2 class="section-title reveal reveal-delay-1">Schedule a Free<br><em>Discovery Call</em></h2>
+          <p class="section-sub reveal reveal-delay-2" style="margin-top:1.5rem">30-minute intro call — no pressure, just a conversation about your vision.</p>
+          <div style="margin-top:2rem;display:flex;flex-direction:column;gap:1rem" class="reveal reveal-delay-3">
+            <div style="display:flex;align-items:center;gap:1rem;font-size:.88rem;color:var(--text-muted)"><span style="font-size:1.2rem">&#9201;</span> 30 minutes</div>
+            <div style="display:flex;align-items:center;gap:1rem;font-size:.88rem;color:var(--text-muted)"><span style="font-size:1.2rem">&#127909;</span> Zoom / Google Meet</div>
+            <div style="display:flex;align-items:center;gap:1rem;font-size:.88rem;color:var(--text-muted)"><span style="font-size:1.2rem">&#128994;</span> Free — no commitment</div>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div class="calendar-widget">
+            <div class="cal-header">
+              <button class="cal-nav" onclick="calPrev()">&#8592;</button>
+              <div class="cal-month" id="calMonth">March 2025</div>
+              <button class="cal-nav" onclick="calNext()">&#8594;</button>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+            <div class="time-slots" id="timeSlots" style="display:none">
+              <div class="time-slots-label" id="timeSlotsLabel">Available times</div>
+              <div class="time-grid" id="timeGrid"></div>
+            </div>
+            <div id="bookingConfirm" style="display:none;margin-top:1rem">
+              <input class="form-input" id="bookingName" placeholder="Your name" style="margin-bottom:.75rem;width:100%"/>
+              <input class="form-input" id="bookingEmail" type="email" placeholder="your@email.com" style="margin-bottom:.75rem;width:100%"/>
+              <button class="btn-primary" style="width:100%" onclick="confirmBooking()">Confirm Booking &#8594;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+
+<!-- NEWSLETTER STRIP -->
+<div class="newsletter-strip" id="newsletterStrip">
+  <div class="nl-text">✦ Stay in the loop — Studio insights, project drops &amp; design tips</div>
+  <div class="nl-form">
+    <input class="nl-input" id="nlEmail" type="email" placeholder="your@email.com" aria-label="Email for newsletter"/>
+    <button class="nl-btn" onclick="subscribeNewsletter()">Subscribe →</button>
+  </div>
+</div>
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">BERLIN <span>C.O.C.</span></div>
+        <p class="footer-bio">A premium creative digital studio. We build brands and digital experiences that define markets and establish authority.</p>
+        <div class="social-links" style="margin-top:1.5rem">
+          <a class="social-link">📷</a>
+          <a class="social-link">𝕏</a>
+          <a class="social-link">in</a>
+          <a class="social-link">Be</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigation</div>
+        <ul class="footer-links">
+          <li><a href="#" onclick="navigate('home')">Home</a></li>
+          <li><a href="#" onclick="navigate('about')">About</a></li>
+          <li><a href="#" onclick="navigate('services')">Services</a></li>
+          <li><a href="#" onclick="navigate('portfolio')">Portfolio</a></li>
+          <li><a href="#" onclick="navigate('blog')">Insights</a></li>
+          <li><a href="#" onclick="navigate('contact')">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#" onclick="navigate('services')">Web Development</a></li>
+          <li><a href="#" onclick="navigate('services')">UI/UX Design</a></li>
+          <li><a href="#" onclick="navigate('services')">Branding</a></li>
+          <li><a href="#" onclick="navigate('services')">Graphic Design</a></li>
+          <li><a href="#" onclick="navigate('services')">Maintenance</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Get in Touch</div>
+        <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.25rem;line-height:1.6">Ready to start your project? Let's talk.</p>
+        <button class="btn-primary" onclick="navigate('contact')">Start a Project</button>
+        <p style="font-size:0.78rem;color:var(--text-dim);margin-top:1.25rem"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="37444342535e58775552455b5e595458541954585a">[email&#160;protected]</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Berlin C.O.C. — Zion Empire. All rights reserved.</div>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+
+
+
+
+
+// ═══════════════════════════════════════════════
+// SHARED DB (localStorage — syncs with admin)
+// ═══════════════════════════════════════════════
+const SiteDB = {
+  get(k){try{return JSON.parse(localStorage.getItem('berlin_'+k))||[];}catch(e){return [];}},
+  set(k,v){localStorage.setItem('berlin_'+k,JSON.stringify(v));}
+};
+function auditLog(action, detail=''){
+  const logs = SiteDB.get('audit_log');
+  logs.unshift({id:Date.now(),action,detail,source:'website',date:new Date().toISOString()});
+  if(logs.length>200) logs.splice(200);
+  SiteDB.set('audit_log',logs);
+}
+
+// ═══════════════════════════════════════════════
+// COOKIE CONSENT
+// ═══════════════════════════════════════════════
+function setCookie(val){
+  localStorage.setItem('berlin_cookie_consent',val);
+  document.getElementById('cookieBanner').classList.remove('show');
+  if(val==='accepted') auditLog('Cookie consent','accepted');
+}
+(function initCookie(){
+  if(!localStorage.getItem('berlin_cookie_consent')){
+    setTimeout(()=>document.getElementById('cookieBanner').classList.add('show'),2000);
+  }
+})();
+
+// ═══════════════════════════════════════════════
+// BACK TO TOP + FLOATING CTA
+// ═══════════════════════════════════════════════
+window.addEventListener('scroll',()=>{
+  const y = window.scrollY;
+  document.getElementById('backTop').classList.toggle('visible', y>500);
+  document.getElementById('floatingCta').style.opacity = y>800?'1':'0';
+  document.getElementById('floatingCta').style.pointerEvents = y>800?'all':'none';
+},{ passive:true });
+
+// ═══════════════════════════════════════════════
+// NEWSLETTER
+// ═══════════════════════════════════════════════
+function subscribeNewsletter(){
+  const email = document.getElementById('nlEmail').value.trim();
+  if(!email || !email.includes('@')){ alert('Please enter a valid email.'); return; }
+  const subs = SiteDB.get('subscribers');
+  if(subs.find(s=>s.email===email)){
+    document.getElementById('nlEmail').value='';
+    document.getElementById('nlEmail').placeholder='Already subscribed! ✓';
+    return;
+  }
+  subs.push({id:Date.now(),email,name:'',source:'Newsletter Bar',status:'active',date:new Date().toISOString().split('T')[0]});
+  SiteDB.set('subscribers',subs);
+  auditLog('Newsletter signup', email);
+  document.getElementById('newsletterStrip').innerHTML = '<div style="font-family:Unbounded,sans-serif;font-size:.85rem;font-weight:700;color:#0A0907;text-align:center;width:100%">✓ You're subscribed! Welcome to the Zion Empire. ✦</div>';
+}
+
+// ═══════════════════════════════════════════════
+// CONTACT FORM (full DB integration)
+// ═══════════════════════════════════════════════
+// Replace old submitForm
+window.submitForm = function(btn) {
+  const form = btn.closest('.contact-form')||btn.parentElement;
+  const inputs = form.querySelectorAll('.form-input');
+  const firstName = inputs[0]?.value||'';
+  const lastName  = inputs[1]?.value||'';
+  const email     = inputs[2]?.value||'';
+  const company   = inputs[3]?.value||'';
+  const selects   = form.querySelectorAll('.form-select');
+  const service   = selects[0]?.value||'General';
+  const budget    = selects[1]?.value||'Not specified';
+  const message   = form.querySelector('.form-textarea')?.value||'';
+  if(!email){alert('Please enter your email address.');return;}
+  const name = (firstName+' '+lastName).trim()||email;
+
+  // Save inquiry
+  const inqs = SiteDB.get('inquiries');
+  const id = Date.now();
+  inqs.push({id,name,email,company,service,budget,message,status:'new',date:new Date().toISOString().split('T')[0],source:'Website Contact Form'});
+  SiteDB.set('inquiries',inqs);
+
+  // Save message to inbox
+  const msgs = SiteDB.get('messages');
+  msgs.push({id:id+1,name,email,subject:'New Project Inquiry — '+service,message:message+'\n\nBudget: '+budget+'\nCompany: '+(company||'N/A'),status:'new',replies:[],date:new Date().toISOString().split('T')[0]});
+  SiteDB.set('messages',msgs);
+
+  // Auto-subscribe
+  const subs = SiteDB.get('subscribers');
+  if(!subs.find(s=>s.email===email)){
+    subs.push({id:id+2,email,name,source:'Contact Form',status:'active',date:new Date().toISOString().split('T')[0]});
+    SiteDB.set('subscribers',subs);
+  }
+  auditLog('Contact form submitted', name+' <'+email+'>');
+
+  btn.textContent='✓ Sent! We will reply within 24 hours.';
+  btn.style.background='#4DFF9E';btn.style.color='#0A0907';
+  form.querySelectorAll('.form-input,.form-textarea').forEach(el=>el.value='');
+  setTimeout(()=>{btn.textContent='Send Project Brief →';btn.style.background='';btn.style.color='';},5000);
+};
+
+// ═══════════════════════════════════════════════
+// SEARCH OVERLAY
+// ═══════════════════════════════════════════════
+const searchIndex = [
+  {type:'Page',icon:'🏠',title:'Home',action:()=>navigate('home')},
+  {type:'Page',icon:'👤',title:'About — Our Story',action:()=>navigate('about')},
+  {type:'Page',icon:'⚙️',title:'Services — All Offerings',action:()=>navigate('services')},
+  {type:'Page',icon:'🖼️',title:'Portfolio — Selected Work',action:()=>navigate('portfolio')},
+  {type:'Page',icon:'⭐',title:'Testimonials — Client Reviews',action:()=>navigate('testimonials')},
+  {type:'Page',icon:'✍️',title:'Blog & Insights',action:()=>navigate('blog')},
+  {type:'Page',icon:'📬',title:'Contact — Start a Project',action:()=>navigate('contact')},
+  {type:'Service',icon:'💻',title:'Web Development',action:()=>navigate('services')},
+  {type:'Service',icon:'🎨',title:'UI/UX Design',action:()=>navigate('services')},
+  {type:'Service',icon:'✦',title:'Branding & Identity',action:()=>navigate('services')},
+  {type:'Service',icon:'🖼️',title:'Graphic Design',action:()=>navigate('services')},
+  {type:'Service',icon:'🔧',title:'Website Maintenance',action:()=>navigate('services')},
+  {type:'Service',icon:'📈',title:'Digital Marketing Assets',action:()=>navigate('services')},
+];
+function openSearch(){
+  document.getElementById('searchOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('searchField').focus(),100);
+  document.getElementById('searchResults').innerHTML = searchIndex.slice(0,5).map(renderSearchItem).join('');
+}
+function closeSearch(){ document.getElementById('searchOverlay').classList.remove('open'); document.getElementById('searchField').value=''; }
+function runSearch(q){
+  const hits = q.length<2 ? searchIndex.slice(0,5) : searchIndex.filter(i=>i.title.toLowerCase().includes(q.toLowerCase()));
+  // Also search blog + portfolio from DB
+  if(q.length>=2){
+    SiteDB.get('blog').filter(b=>b.title.toLowerCase().includes(q.toLowerCase())).slice(0,3).forEach(b=>{
+      hits.push({type:'Blog',icon:b.icon||'✍️',title:b.title,action:()=>{closeSearch();navigate('blog');}});
+    });
+    SiteDB.get('portfolio').filter(p=>p.title.toLowerCase().includes(q.toLowerCase())).slice(0,3).forEach(p=>{
+      hits.push({type:'Portfolio',icon:p.icon||'🖼️',title:p.title,action:()=>{closeSearch();navigate('portfolio');}});
+    });
+  }
+  document.getElementById('searchResults').innerHTML = hits.length ? hits.map(renderSearchItem).join('') : '<div style="color:var(--text-muted);text-align:center;padding:2rem;font-size:.88rem">No results found</div>';
+}
+function renderSearchItem(item){
+  return `<div class="search-result-item" onclick="(${item.action.toString()})();closeSearch()"><div class="sr-icon">${item.icon}</div><div><div class="sr-title">${item.title}</div><div class="sr-type">${item.type}</div></div></div>`;
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) openSearch();
+  if(e.key==='Escape'){ closeSearch(); closeSiteModal('caseStudyModal'); closeSiteModal('blogModal'); }
+});
+
+// ═══════════════════════════════════════════════
+// MODALS (site-level)
+// ═══════════════════════════════════════════════
+function openSiteModal(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeSiteModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+
+// ═══════════════════════════════════════════════
+// PORTFOLIO CASE STUDY
+// ═══════════════════════════════════════════════
+const portfolioData = [
+  {id:1,title:'NexGen Finance Platform',cat:'Web Development',client:'NexGen Capital',icon:'🌐',bg:'linear-gradient(135deg,#1a1812,#2a2518)',problem:'The client needed a complete fintech platform with real-time data feeds, complex user dashboards, and institutional-grade security — on a 90-day timeline.',solution:'Built a Next.js + TypeScript application with server-side rendering for performance, Zustand for state management, and a custom charting library for real-time financial data.',tools:['Next.js','TypeScript','Tailwind CSS','Zustand','Chart.js','Node.js','PostgreSQL'],results:['+240% conversion rate','90-day delivery','0 security incidents','4.9/5 client rating']},
+  {id:2,title:'Apex Creative Identity',cat:'Branding',client:'Apex Creative',icon:'✦',bg:'linear-gradient(135deg,#131210,#221f15)',problem:'Apex Creative was losing high-value clients to competitors despite having superior work — their brand felt generic and failed to command premium prices.',solution:'Developed a complete brand identity system built around the concept of "controlled chaos" — bold typography, a refined monochromatic palette with sharp gold accents, and a comprehensive guidelines document.',tools:['Figma','Adobe Illustrator','Adobe InDesign'],results:['42% increase in average project value','Premium market repositioning','New brand launched across 12 touchpoints','3 major clients won within 60 days']},
+  {id:3,title:'Lumix Mobile App',cat:'UI/UX Design',client:'Lumix Studios',icon:'📱',bg:'linear-gradient(135deg,#0f0e0a,#1a1712)',problem:'Lumix had a photography app with excellent features but a confusing UX — users were dropping off at onboarding (72% churn in first session) and key features went undiscovered.',solution:'Conducted 12 user interviews, rebuilt the information architecture from scratch, redesigned the onboarding flow with progressive disclosure, and created a new navigation pattern that surfaced key features.',tools:['Figma','Maze (user testing)','Protopie','Miro'],results:['Onboarding churn reduced from 72% to 18%','4.8★ App Store rating (up from 3.1★)','+180% feature discovery rate','Selected for App Store feature']},
+  {id:4,title:'Monarch Campaign Series',cat:'Graphic Design',client:'Monarch Group',icon:'🎨',bg:'linear-gradient(135deg,#161411,#221f15)',problem:'Monarch Group's luxury real estate marketing looked indistinguishable from competitors — generic photography and uninspired layouts failed to justify their premium price positioning.',solution:'Created a 50-piece campaign system with a consistent visual language: dramatic negative space, editorial typography, and architectural photography treatments that evoked exclusivity and aspiration.',tools:['Adobe Photoshop','Adobe Illustrator','Adobe InDesign'],results:['+35% engagement on social media','Campaign ran across 8 markets','12 properties sold within campaign period','Featured in Luxury Property Magazine']},
+  {id:5,title:'Velour E-Commerce',cat:'Web Development',client:'Velour Fashion',icon:'🏪',bg:'linear-gradient(135deg,#12100d,#1e1a12)',problem:'Velour's Shopify store had a 1.2% conversion rate — far below the 3.5% industry average. Poor mobile experience and a confusing checkout flow were losing thousands in daily revenue.',solution:'Complete redesign and rebuild on a custom Next.js storefront with Shopify headless, a streamlined 2-step checkout, size recommendation AI, and mobile-first design.',tools:['Next.js','Shopify Storefront API','Stripe','Tailwind CSS'],results:['Conversion rate: 1.2% → 4.1%','+240% monthly revenue','Mobile conversions up 310%','Load time: 8.2s → 1.4s']},
+  {id:6,title:'Obsidian Consulting',cat:'Branding',client:'Obsidian Consulting',icon:'💎',bg:'linear-gradient(135deg,#13120f,#201d14)',problem:'Obsidian Consulting was competing purely on reputation in a market where Fortune 500 clients make decisions largely based on perceived authority — their visual identity was undermining their pricing.',solution:'Built an identity system that communicates institutional authority: a custom wordmark, a dark-dominant palette with strategic gold accents, and a comprehensive suite of collateral.',tools:['Figma','Adobe Illustrator','Adobe InDesign'],results:['Average retainer value +68%','Won 3 Fortune 500 engagements','Brand redesign paid back in 45 days','Featured in Design Awards shortlist']},
+];
+
+function openCaseStudy(id){
+  const p = portfolioData.find(x=>x.id===id) || portfolioData[0];
+  document.getElementById('caseHero').style.background = p.bg;
+  document.getElementById('caseHero').innerHTML = `<span style="font-size:5rem">${p.icon}</span><div style="position:absolute;bottom:1.5rem;left:2rem"><div style="font-family:Unbounded,sans-serif;font-size:.6rem;letter-spacing:.2em;color:var(--gold);margin-bottom:.4rem">${p.cat}</div><div style="font-family:Unbounded,sans-serif;font-size:1.3rem;font-weight:700">${p.title}</div></div>`;
+  document.getElementById('caseBody').innerHTML = `
+    <div class="case-grid">
+      <div class="case-block"><div class="case-block-label">The Problem</div><div class="case-block-text">${p.problem}</div></div>
+      <div class="case-block"><div class="case-block-label">The Solution</div><div class="case-block-text">${p.solution}</div></div>
+      <div class="case-block"><div class="case-block-label">Tools Used</div><div class="tools-chips">${p.tools.map(t=>`<span class="tool-chip">${t}</span>`).join('')}</div></div>
+      <div class="case-block"><div class="case-block-label">Results</div>${p.results.map(r=>`<div style="display:flex;align-items:center;gap:.5rem;padding:.35rem 0;font-size:.88rem;color:var(--text-muted);border-bottom:1px solid var(--border2)"><span style="color:var(--gold)">→</span>${r}</div>`).join('')}</div>
+    </div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:.5rem">
+      <button class="btn-primary" onclick="navigate('contact');closeSiteModal('caseStudyModal')">Start a Similar Project →</button>
+      <button class="btn-outline" onclick="closeSiteModal('caseStudyModal')">← Back to Portfolio</button>
+    </div>
+  `;
+  openSiteModal('caseStudyModal');
+  auditLog('Portfolio case study viewed', p.title);
+}
+
+// Wire portfolio cards to open case studies
+document.querySelectorAll('.port-full-card').forEach((card,i)=>{
+  card.addEventListener('click',()=>openCaseStudy(i+1));
+});
+document.querySelectorAll('.port-card').forEach((card,i)=>{
+  card.style.cursor='pointer';
+  card.addEventListener('click',()=>openCaseStudy(i+1));
+});
+
+// ═══════════════════════════════════════════════
+// BLOG ARTICLE MODAL
+// ═══════════════════════════════════════════════
+const blogData = [
+  {id:1,icon:'✦',cat:'Design',date:'Mar 5, 2025',title:'Why Most Brand Identities Fail (And How to Build One That Lasts)',excerpt:'Most brands confuse aesthetics with identity.',content:`<h2>The Core Mistake</h2><p>Most brands spend their budget on a logo and call it branding. Real brand identity is a system — it's the sum of every impression your company makes. A logo is maybe 5% of that.</p><h2>The Strategic Foundation</h2><p>Before any visual work begins, you need to answer three questions ruthlessly honestly: What do you believe that your competitors don't? Who are you specifically for? What would be lost if you disappeared?</p><h2>The Visual Expression</h2><p>Once the strategy is locked, visual identity becomes translation work — turning abstract positioning into concrete sensory cues. Color, typography, spacing, motion — each element communicates something.</p><h2>The System, Not the Asset</h2><p>The deliverable isn't a logo file. It's a living system with rules that can be applied consistently across every touchpoint — from a business card to a billboard to a 404 error page.</p><p>Brands that last aren't those with the best logos. They're the ones who've built the most coherent, consistent, and strategically grounded identity system.</p>`},
+  {id:2,icon:'💻',cat:'Development',date:'Feb 18, 2025',title:'The 2025 Web Performance Stack: What Actually Moves the Needle',excerpt:'Lighthouse scores are vanity metrics.',content:`<h2>Stop Chasing Lighthouse Scores</h2><p>A 100/100 Lighthouse score that doesn't translate to business results is worthless. Performance optimization should be tied to conversion metrics, not abstract scores.</p><h2>The Stack That Works</h2><p>Next.js 15 with React Server Components eliminates the JavaScript payload problem entirely for static content. Combine with Turbopack for development speed and you have a foundation that scales.</p><h2>Image Optimization</h2><p>Images are responsible for 60-80% of page weight on most marketing sites. Next.js Image component with Cloudinary or imgix for transformation gives you sub-second loads even on mobile 3G.</p><h2>The Hidden Win: Edge Functions</h2><p>Moving API routes to the edge (Vercel Edge Functions or Cloudflare Workers) cuts server response times from 200-400ms to 30-50ms globally. For dynamic content, this is the single biggest win available.</p>`},
+  {id:3,icon:'🎯',cat:'Strategy',date:'Feb 1, 2025',title:'Premium Positioning: How Design Justifies Higher Prices',excerpt:'Your design is making pricing decisions before you open your mouth.',content:`<h2>Design as a Price Signal</h2><p>Premium brands are bought on emotion and justified by logic. Design is the emotional trigger. Before a prospect reads your pricing page, your visual identity has already set their price expectations.</p><h2>The Credibility Cascade</h2><p>Cheap design signals cheap thinking. If your brand looks like it was assembled from a template, prospects unconsciously assume your work product is similarly templated. The brand is the product, even before the product is seen.</p><h2>The Investment Framing</h2><p>Premium positioning shifts the conversation from cost to investment. A $15,000 website that generates $200,000 in new business annually isn't an expense — it's a 13x return. But you can't have that conversation if the site looks like it cost $500.</p><h2>Case Study: How We Repositioned Obsidian</h2><p>Obsidian Consulting had a $480/hour billing rate but a brand that looked like a $150/hour firm. The rebrand didn't change their services — it changed how those services were perceived. Average retainer value increased 68% within 6 months.</p>`},
+];
+
+document.querySelectorAll('.blog-card').forEach((card,i)=>{
+  card.addEventListener('click',()=>openBlogArticle(i+1));
+});
+
+function openBlogArticle(id){
+  const b = blogData.find(x=>x.id===id)||blogData[0];
+  document.getElementById('blogModalHeader').innerHTML = `
+    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+      <span style="padding:.25rem .7rem;background:var(--gold-dim);border-radius:100px;font-size:.65rem;font-family:Unbounded,sans-serif;font-weight:700;letter-spacing:.1em;color:var(--gold)">${b.cat}</span>
+      <span style="font-size:.75rem;color:var(--dim);font-family:DM Mono,monospace">${b.date}</span>
+    </div>
+    <h2 style="font-family:Unbounded,sans-serif;font-size:clamp(1.1rem,3vw,1.6rem);font-weight:700;line-height:1.2;letter-spacing:-.02em">${b.title}</h2>
+  `;
+  document.getElementById('blogModalBody').innerHTML = `
+    <div class="article-body">${b.content}</div>
+    <div class="share-row">
+      <span class="share-label">Share:</span>
+      <button class="share-btn" onclick="shareArticle('twitter','${b.title}')">𝕏 Twitter</button>
+      <button class="share-btn" onclick="shareArticle('linkedin','${b.title}')">LinkedIn</button>
+      <button class="share-btn" onclick="copyLink()">🔗 Copy Link</button>
+    </div>
+    <div style="margin-top:1.5rem;text-align:center">
+      <button class="btn-outline" style="margin-right:.75rem" onclick="closeSiteModal('blogModal')">← Back to Blog</button>
+      <button class="btn-primary" onclick="navigate('contact');closeSiteModal('blogModal')">Start a Project →</button>
+    </div>
+  `;
+  openSiteModal('blogModal');
+  auditLog('Blog article viewed', b.title);
+}
+
+function shareArticle(platform, title){
+  const url = encodeURIComponent('https://berlincoc.com');
+  const t = encodeURIComponent(title + ' — Berlin C.O.C.');
+  if(platform==='twitter') window.open('https://twitter.com/intent/tweet?text='+t+'&url='+url,'_blank');
+  if(platform==='linkedin') window.open('https://www.linkedin.com/sharing/share-offsite/?url='+url,'_blank');
+}
+function copyLink(){ navigator.clipboard?.writeText(window.location.href); alert('Link copied!'); }
+
+// ═══════════════════════════════════════════════
+// LIVE CHAT
+// ═══════════════════════════════════════════════
+const chatResponses = [
+  "Great! Tell me more about your project and I'll make sure the team gets back to you right away.",
+  "Sounds exciting! Feel free to fill out the contact form on this page and we'll be in touch within 24 hours.",
+  "That's exactly the kind of project we love. What's your timeline looking like?",
+  "We'd love to help with that! Our typical starting price for that type of work is on the Services page. Would you like me to point you there?",
+  "Perfect. Let me make sure you're connected with the right person. Can you share your email?"
+];
+let chatReplyIdx = 0;
+
+function toggleChat(){
+  document.getElementById('chatWindow').classList.toggle('open');
+  setTimeout(()=>document.getElementById('chatInput').focus(), 300);
+}
+function sendChat(){
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const msgs = document.getElementById('chatMessages');
+  msgs.innerHTML += `<div class="chat-msg user"><div class="chat-msg-bubble">${text}</div><div class="chat-msg-time">Just now</div></div>`;
+  input.value='';
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // Save to messages DB
+  const dbMsgs = SiteDB.get('messages');
+  const existing = dbMsgs.find(m=>m.subject==='Live Chat Session');
+  if(existing){ existing.message += '\nUser: '+text; }
+  else dbMsgs.push({id:Date.now(),name:'Chat Visitor',email:'',subject:'Live Chat Session',message:'User: '+text,status:'new',replies:[],date:new Date().toISOString().split('T')[0]});
+  SiteDB.set('messages',dbMsgs);
+
+  setTimeout(()=>{
+    const reply = chatResponses[chatReplyIdx % chatResponses.length];
+    chatReplyIdx++;
+    msgs.innerHTML += `<div class="chat-msg bot"><div class="chat-msg-bubble">${reply}</div><div class="chat-msg-time">Just now</div></div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1200);
+}
+
+// ═══════════════════════════════════════════════
+// BOOKING CALENDAR
+// ═══════════════════════════════════════════════
+let calDate = new Date(2025,2,1);
+let selDay = null, selTime = null;
+const bookedDays = [5,12,19,20];
+const times = ['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM'];
+const bookedTimes = ['9:00 AM','10:30 AM','3:00 PM'];
+
+function renderCalendar(){
+  const y=calDate.getFullYear(), m=calDate.getMonth();
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calMonth').textContent = months[m]+' '+y;
+  const firstDay = new Date(y,m,1).getDay();
+  const daysInMonth = new Date(y,m+1,0).getDate();
+  const today = new Date();
+  let html = '<div class="cal-dow">Su</div><div class="cal-dow">Mo</div><div class="cal-dow">Tu</div><div class="cal-dow">We</div><div class="cal-dow">Th</div><div class="cal-dow">Fr</div><div class="cal-dow">Sa</div>';
+  for(let i=0;i<firstDay;i++) html+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const isToday = d===today.getDate()&&m===today.getMonth()&&y===today.getFullYear();
+    const isBooked = bookedDays.includes(d);
+    const isSel = d===selDay;
+    const isPast = new Date(y,m,d) < today && !isToday;
+    const cls = [isToday?'today':'',isBooked?'booked':'available',isSel?'selected':'',isPast?'booked':''].filter(Boolean).join(' ');
+    html += `<div class="cal-day ${cls}" onclick="${(!isBooked&&!isPast)?'selectDay('+d+')':''}"> ${d}</div>`;
+  }
+  document.getElementById('calGrid').innerHTML = html;
+}
+function calPrev(){calDate=new Date(calDate.getFullYear(),calDate.getMonth()-1,1);renderCalendar();}
+function calNext(){calDate=new Date(calDate.getFullYear(),calDate.getMonth()+1,1);renderCalendar();}
+function selectDay(d){
+  selDay=d; selTime=null;
+  renderCalendar();
+  const ts = document.getElementById('timeSlots');
+  ts.style.display='block';
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('timeSlotsLabel').textContent = 'Available times — '+months[calDate.getMonth()]+' '+d;
+  document.getElementById('timeGrid').innerHTML = times.map(t=>`<div class="time-slot${bookedTimes.includes(t)?' taken':''}" onclick="${!bookedTimes.includes(t)?'selectTime(''+t+'')':''}">${t}</div>`).join('');
+  document.getElementById('bookingConfirm').style.display='none';
+}
+function selectTime(t){
+  selTime=t;
+  document.querySelectorAll('.time-slot').forEach(el=>el.classList.toggle('selected',el.textContent.trim()===t));
+  document.getElementById('bookingConfirm').style.display='block';
+}
+function confirmBooking(){
+  const name = document.getElementById('bookingName').value.trim();
+  const email = document.getElementById('bookingEmail').value.trim();
+  if(!name||!email){alert('Please fill in your name and email.');return;}
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const dateStr = months[calDate.getMonth()]+' '+selDay+', '+calDate.getFullYear()+' at '+selTime;
+
+  const bookings = SiteDB.get('bookings');
+  bookings.push({id:Date.now(),name,email,date:dateStr,status:'confirmed',created:new Date().toISOString().split('T')[0]});
+  SiteDB.set('bookings',bookings);
+
+  const msgs = SiteDB.get('messages');
+  msgs.push({id:Date.now()+1,name,email,subject:'Discovery Call Booking — '+dateStr,message:'A discovery call has been booked.\nDate: '+dateStr+'\nName: '+name+'\nEmail: '+email,status:'new',replies:[],date:new Date().toISOString().split('T')[0]});
+  SiteDB.set('messages',msgs);
+  auditLog('Discovery call booked', name+' — '+dateStr);
+
+  document.querySelector('.calendar-widget').innerHTML = `
+    <div style="text-align:center;padding:2rem">
+      <div style="font-size:3rem;margin-bottom:1rem">✅</div>
+      <div style="font-family:Unbounded,sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.5rem">Booking Confirmed!</div>
+      <div style="font-size:.85rem;color:var(--text-muted);margin-bottom:.35rem">${dateStr}</div>
+      <div style="font-size:.82rem;color:var(--dim)">A confirmation will be sent to ${email}</div>
+    </div>
+  `;
+}
+document.addEventListener("DOMContentLoaded",()=>{ if(document.getElementById("calGrid")) renderCalendar(); });
+
+// ═══════════════════════════════════════════════
+// ARIA + ACCESSIBILITY
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.service-card').forEach(card=>{card.setAttribute('role','article');card.setAttribute('tabindex','0');});document.querySelectorAll('.port-full-card,.port-card').forEach(card=>{card.setAttribute('role','button');card.setAttribute('tabindex','0');});});
+
+// ═══════════════════════════════════════════════
+// PORTFOLIO FILTER (fix for portfolio page)
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{document.getElementById('filterBar')?.addEventListener('click',e=>{const btn=e.target.closest('.filter-btn');if(!btn)return;document.querySelectorAll('#filterBar .filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.filter||'all';const catMap={'web':'Web Development','branding':'Branding','graphics':'Graphic Design','uiux':'UI/UX Design'};document.querySelectorAll('#portfolioGrid .port-full-card').forEach((card,i)=>{const pCat=portfolioData[i]?.cat||'';const match=f==='all'||pCat===catMap[f];card.style.display=match?'':'none';});});
+});
+
+// ═══════════════════════════════════════════════
+// SEARCH KEYBIND HINT IN NAV
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{document.querySelector('.nav-actions')?.insertAdjacentHTML('afterbegin','<button class="theme-toggle" onclick="openSearch()" title="Search (press /)">🔍</button>');});
+
+
+
+
+</script>
+
+<script>
+
+
+
+
+
+
+// ── CURSOR ─────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+});
+function animateRing() {
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  cursorRing.style.left=rx+'px'; cursorRing.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+// ── PRELOADER ──────────────────────────────────
+const _hidePreloader = () => { const el = document.getElementById('preloader'); if(el) el.classList.add('hidden'); };
+window.addEventListener('load', () => setTimeout(_hidePreloader, 300));
+setTimeout(_hidePreloader, 2000);
+
+// ── NAV SCROLL ─────────────────────────────────
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+  const scrollBar = document.getElementById('scrollBar');
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  scrollBar.style.width = pct + '%';
+});
+
+// ── THEME ──────────────────────────────────────
+const themeToggle = document.getElementById('themeToggle');
+let isDark = true;
+themeToggle.addEventListener('click', () => {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  themeToggle.textContent = isDark ? '☀️' : '🌙';
+});
+
+// ── MOBILE NAV ─────────────────────────────────
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+hamburger.addEventListener('click', () => mobileNav.classList.toggle('open'));
+function closeMobile() { mobileNav.classList.remove('open'); }
+
+// ── PAGE NAVIGATION ────────────────────────────
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.dataset.page === page);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+  setTimeout(initReveal, 100);
+  return false;
+}
+
+// ── REVEAL ANIMATIONS ─────────────────────────
+function initReveal() {
+  const reveals = document.querySelectorAll('#page-' + getCurrentPage() + ' .reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => obs.observe(el));
+}
+
+function getCurrentPage() {
+  const active = document.querySelector('.page.active');
+  return active ? active.id.replace('page-','') : 'home';
+}
+
+// ── SERVICE CARD MOUSE EFFECT ──────────────────
+document.querySelectorAll('.service-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX-rect.left)/rect.width*100)+'%');
+    card.style.setProperty('--my', ((e.clientY-rect.top)/rect.height*100)+'%');
+  });
+});
+
+// ── TESTIMONIALS SLIDER ────────────────────────
+let sliderPos = 0;
+const track = document.getElementById('testimonialsTrack');
+const cards = track ? track.querySelectorAll('.testimonial-card') : [];
+let maxPos = 0;
+function updateSlider() {
+  if(!track) return;
+  const cardW = cards[0] ? cards[0].offsetWidth + 24 : 0;
+  maxPos = Math.max(0, cards.length - Math.floor(track.parentElement.offsetWidth / cardW));
+  track.style.transform = `translateX(-${sliderPos * cardW}px)`;
+}
+document.getElementById('nextBtn')?.addEventListener('click', () => {
+  sliderPos = Math.min(sliderPos + 1, maxPos);
+  updateSlider();
+});
+document.getElementById('prevBtn')?.addEventListener('click', () => {
+  sliderPos = Math.max(sliderPos - 1, 0);
+  updateSlider();
+});
+window.addEventListener('resize', updateSlider);
+
+// ── PORTFOLIO FILTER ───────────────────────────
+
+
+// ── CONTACT FORM ───────────────────────────────
+
+
+
+
+
+
+</script>
+
+
+
+<!-- NEWSLETTER STRIP -->
+<div class="newsletter-strip" id="newsletterStrip">
+  <div class="nl-text">✦ Stay in the loop — Studio insights, project drops &amp; design tips</div>
+  <div class="nl-form">
+    <input class="nl-input" id="nlEmail" type="email" placeholder="your@email.com" aria-label="Email for newsletter"/>
+    <button class="nl-btn" onclick="subscribeNewsletter()">Subscribe →</button>
+  </div>
+</div>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+  <p class="cookie-text">We use cookies to enhance your experience. <a href="#" onclick="navigate('about')">Privacy Policy</a></p>
+  <div class="cookie-btns">
+    <button style="padding:.5rem 1.1rem;font-size:.75rem;border:1px solid var(--border);background:transparent;color:var(--text-muted);border-radius:4px;cursor:pointer" onclick="setCookie('declined')">Decline</button>
+    <button class="btn-nav" onclick="setCookie('accepted')" style="padding:.5rem 1.3rem">Accept All</button>
+  </div>
+</div>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- FLOATING CTA -->
+<div class="floating-cta" id="floatingCta" style="opacity:0;transition:opacity .5s;pointer-events:none">
+  <button class="float-btn primary" onclick="navigate('contact')"><div class="float-dot"></div> Let's Talk</button>
+  <button class="float-btn secondary" onclick="openSearch()">🔍 Search</button>
+</div>
+
+<!-- LIVE CHAT BUBBLE -->
+<div class="chat-bubble" id="chatBubble" onclick="toggleChat()" aria-label="Open live chat" role="button" tabindex="0">
+  💬<div class="chat-dot"></div>
+</div>
+<div class="chat-window" id="chatWindow" role="dialog" aria-label="Live chat">
+  <div class="chat-header">
+    <div class="chat-avatar">👤</div>
+    <div><div class="chat-header-name">Berlin C.O.C.</div><div class="chat-header-status">🟢 Online — replies instantly</div></div>
+    <button class="chat-close-btn" onclick="toggleChat()" aria-label="Close chat">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot"><div class="chat-msg-bubble">👋 Hey! What kind of project are you thinking about?</div><div class="chat-msg-time">Just now</div></div>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChat()"/>
+    <button class="chat-send" onclick="sendChat()" aria-label="Send">→</button>
+  </div>
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay" role="search">
+  <div class="search-wrap">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input class="search-field" id="searchField" placeholder="Search pages, services, blog..." oninput="runSearch(this.value)"/>
+      <button class="search-close" onclick="closeSearch()" aria-label="Close search">✕</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- PORTFOLIO CASE STUDY MODAL -->
+<div class="modal-overlay-site" id="caseStudyModal" onclick="if(event.target===this)closeSiteModal('caseStudyModal')">
+  <div class="site-modal">
+    <button class="site-modal-close" onclick="closeSiteModal('caseStudyModal')">✕</button>
+    <div class="site-modal-hero" id="caseHero"></div>
+    <div class="site-modal-body" id="caseBody"></div>
+  </div>
+</div>
+
+<!-- BLOG ARTICLE MODAL -->
+<div class="modal-overlay-site" id="blogModal" onclick="if(event.target===this)closeSiteModal('blogModal')">
+  <div class="site-modal" style="max-width:760px">
+    <button class="site-modal-close" onclick="closeSiteModal('blogModal')">✕</button>
+    <div class="blog-modal-header" id="blogModalHeader"></div>
+    <div class="blog-modal-body" id="blogModalBody"></div>
+  </div>
+</div>
+
+<!-- BOOKING SECTION (injected into contact page) -->
+
+<!-- 404 PAGE -->
+<div id="page-404" style="display:none">
+  <div style="padding-top:120px;text-align:center;min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;padding:8rem 2rem">
+    <div class="err-code">404</div>
+    <h1 class="err-title">Page Not Found</h1>
+    <p class="err-sub">Looks like this page doesn't exist. Let's get you back on track.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <button class="btn-primary" onclick="navigate('home')">← Back to Home</button>
+      <button class="btn-outline" onclick="navigate('portfolio')">View Portfolio</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
